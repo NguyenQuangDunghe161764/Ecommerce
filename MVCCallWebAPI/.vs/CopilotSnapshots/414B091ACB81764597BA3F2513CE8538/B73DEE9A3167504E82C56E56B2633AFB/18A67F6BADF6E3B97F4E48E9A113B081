@@ -1,0 +1,120 @@
+﻿@model IEnumerable<MVCCallWebAPI.ViewModels.RoleViewModel>
+
+@{
+    ViewData["Title"] = "Quản lý Quyền";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<style>
+    /* Hiệu ứng khi di chuột qua các mục menu không được chọn */
+    .hover-link:hover {
+        color: #ffffff !important;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+        transition: all 0.2s ease;
+    }
+    /* Đảm bảo sidebar chiếm toàn bộ chiều cao tối thiểu */
+    #sidebarMenu {
+        min-height: 100vh;
+        box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+    }
+
+    .nav-link {
+        font-weight: 500;
+        padding: 0.8rem 1rem;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse pt-3">
+            <div class="position-sticky">
+                <h5 class="text-white px-3 mb-3">Admin Panel</h5>
+                <ul class="nav flex-column">
+                    @{
+                        // Lấy tên Action hiện tại từ Route để tự động bật trạng thái Active
+                        var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+                    }
+
+                    <li class="nav-item mb-2">
+                        <a class="nav-link mx-2 @(currentAction == "Roles" || currentAction == "Index" ? "active bg-primary text-white" : "text-white-50 hover-link")"
+                           asp-area="Admin" asp-controller="Admin" asp-action="Roles">
+                            <i class="bi bi-shield-lock me-2"></i> Quản lý Quyền (Roles)
+                        </a>
+                    </li>
+
+                    <li class="nav-item mb-2">
+                        <a class="nav-link mx-2 @(currentAction == "Users" ? "active bg-primary text-white" : "text-white-50 hover-link")"
+                           asp-area="Admin" asp-controller="Admin" asp-action="Users">
+                            <i class="bi bi-people me-2"></i> Quản lý Người dùng
+                        </a>
+                    </li>
+
+                    <li class="nav-item mb-2">
+                        <a class="nav-link mx-2 @(currentAction == "Products" ? "active bg-primary text-white" : "text-white-50 hover-link")"
+                           asp-area="Admin" asp-controller="Admin" asp-action="Products">
+                            <i class="bi bi-box-seam me-2"></i> Quản lý Sản phẩm
+                        </a>
+                    </li>
+
+                    <li class="nav-item mb-2">
+                        <a class="nav-link mx-2 @(currentAction == "Orders" ? "active bg-primary text-white" : "text-white-50 hover-link")"
+                           asp-area="Admin" asp-controller="Admin" asp-action="Orders">
+                            <i class="bi bi-cart-check me-2"></i> Quản lý Đơn hàng
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-4 bg-light">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                <h1 class="h3 text-secondary">Danh sách Quyền hệ thống</h1>
+            </div>
+
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-0">
+                    <table class="table table-bordered table-hover mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th scope="col" class="w-75 ps-3">Role Name</th>
+                                <th scope="col" class="w-25 text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Any())
+                            {
+                                @foreach (var role in Model)
+                                {
+                                    <tr>
+                                        <td class="align-middle ps-3 fw-bold text-dark">
+                                            @role.Name
+                                        </td>
+                                        <td class="text-center align-middle">
+                                            <a asp-area="Admin"
+                                               asp-controller="Admin"
+                                               asp-action="ManageRolePermissions"
+                                               asp-route-roleId="@role.Id"
+                                               class="btn btn-primary btn-sm px-3 shadow-sm">
+                                                <i class="bi bi-gear-fill me-1"></i> Manage Permissions
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="2" class="text-center text-muted py-4">
+                                        <i class="bi bi-exclamation-circle me-1"></i> Không tìm thấy quyền nào trong hệ thống.
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>

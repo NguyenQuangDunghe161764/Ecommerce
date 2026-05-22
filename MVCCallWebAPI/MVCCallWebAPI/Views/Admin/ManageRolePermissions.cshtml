@@ -1,0 +1,45 @@
+﻿@model ManagePermissionViewModel
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Manage Permissions - @Model.RoleName</h2>
+
+<form asp-action="ManageRolePermissions" asp-controller="Admin" method="post">
+    @Html.AntiForgeryToken()
+
+    <input type="hidden" asp-for="RoleId" />
+
+    @for (int i = 0; i < Model.Permissions.Count; i++)
+    {
+        <div class="form-check mb-2">
+
+            <!-- hidden -->
+            <input type="hidden"
+                   asp-for="Permissions[i].PermissionId" />
+
+            <input type="hidden"
+                   asp-for="Permissions[i].PermissionName" />
+
+            <!-- ensure unchecked values are posted -->
+            <input type="hidden" name="Permissions[@i].IsSelected" value="false" />
+
+            <!-- checkbox -->
+            <input class="form-check-input"
+                   type="checkbox"
+                   name="Permissions[@i].IsSelected"
+                   value="true"
+                   @(Model.Permissions[i].IsSelected ? "checked\" checked\"" : "") />
+
+            <label class="form-check-label" asp-for="Permissions[i].IsSelected">
+                @Model.Permissions[i].PermissionName
+            </label>
+
+        </div>
+    }
+
+    <button type="submit" class="btn btn-primary mt-3">
+        Save Permissions
+    </button>
+
+</form>

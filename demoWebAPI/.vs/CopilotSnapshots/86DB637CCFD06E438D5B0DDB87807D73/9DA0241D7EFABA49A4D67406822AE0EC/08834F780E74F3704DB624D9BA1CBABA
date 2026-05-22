@@ -1,0 +1,194 @@
+﻿using demoWebAPI.DTOs;
+using demoWebAPI.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Data;
+[ApiController]
+[AllowAnonymous]
+[Route("api/[controller]")]
+public class AuthController : ControllerBase
+{
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly JwtService _jwtService;
+    private readonly EcommerceContext _context;
+
+    public AuthController(
+        UserManager<ApplicationUser> userManager,
+        SignInManager<ApplicationUser> signInManager,
+        JwtService jwtService,
+        EcommerceContext context)
+    {
+        _userManager = userManager;
+
+        _signInManager = signInManager;
+
+        _jwtService = jwtService;
+
+        _context = context;
+    }
+    // REGISTER
+    [HttpPost("register")]
+    public async Task<IActionResult> Register(RegisterDto dto)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var user = new ApplicationUser
+        {
+            UserName = dto.Email,
+            Email = dto.Email,
+            FullName = dto.FullName,
+            PhoneNumber = dto.PhoneNumber
+        };
+        if (dto.Password != dto.ConfirmPassword)
+        {
+            return BadRequest(new { message = "Passwords do not match" });
+        }
+        var result = await _userManager.CreateAsync(user, dto.Password);
+
+        if (!result.Succeeded)
+            return BadRequest(result.Errors);
+
+        await _userManager.AddToRoleAsync(user, "User");
+
+        return Ok("Register success");
+    }
+
+    // LOGIN
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(LoginDto dto)
+    {
+        var user = await _userManager
+            .FindByEmailAsync(dto.Email);
+
+        if (user == null)
+        {
+            return Unauthorized(new
+            {
+                message = "Invalid email or password"
+            });
+        }
+
+        var result = await _signInManager
+            .CheckPasswordSignInAsync(
+                user,
+                dto.Password,
+                true);
+
+        if (!result.Succeeded)
+        {
+            return Unauthorized(new
+            {
+                message = "Invalid email or password"
+            });
+        }
+
+        // REVOKE OLD TOKENS
+        var oldTokens = await _context.RefreshTokens
+            .Where(x =>
+                x.UserId == user.Id &&
+                !x.IsRevoked)
+            .ToListAsync();
+
+        foreach (var oldToken in oldTokens)
+        {
+            oldToken.IsRevoked = true;
+        }
+
+        // USER ROLES
+        var roles =
+            await _userManager.GetRolesAsync(user);
+
+        // ACCESS TOKEN
+        var accessToken =
+            await _jwtService.GenerateToken(user);
+
+        // REFRESH TOKEN
+        var refreshToken =
+            _jwtService.GenerateRefreshToken();
+
+        // SAVE REFRESH TOKEN
+        var refreshTokenEntity = new RefreshToken
+        {
+            Token = refreshToken,
+            ExpiryDate = DateTime.UtcNow.AddDays(7),
+            IsRevoked = false,
+            UserId = user.Id
+        };
+
+        _context.RefreshTokens.Add(refreshTokenEntity);
+
+        await _context.SaveChangesAsync();
+
+        return Ok(new
+        {
+            accessToken,
+            refreshToken,
+            userName = user.UserName,
+            role = roles.FirstOrDefault()
+        });
+    }
+    [HttpPost("refresh")]
+    public async Task<IActionResult> Refresh(
+    TokenRequest request)
+    {
+        // FIND REFRESH TOKEN
+        var storedToken = await _context.RefreshTokens
+            .Include(x => x.User)
+            .FirstOrDefaultAsync(x =>
+                x.Token == request.RefreshToken);
+
+        // TOKEN NOT FOUND
+        if (storedToken == null)
+        {
+            return Unauthorized(new
+            {
+                message = "Invalid refresh token"
+            });
+        }
+
+        // TOKEN EXPIRED
+        if (storedToken.ExpiryDate < DateTime.UtcNow)
+        {
+            return Unauthorized(new
+            {
+                message = "Refresh token expired"
+            });
+        }
+
+        // TOKEN REVOKED
+        if (storedToken.IsRevoked)
+        {
+            return Unauthorized(new
+            {
+                message = "Refresh token revoked"
+            });
+        }
+
+        // GENERATE NEW ACCESS TOKEN
+        var newAccessToken =
+            await _jwtService.GenerateToken(
+                storedToken.User);
+
+        return Ok(new
+        {
+            accessToken = newAccessToken
+        });
+    }
+    [HttpGet("check-email")]
+    public async Task<IActionResult> CheckEmail(string email)
+    {
+        var exists = await _userManager.Users.AnyAsync(x => x.Email == email);
+        return Ok(new { exists });
+    }
+
+    [HttpGet("check-phone")]
+    public async Task<IActionResult> CheckPhone(string phone)
+    {
+        var exists = await _userManager.Users.AnyAsync(x => x.PhoneNumber == phone);
+        return Ok(new { exists });
+    }
+}

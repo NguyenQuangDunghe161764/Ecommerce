@@ -1,0 +1,41 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+
+public class PermissionAttribute : Attribute, IAuthorizationFilter
+{
+    private readonly string _permission;
+
+    public PermissionAttribute(string permission)
+    {
+        _permission = permission;
+    }
+
+    public void OnAuthorization(AuthorizationFilterContext context)
+    {
+        var httpContext = context.HttpContext;
+        var token = httpContext.Session.GetString("JWT");
+
+        if (string.IsNullOrEmpty(token))
+        {
+            context.Result = new RedirectToActionResult("Login", "Account", null);
+            return;
+        }
+
+        bool hasPermission;
+
+        try
+        {
+            hasPermission = JwtHelper.HasPermission(token, _permission);
+        }
+        catch
+        {
+            context.Result = new RedirectToActionResult("AccessDenied", "Account", null);
+            return;
+        }
+
+        if (!hasPermission)
+        {
+            context.Result = new RedirectToActionResult("AccessDenied", "Account", null);
+        }
+    }
+}

@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "dgSpecHash": "GiJWqh13wag=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\dungh\\source\\repos\\MVCCallWebAPI\\MVCCallWebAPI\\MVCCallWebAPI.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\dungh\\.nuget\\packages\\microsoft.extensions.http.polly\\10.0.8\\microsoft.extensions.http.polly.10.0.8.nupkg.sha512",
+    "C:\\Users\\dungh\\.nuget\\packages\\microsoft.identitymodel.abstractions\\8.18.0\\microsoft.identitymodel.abstractions.8.18.0.nupkg.sha512",
+    "C:\\Users\\dungh\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\8.18.0\\microsoft.identitymodel.jsonwebtokens.8.18.0.nupkg.sha512",
+    "C:\\Users\\dungh\\.nuget\\packages\\microsoft.identitymodel.logging\\8.18.0\\microsoft.identitymodel.logging.8.18.0.nupkg.sha512",
+    "C:\\Users\\dungh\\.nuget\\packages\\microsoft.identitymodel.tokens\\8.18.0\\microsoft.identitymodel.tokens.8.18.0.nupkg.sha512",
+    "C:\\Users\\dungh\\.nuget\\packages\\newtonsoft.json\\13.0.4\\newtonsoft.json.13.0.4.nupkg.sha512",
+    "C:\\Users\\dungh\\.nuget\\packages\\polly\\8.6.6\\polly.8.6.6.nupkg.sha512",
+    "C:\\Users\\dungh\\.nuget\\packages\\polly.core\\8.6.6\\polly.core.8.6.6.nupkg.sha512",
+    "C:\\Users\\dungh\\.nuget\\packages\\polly.extensions.http\\3.0.0\\polly.extensions.http.3.0.0.nupkg.sha512",
+    "C:\\Users\\dungh\\.nuget\\packages\\system.identitymodel.tokens.jwt\\8.18.0\\system.identitymodel.tokens.jwt.8.18.0.nupkg.sha512"
+  ],
+  "logs": []
+}
