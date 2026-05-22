@@ -7,6 +7,7 @@ public class CreateProductDto
     public string Name { get; set; }
 
     public string? Description { get; set; }
+    public List<IFormFile>? Images { get; set; }
 
     [Range(0, double.MaxValue, ErrorMessage = "Price must be >= 0")]
     public decimal Price { get; set; }

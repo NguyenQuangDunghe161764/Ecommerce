@@ -48,8 +48,9 @@ public class ProductsController : ControllerBase
     int? categoryId = null)
     {
         var query = _context.Products
-            .Include(x => x.Category)
-            .AsQueryable();
+    .Include(x => x.Category)
+    .Include(x => x.Productimages)
+    .AsQueryable(); ;
 
         // FILTER: keyword
         if (!string.IsNullOrWhiteSpace(keyword))
@@ -76,11 +77,16 @@ public class ProductsController : ControllerBase
                 Name = x.Name,
                 Price = (decimal)x.Price,
                 Stock = x.Stock,
+
                 Category = x.Category == null ? null : new CategoryDto
                 {
                     Id = x.Category.Id,
                     Name = x.Category.Name
-                }
+                },
+
+                Images = x.Productimages
+        .Select(i => i.ImageUrl)
+        .ToList()
             })
             .ToListAsync();
 
@@ -97,8 +103,9 @@ public class ProductsController : ControllerBase
 
     [HttpPost("{id}/images")]
     [Authorize(Policy = "Product.Edit")]
-    public async Task<IActionResult> UploadProductImages(int id, List<IFormFile> files)
-    {
+public async Task<IActionResult> UploadProductImages(
+    int id,
+    [FromForm] List<IFormFile> files)    {
         if (files == null || files.Count == 0)
         {
             return BadRequest(new { message = "No files uploaded." });
@@ -133,16 +140,43 @@ public class ProductsController : ControllerBase
             if (file.Length <= 0)
                 continue;
 
+            // GET FILE EXTENSION
             var ext = Path.GetExtension(file.FileName);
-            var fileName = $"{Guid.NewGuid()}{ext}";
-            var fullPath = Path.Combine(uploadFolder, fileName);
 
-            using (var stream = new FileStream(fullPath, FileMode.Create))
+            // ALLOWED EXTENSIONS
+            var allowedExtensions =
+                new[] { ".jpg", ".jpeg", ".png", ".webp" };
+
+            if (!allowedExtensions.Contains(ext.ToLower()))
+            {
+                return BadRequest(new
+                {
+                    message = "Invalid file type"
+                });
+            }
+
+            // LIMIT SIZE 5MB
+            if (file.Length > 5 * 1024 * 1024)
+            {
+                return BadRequest(new
+                {
+                    message = "File too large"
+                });
+            }
+
+            var fileName = $"{Guid.NewGuid()}{ext}";
+
+            var fullPath =
+                Path.Combine(uploadFolder, fileName);
+
+            using (var stream =
+                new FileStream(fullPath, FileMode.Create))
             {
                 await file.CopyToAsync(stream);
             }
 
-            var relativeUrl = $"/uploads/products/{id}/{fileName}";
+            var relativeUrl =
+                $"/uploads/products/{id}/{fileName}";
 
             var img = new Productimage
             {
@@ -152,7 +186,11 @@ public class ProductsController : ControllerBase
             };
 
             _context.Productimages.Add(img);
-            createdImages.Add(new { img.ImageUrl });
+
+            createdImages.Add(new
+            {
+                img.ImageUrl
+            });
         }
 
         // If product has no main image, mark the first uploaded as main
@@ -190,11 +228,11 @@ public class ProductsController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Policy = "Product.Create")]
+    //[Authorize(Policy = "Product.Create")]
+    [AllowAnonymous]
     public async Task<ActionResult<ProductDto>>
-        CreateProduct(CreateProductDto dto)
+    CreateProduct([FromForm] CreateProductDto dto)
     {
-
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
@@ -205,24 +243,45 @@ public class ProductsController : ControllerBase
 
         // LOAD ENTITY
         var product = await _context.Products
-            .FindAsync(created.Id);
+            .Include(x => x.Category)
+            .Include(x => x.Productimages)
+            .FirstOrDefaultAsync(x => x.Id == created.Id);
 
-        // ASSIGN OWNER
-        var userId =
-            User.FindFirstValue(
-                ClaimTypes.NameIdentifier);
+        if (product == null)
+        {
+            return NotFound();
+        }
 
-        product.OwnerId = userId;
+        var result = new ProductDto
+        {
+            Id = product.Id,
 
-        await _context.SaveChangesAsync();
+            Name = product.Name,
+
+            Price = product.Price,
+
+            Stock = product.Stock,
+
+            MainImageUrl = product.Productimages
+                .Where(x => x.IsMain)
+                .Select(x => x.ImageUrl)
+                .FirstOrDefault(),
+
+            Category = product.Category == null
+                ? null
+                : new CategoryDto
+                {
+                    Id = product.Category.Id,
+                    Name = product.Category.Name
+                }
+        };
 
         return CreatedAtAction(
             nameof(GetProduct),
-            new { id = created.Id },
-            created
+            new { id = result.Id },
+            result
         );
     }
-
     [HttpPut("{id}")]
     [Authorize(Policy = "Product.Edit")]
     public async Task<IActionResult>
