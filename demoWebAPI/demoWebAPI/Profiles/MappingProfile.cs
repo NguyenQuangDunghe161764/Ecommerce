@@ -5,12 +5,17 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        CreateMap<Product, ProductDto>();
-        CreateMap<Category, CategoryDto>();
+        CreateMap<Product, ProductDto>()
+            .ForMember(
+                dest => dest.MainImageUrl,
+                opt => opt.MapFrom(src =>
+                    src.Productimages
+                        .Where(x => x.IsMain)
+                        .Select(x => x.ImageUrl)
+                        .FirstOrDefault()
+                )
+            );
 
-        CreateMap<CreateProductDto, Product>();
-        CreateMap<UpdateProductDto, Product>();
         CreateMap<Category, CategoryDto>();
-
     }
 }

@@ -19,8 +19,10 @@
                     <div class="alert alert-danger">@ViewBag.Error</div>
                 }
 
-                <form asp-controller="Product" asp-action="Create" method="post">
-
+                <form asp-controller="Product"
+                      asp-action="Create"
+                      method="post"
+                      enctype="multipart/form-data">
                     <div class="mb-3">
                         <label asp-for="Name" class="form-label fw-bold">Tên sản phẩm</label>
                         <input asp-for="Name" class="form-control" placeholder="Nhập tên sản phẩm..." required />
@@ -35,13 +37,25 @@
                         <input asp-for="Images"
                                type="file"
                                multiple
-                               class="form-control" />
+                               accept=".png,.jpg,.jpeg"
+                               class="form-control"
+                               id="imageInput" />
 
+                    </div>
+
+                    <!-- PREVIEW -->
+                    <div id="previewContainer"
+                         class="d-flex flex-wrap gap-3 mt-3">
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="Price" class="form-label fw-bold">Giá bán</label>
-                        <input asp-for="Price" type="number" step="0.01" class="form-control" placeholder="0.00" required />
+                        <input asp-for="Price"
+                               type="number"
+                               step="1"
+                               min="0"
+                               class="form-control"
+                               placeholder="0" />                        
                         <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
@@ -56,7 +70,12 @@
                     <div class="mb-3">
                         <label class="form-label fw-bold">Danh mục sản phẩm</label>
                         <div class="input-group">
-                            <select name="CategoryId" id="categorySelect" class="form-select" required>
+                            <select asp-for="CategoryId"
+                                    id="categorySelect"
+                                    class="form-select"
+                                    required>
+                                <span asp-validation-for="CategoryId"
+                                      class="text-danger"></span>
                                 <option value="">-- Chọn danh mục --</option>
                                 @if (ViewBag.Categories != null)
                                 {
@@ -106,39 +125,173 @@
 </div>
 
 @section Scripts {
+
     <script>
-        $(document).ready(function () {
-            $("#btnSaveCategory").click(function () {
-                var catName = $("#newCategoryName").val().trim();
 
-                if (catName === "") {
-                    $("#modalError").removeClass("d-none");
-                    return;
-                } else {
-                    $("#modalError").addClass("d-none");
-                }
+        let selectedFiles = [];
 
-                        $.ajax({
-            url: "https://localhost:7208/api/categories",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({ Name: catName.trim() }),
+        $("#imageInput").on("change", function (e) {
 
-            success: function (response) {
-                $("#categorySelect").append(
-                    new Option(response.name, response.id, true, true)
-                );
+            const files = Array.from(e.target.files);
 
-                $("#newCategoryName").val("");
-                $("#addCategoryModal").modal("hide");
-            },
+            // add file mới vào list
+            selectedFiles.push(...files);
 
-            error: function (xhr) {
-                console.log(xhr.responseText);
-                alert("Lỗi: " + xhr.responseText);
+            renderPreview();
+
+            updateInputFiles();
+        });
+
+        function renderPreview() {
+
+            $("#previewContainer").html("");
+
+            selectedFiles.forEach((file, index) => {
+
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+
+                    const html = `
+                        <div class="position-relative border rounded p-1">
+
+                            <img src="${e.target.result}"
+                                 style="
+                                    width:120px;
+                                    height:120px;
+                                    object-fit:cover;
+                                    border-radius:8px;
+                                 " />
+
+                            <button type="button"
+                                    class="btn btn-danger btn-sm position-absolute top-0 end-0"
+                                    onclick="removeImage(${index})"
+                                    style="
+                                        width:24px;
+                                        height:24px;
+                                        padding:0;
+                                        line-height:1;
+                                        border-radius:50%;
+                                        transform:translate(30%,-30%);
+                                    ">
+                                ×
+                            </button>
+
+                        </div>
+                    `;
+
+                    $("#previewContainer").append(html);
+                };
+
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function removeImage(index) {
+
+            selectedFiles.splice(index, 1);
+
+            renderPreview();
+
+            updateInputFiles();
+        }
+
+        function updateInputFiles() {
+
+            const dataTransfer = new DataTransfer();
+
+            selectedFiles.forEach(file => {
+                dataTransfer.items.add(file);
+            });
+
+            document.getElementById("imageInput").files =
+                dataTransfer.files;
+        }
+
+    </script>
+    <script>
+        const imageInput = document.getElementById("imageInput");
+
+        imageInput.addEventListener("change", function (e) {
+
+            const files = Array.from(e.target.files);
+
+            const invalidFiles =
+                files.filter(f => !f.type.startsWith("image/"));
+
+            if (invalidFiles.length > 0) {
+
+                alert("Chỉ được chọn file ảnh!");
+
+                selectedFiles = [];
+
+                imageInput.value = "";
+
+                $("#previewContainer").html("");
+
+                return;
             }
         });
+    </script>
+    <script>
+        $(document).ready(function () {
+
+            $("#btnSaveCategory").click(function () {
+
+                var catName =
+                    $("#newCategoryName").val().trim();
+
+                if (catName === "") {
+
+                    $("#modalError")
+                        .removeClass("d-none");
+
+                    return;
+
+                } else {
+
+                    $("#modalError")
+                        .addClass("d-none");
+                }
+
+                $.ajax({
+                    url: "https://localhost:7208/api/categories",
+
+                    type: "POST",
+
+                    contentType: "application/json",
+
+                    data: JSON.stringify({
+                        Name: catName.trim()
+                    }),
+
+                    success: function (response) {
+
+                        $("#categorySelect").append(
+                            new Option(
+                                response.name,
+                                response.id,
+                                true,
+                                true
+                            )
+                        );
+
+                        $("#newCategoryName").val("");
+
+                        $("#addCategoryModal").modal("hide");
+                    },
+
+                    error: function (xhr) {
+
+                        console.log(xhr.responseText);
+
+                        alert(
+                            "Lỗi: " + xhr.responseText
+                        );
+                    }
+                });
             });
         });
     </script>
+
 }
