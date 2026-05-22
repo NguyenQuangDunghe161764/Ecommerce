@@ -1,0 +1,19 @@
+## Cấu hình chặn file rác Visual Studio & .NET
+
+# Chặn thư mục cấu hình ẩn của VS (chứa .sqlite, .json rác trong ảnh của bạn)
+.vs/
+.vscode/
+
+# Chặn thư mục build sinh ra khi chạy code (bin/obj)
+bin/
+obj/
+
+# Chặn các file log và file tạm tự động sinh ra
+*.log
+*.tmp
+*.dtbcache*
+*.suo
+*.user
+
+# Chặn các file snapshot/backup không cần thiết của IDE
+DocumentLayout.json
