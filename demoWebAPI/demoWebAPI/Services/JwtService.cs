@@ -72,13 +72,17 @@ public class JwtService
     .Select(ur => ur.RoleId)
     .ToListAsync();
 
+        var rolePermissions =
+    await _context.RolePermissions
+        .Include(rp => rp.Permission)
+        .ToListAsync();
+
         var permissionNames =
-            await _context.RolePermissions
-                .Include(rp => rp.Permission)
+            rolePermissions
                 .Where(rp => roleIds.Contains(rp.RoleId))
                 .Select(rp => rp.Permission.Name)
                 .Distinct()
-                .ToListAsync();
+                .ToList();
 
 
         // ADD PERMISSION CLAIMS
