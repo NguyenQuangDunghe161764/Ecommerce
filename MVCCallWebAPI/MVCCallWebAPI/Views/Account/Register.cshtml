@@ -1,0 +1,129 @@
+﻿@model RegisterViewModel
+
+<h2>Register</h2>
+
+<form asp-action="Register" method="post">
+
+    <div>
+        <label>Full Name</label>
+        <input asp-for="FullName" class="form-control" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label>Email</label>
+        <input asp-for="Email" id="emailInput" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div>
+        <label>Phone</label>
+        <input asp-for="PhoneNumber" id="phoneInput" class="form-control" />
+        <span id="phoneError" class="text-danger"></span>
+    </div>
+    <div>
+        <label>Password</label>
+        <input asp-for="Password" type="password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label>Confirm Password</label>
+        <input asp-for="ConfirmPassword" type="password" class="form-control" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+
+    <button type="submit" disabled>Register</button>
+
+</form>
+
+@if (ViewBag.Error != null)
+{
+    <div style="color:red">
+        @Html.Raw(ViewBag.Error)
+    </div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        let emailTimer;
+        let phoneTimer;
+
+        function validateForm() {
+
+            let hasError =
+                $("[data-valmsg-for='Email']").text().trim() !== "" ||
+                $("#phoneError").text().trim() !== "";
+
+            $("button[type='submit']").prop("disabled", hasError);
+        }
+
+        // EMAIL CHECK
+        $("#emailInput").on("input", function () {
+
+            clearTimeout(emailTimer);
+
+            emailTimer = setTimeout(function () {
+
+                let email = $("#emailInput").val();
+
+                if (!email) {
+                    $("[data-valmsg-for='Email']").text("");
+                    validateForm();
+                    return;
+                }
+
+                $.get("https://localhost:7208/api/auth/check-email",
+                    { email: email },
+                    function (res) {
+
+                        $("[data-valmsg-for='Email']").text(
+                            res.exists ? "Email already exists" : ""
+                        );
+
+                        validateForm();
+                    });
+
+            }, 500);
+        });
+
+        // PHONE CHECK
+        $("#phoneInput").on("input", function () {
+
+            clearTimeout(phoneTimer);
+
+            phoneTimer = setTimeout(function () {
+
+                let phone = $("#phoneInput").val();
+
+                if (!phone) {
+                    $("#phoneError").text("");
+                    validateForm();
+                    return;
+                }
+
+                $.get("https://localhost:7208/api/auth/check-phone",
+                    { phone: phone },
+                    function (res) {
+
+                        $("#phoneError").text(
+                            res.exists ? "Phone already exists" : ""
+                        );
+
+                        validateForm();
+                    });
+
+            }, 500);
+        });
+
+        // SUBMIT BLOCK
+        $("form").on("submit", function (e) {
+
+            if ($("button[type='submit']").prop("disabled")) {
+                e.preventDefault();
+                alert("Please fix errors first");
+            }
+        });
+    </script>
+}

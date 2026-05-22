@@ -1,0 +1,107 @@
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
+using MVCCallWebAPI.DTOs;
+using MVCCallWebAPI.Models;
+using MVCCallWebAPI.ViewModels;
+using System.Net.Http.Json;
+[AllowAnonymous]
+public class AccountController : Controller
+{
+    private readonly HttpClient _httpClient;
+    
+    public AccountController(IHttpClientFactory factory)
+    {
+        _httpClient = factory.CreateClient();
+    }
+    public IActionResult AccessDenied()
+        {
+            return View();
+        }
+    // LOGIN VIEW
+    [HttpGet]
+    public IActionResult Login()
+    {
+        return View();
+    }
+
+    // LOGIN POST
+    [HttpPost]
+    public async Task<IActionResult> Login(LoginViewModel model)
+    {
+        var response = await _httpClient.PostAsJsonAsync(
+            "https://localhost:7208/api/auth/login",
+            model
+        );
+
+        if (!response.IsSuccessStatusCode)
+        {
+            ViewBag.Error = "Login failed";
+            return View();
+        }
+
+        var result = await response.Content
+            .ReadFromJsonAsync<LoginResponse>();
+
+        // API returns 'token' field; store it in session as JWT
+        HttpContext.Session.SetString("JWT", result.token ?? string.Empty);
+        HttpContext.Session.SetString("UserName", result.userName ?? string.Empty);
+        HttpContext.Session.SetString("Role", result.role ?? string.Empty);
+
+        // Create authentication cookie so [Authorize] works with Role checks
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, result.userName ?? string.Empty),
+            new Claim(ClaimTypes.Role, result.role ?? string.Empty)
+        };
+
+        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        var principal = new ClaimsPrincipal(identity);
+
+        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+        return RedirectToAction("Index", "Home");
+    }
+
+    // LOGOUT
+    public IActionResult Logout()
+    {
+        HttpContext.Session.Remove("JWT");
+        return RedirectToAction("Login");
+    }
+    // GET: REGISTER
+    [HttpGet]
+    public IActionResult Register()
+    {
+        return View();
+    }
+
+    // POST: REGISTER
+    [HttpPost]
+    public async Task<IActionResult> Register(RegisterViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model); 
+        }
+        var response = await _httpClient.PostAsJsonAsync(
+            "https://localhost:7208/api/auth/register",
+            model
+        );
+
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var errors = await response.Content.ReadFromJsonAsync<List<IdentityErrorResponse>>();
+
+            ViewBag.Error = errors != null
+                ? string.Join("<br/>", errors.Select(e => "• " + e.Description))
+                : "Register failed";
+
+            return View(model);
+        }
+        return RedirectToAction("Login", "Account");
+    }
+}

@@ -1,0 +1,827 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\services\\jwtservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\services\\jwtservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\models\\ecomdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\models\\ecomdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\models\\rolepermission.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\models\\rolepermission.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\data\\dbseeder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\data\\dbseeder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\controllers\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\controllers\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\models\\applicationuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\models\\applicationuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\services\\productservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\services\\productservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\models\\productimage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\models\\productimage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\authorization\\handlers\\productownerhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\authorization\\handlers\\productownerhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\data\\repositories\\productrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\data\\repositories\\productrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\viewmodels\\roleviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\viewmodels\\roleviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\dtos\\loginresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\dtos\\loginresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\viewmodels\\permissioncheckbox.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\viewmodels\\permissioncheckbox.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\viewmodels\\pagedresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\viewmodels\\pagedresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\viewmodels\\managepermissionviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\viewmodels\\managepermissionviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\services\\iproductservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\services\\iproductservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\services\\icategoryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\services\\icategoryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\services\\categoryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\services\\categoryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\dtos\\productdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\dtos\\productdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\dtos\\logindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\dtos\\logindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\dtos\\createproductdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\dtos\\createproductdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\dtos\\categorydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\dtos\\categorydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\data\\repositories\\categoryrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\data\\repositories\\categoryrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\authorization\\requirements\\permissionrequirement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\authorization\\requirements\\permissionrequirement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\authorization\\policyprovider\\permissionpolicyprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\authorization\\policyprovider\\permissionpolicyprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\authorization\\handlers\\permissionhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\authorization\\handlers\\permissionhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\models\\baseentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\models\\baseentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\models\\address.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\models\\address.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\models\\payment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\models\\payment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\models\\cartitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\models\\cartitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\models\\cart.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\models\\cart.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\models\\permission.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\models\\permission.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\models\\refreshtoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\models\\refreshtoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\models\\review.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\models\\review.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\models\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\models\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\models\\orderdetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\models\\orderdetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\models\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\models\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\data\\repositories\\repository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\data\\repositories\\repository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\data\\repositories\\orderrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\data\\repositories\\orderrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\exceptions\\notfoundexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\exceptions\\notfoundexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|c:\\users\\dungh\\source\\repos\\demowebapi\\demowebapi\\exceptions\\badrequestexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01031E14-A6D7-6F58-0FBA-99DF4F2840A4}|demoWebAPI\\demoWebAPI.csproj|solutionrelative:demowebapi\\exceptions\\badrequestexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "JwtService.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Services\\JwtService.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Services\\JwtService.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Services\\JwtService.cs",
+              "RelativeToolTip": "demoWebAPI\\Services\\JwtService.cs",
+              "ViewState": "AgIAADwAAAAAAAAAAAAYwE4AAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T03:36:00.472Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "AuthService.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Services\\AuthService.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Services\\AuthService.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Services\\AuthService.cs",
+              "RelativeToolTip": "demoWebAPI\\Services\\AuthService.cs",
+              "ViewState": "AgIAACoAAAAAAAAAAAAowEgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T03:38:27.699Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "ProductOwnerHandler.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Authorization\\Handlers\\ProductOwnerHandler.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Authorization\\Handlers\\ProductOwnerHandler.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Authorization\\Handlers\\ProductOwnerHandler.cs",
+              "RelativeToolTip": "demoWebAPI\\Authorization\\Handlers\\ProductOwnerHandler.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T03:39:08.42Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ProductService.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Services\\ProductService.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Services\\ProductService.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Services\\ProductService.cs",
+              "RelativeToolTip": "demoWebAPI\\Services\\ProductService.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAtwE4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T03:36:12.061Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Productimage.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\Productimage.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Models\\Productimage.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\Productimage.cs",
+              "RelativeToolTip": "demoWebAPI\\Models\\Productimage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T04:06:49.143Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Controllers\\AuthController.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "demoWebAPI\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAADgvyoAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T03:34:02.468Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DbSeeder.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Data\\DbSeeder.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Data\\DbSeeder.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Data\\DbSeeder.cs",
+              "RelativeToolTip": "demoWebAPI\\Data\\DbSeeder.cs",
+              "ViewState": "AgIAACUAAAAAAAAAAAASwDoAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T03:38:19.213Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ApplicationUser.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\ApplicationUser.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Models\\ApplicationUser.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\ApplicationUser.cs",
+              "RelativeToolTip": "demoWebAPI\\Models\\ApplicationUser.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T03:51:09.21Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "EcomDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\EcomDbContext.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Models\\EcomDbContext.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\EcomDbContext.cs",
+              "RelativeToolTip": "demoWebAPI\\Models\\EcomDbContext.cs",
+              "ViewState": "AgIAAMwAAAAAAAAAAAAqwN8AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T04:02:22.201Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "RolePermission.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\RolePermission.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Models\\RolePermission.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\RolePermission.cs",
+              "RelativeToolTip": "demoWebAPI\\Models\\RolePermission.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T03:52:01.037Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Program.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Program.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Program.cs",
+              "RelativeToolTip": "demoWebAPI\\Program.cs",
+              "ViewState": "AgIAAD4AAAAAAAAAAAAnwE4AAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T03:38:33.322Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ProductsController.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Controllers\\ProductsController.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Controllers\\ProductsController.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Controllers\\ProductsController.cs",
+              "RelativeToolTip": "demoWebAPI\\Controllers\\ProductsController.cs",
+              "ViewState": "AgIAAHQAAAAAAAAAAAASwJcAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T04:41:38.285Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "ProductRepository.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Data\\Repositories\\ProductRepository.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Data\\Repositories\\ProductRepository.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Data\\Repositories\\ProductRepository.cs",
+              "RelativeToolTip": "demoWebAPI\\Data\\Repositories\\ProductRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T03:35:33.7Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "RoleViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\ViewModels\\RoleViewModel.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\ViewModels\\RoleViewModel.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\ViewModels\\RoleViewModel.cs",
+              "RelativeToolTip": "demoWebAPI\\ViewModels\\RoleViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T04:32:37.044Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "LoginResponse.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\DTOs\\LoginResponse.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\DTOs\\LoginResponse.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\DTOs\\LoginResponse.cs",
+              "RelativeToolTip": "demoWebAPI\\DTOs\\LoginResponse.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAiwAkAAACsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-18T10:02:20.304Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "PagedResult.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\ViewModels\\PagedResult.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\ViewModels\\PagedResult.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\ViewModels\\PagedResult.cs",
+              "RelativeToolTip": "demoWebAPI\\ViewModels\\PagedResult.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-20T10:24:15Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "ManagePermissionViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\ViewModels\\ManagePermissionViewModel.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\ViewModels\\ManagePermissionViewModel.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\ViewModels\\ManagePermissionViewModel.cs",
+              "RelativeToolTip": "demoWebAPI\\ViewModels\\ManagePermissionViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-21T02:53:39.605Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "IProductService.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Services\\IProductService.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Services\\IProductService.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Services\\IProductService.cs",
+              "RelativeToolTip": "demoWebAPI\\Services\\IProductService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-13T09:57:22.658Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "ICategoryService.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Services\\ICategoryService.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Services\\ICategoryService.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Services\\ICategoryService.cs",
+              "RelativeToolTip": "demoWebAPI\\Services\\ICategoryService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-18T04:15:35.213Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "CategoryService.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Services\\CategoryService.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Services\\CategoryService.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Services\\CategoryService.cs",
+              "RelativeToolTip": "demoWebAPI\\Services\\CategoryService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T03:35:53.069Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "PermissionCheckbox.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\ViewModels\\PermissionCheckbox.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\ViewModels\\PermissionCheckbox.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\ViewModels\\PermissionCheckbox.cs",
+              "RelativeToolTip": "demoWebAPI\\ViewModels\\PermissionCheckbox.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-21T02:53:50.074Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "ProductDto.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\DTOs\\ProductDto.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\DTOs\\ProductDto.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\DTOs\\ProductDto.cs",
+              "RelativeToolTip": "demoWebAPI\\DTOs\\ProductDto.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAiwAQAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-15T07:45:46.498Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "LoginDto.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\DTOs\\LoginDto.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\DTOs\\LoginDto.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\DTOs\\LoginDto.cs",
+              "RelativeToolTip": "demoWebAPI\\DTOs\\LoginDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-18T08:16:29.1Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "CreateProductDto.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\DTOs\\CreateProductDto.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\DTOs\\CreateProductDto.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\DTOs\\CreateProductDto.cs",
+              "RelativeToolTip": "demoWebAPI\\DTOs\\CreateProductDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-15T07:45:27.95Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "CategoryDto.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\DTOs\\CategoryDto.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\DTOs\\CategoryDto.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\DTOs\\CategoryDto.cs",
+              "RelativeToolTip": "demoWebAPI\\DTOs\\CategoryDto.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAiwAQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-15T08:36:56.715Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "CategoryRepository.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Data\\Repositories\\CategoryRepository.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Data\\Repositories\\CategoryRepository.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Data\\Repositories\\CategoryRepository.cs",
+              "RelativeToolTip": "demoWebAPI\\Data\\Repositories\\CategoryRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T03:35:05.632Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "UserController.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Controllers\\UserController.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Controllers\\UserController.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Controllers\\UserController.cs",
+              "RelativeToolTip": "demoWebAPI\\Controllers\\UserController.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAgwBQAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T03:34:54.851Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "PermissionRequirement.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Authorization\\Requirements\\PermissionRequirement.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Authorization\\Requirements\\PermissionRequirement.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Authorization\\Requirements\\PermissionRequirement.cs",
+              "RelativeToolTip": "demoWebAPI\\Authorization\\Requirements\\PermissionRequirement.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-20T04:03:51.247Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "PermissionPolicyProvider.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Authorization\\PolicyProvider\\PermissionPolicyProvider.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Authorization\\PolicyProvider\\PermissionPolicyProvider.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Authorization\\PolicyProvider\\PermissionPolicyProvider.cs",
+              "RelativeToolTip": "demoWebAPI\\Authorization\\PolicyProvider\\PermissionPolicyProvider.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-20T04:05:00.117Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "PermissionHandler.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Authorization\\Handlers\\PermissionHandler.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Authorization\\Handlers\\PermissionHandler.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Authorization\\Handlers\\PermissionHandler.cs",
+              "RelativeToolTip": "demoWebAPI\\Authorization\\Handlers\\PermissionHandler.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-20T04:04:10.069Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\appsettings.json",
+              "RelativeDocumentMoniker": "demoWebAPI\\appsettings.json",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\appsettings.json",
+              "RelativeToolTip": "demoWebAPI\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-05-22T04:17:33.182Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 40,
+              "Title": "Order.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\Order.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Models\\Order.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\Order.cs",
+              "RelativeToolTip": "demoWebAPI\\Models\\Order.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T04:02:55.852Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 39,
+              "Title": "Review.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\Review.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Models\\Review.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\Review.cs",
+              "RelativeToolTip": "demoWebAPI\\Models\\Review.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T04:03:06.974Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 42,
+              "Title": "Category.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\Category.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Models\\Category.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\Category.cs",
+              "RelativeToolTip": "demoWebAPI\\Models\\Category.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T04:05:42.156Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "Permission.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\Permission.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Models\\Permission.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\Permission.cs",
+              "RelativeToolTip": "demoWebAPI\\Models\\Permission.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T04:06:30.87Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "Product.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\Product.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Models\\Product.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\Product.cs",
+              "RelativeToolTip": "demoWebAPI\\Models\\Product.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T04:06:41.887Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "Cart.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\Cart.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Models\\Cart.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\Cart.cs",
+              "RelativeToolTip": "demoWebAPI\\Models\\Cart.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T04:10:20.788Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "CartItem.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\CartItem.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Models\\CartItem.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\CartItem.cs",
+              "RelativeToolTip": "demoWebAPI\\Models\\CartItem.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T04:10:38.624Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "Payment.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\Payment.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Models\\Payment.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\Payment.cs",
+              "RelativeToolTip": "demoWebAPI\\Models\\Payment.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T04:10:58.084Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "Address.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\Address.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Models\\Address.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\Address.cs",
+              "RelativeToolTip": "demoWebAPI\\Models\\Address.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T04:11:15.476Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "BaseEntity.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\BaseEntity.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Models\\BaseEntity.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\BaseEntity.cs",
+              "RelativeToolTip": "demoWebAPI\\Models\\BaseEntity.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T04:12:05.624Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "RefreshToken.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\RefreshToken.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Models\\RefreshToken.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\RefreshToken.cs",
+              "RelativeToolTip": "demoWebAPI\\Models\\RefreshToken.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T03:48:25.072Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 41,
+              "Title": "Orderdetail.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\Orderdetail.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Models\\Orderdetail.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Models\\Orderdetail.cs",
+              "RelativeToolTip": "demoWebAPI\\Models\\Orderdetail.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T03:48:08.88Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 43,
+              "Title": "Repository.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Data\\Repositories\\Repository.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Data\\Repositories\\Repository.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Data\\Repositories\\Repository.cs",
+              "RelativeToolTip": "demoWebAPI\\Data\\Repositories\\Repository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T03:35:45.635Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 44,
+              "Title": "OrderRepository.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Data\\Repositories\\OrderRepository.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Data\\Repositories\\OrderRepository.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Data\\Repositories\\OrderRepository.cs",
+              "RelativeToolTip": "demoWebAPI\\Data\\Repositories\\OrderRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T03:35:11.388Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 45,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "demoWebAPI\\Properties\\launchSettings.json",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Properties\\launchSettings.json",
+              "RelativeToolTip": "demoWebAPI\\Properties\\launchSettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-05-13T02:23:08.401Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 46,
+              "Title": "NotFoundException.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Exceptions\\NotFoundException.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Exceptions\\NotFoundException.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Exceptions\\NotFoundException.cs",
+              "RelativeToolTip": "demoWebAPI\\Exceptions\\NotFoundException.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAA6wAYAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-15T10:18:45.086Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 47,
+              "Title": "BadRequestException.cs",
+              "DocumentMoniker": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Exceptions\\BadRequestException.cs",
+              "RelativeDocumentMoniker": "demoWebAPI\\Exceptions\\BadRequestException.cs",
+              "ToolTip": "C:\\Users\\dungh\\source\\repos\\demoWebAPI\\demoWebAPI\\Exceptions\\BadRequestException.cs",
+              "RelativeToolTip": "demoWebAPI\\Exceptions\\BadRequestException.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAA6wAYAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-15T10:18:54.666Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

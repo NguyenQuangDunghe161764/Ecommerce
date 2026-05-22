@@ -1,0 +1,65 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+
+public class PermissionAttribute : Attribute, IAuthorizationFilter
+{
+    private readonly string _permission;
+
+    public PermissionAttribute(string permission)
+    {
+        _permission = permission;
+    }
+
+    public void OnAuthorization(AuthorizationFilterContext context)
+    {
+        var httpContext = context.HttpContext;
+        var token = httpContext.Session.GetString("JWT");
+
+        if (string.IsNullOrEmpty(token))
+        {
+            context.Result = new RedirectToActionResult("Login", "Account", null);
+            return;
+        }
+
+        // If the JWT contains a role claim with Admin, allow access immediately.
+        try
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jwt = handler.ReadJwtToken(token);
+
+            var roles = jwt.Claims
+                .Where(c => string.Equals(c.Type, "role", System.StringComparison.OrdinalIgnoreCase)
+                            || string.Equals(c.Type, "roles", System.StringComparison.OrdinalIgnoreCase)
+                            || c.Type.EndsWith("/role", System.StringComparison.OrdinalIgnoreCase))
+                .Select(c => c.Value);
+
+            if (roles.Any(r => string.Equals(r, "Admin", System.StringComparison.OrdinalIgnoreCase)))
+            {
+                return; // admin bypasses permission checks
+            }
+        }
+        catch
+        {
+            // ignore parsing errors and fall back to permission check
+        }
+
+        bool hasPermission;
+
+        try
+        {
+            hasPermission = JwtHelper.HasPermission(token, _permission);
+        }
+        catch
+        {
+            context.Result = new RedirectToActionResult("AccessDenied", "Account", null);
+            return;
+        }
+
+        if (!hasPermission)
+        {
+            context.Result = new RedirectToActionResult("AccessDenied", "Account", null);
+        }
+    }
+}

@@ -1,0 +1,124 @@
+﻿using demoWebAPI.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
+public static class DbSeeder
+{
+    public static async Task SeedAsync(
+        IServiceProvider serviceProvider)
+    {
+        var roleManager =
+            serviceProvider
+                .GetRequiredService<
+                    RoleManager<IdentityRole>>();
+
+        var userManager =
+            serviceProvider
+                .GetRequiredService<
+                    UserManager<ApplicationUser>>();
+
+        var context =
+            serviceProvider
+                .GetRequiredService<
+                    EcomDbContext>();
+
+        // ROLES
+        string[] roles =
+        {
+            "Admin",
+            "Staff",
+            "User"
+        };
+
+        foreach (var role in roles)
+        {
+            if (!await roleManager.RoleExistsAsync(role))
+            {
+                await roleManager
+                    .CreateAsync(
+                        new IdentityRole(role));
+            }
+        }
+
+        // ADMIN USER
+        var adminEmail = "admin@gmail.com";
+
+        var admin =
+            await userManager
+                .FindByEmailAsync(adminEmail);
+
+        if (admin == null)
+        {
+            admin = new ApplicationUser
+            {
+                UserName = adminEmail,
+                Email = adminEmail,
+                FullName = "System Admin"
+            };
+
+            await userManager.CreateAsync(
+                admin,
+                "Admin@123");
+
+            await userManager.AddToRoleAsync(
+                admin,
+                "Admin");
+        }
+
+        // PERMISSIONS
+        if (!await context.Permissions.AnyAsync())
+        {
+            var permissions = new List<Permission>
+            {
+                new Permission
+                {
+                    Name = "Product.Create"
+                },
+
+                new Permission
+                {
+                    Name = "Product.Edit"
+                },
+
+                new Permission
+                {
+                    Name = "Product.Delete"
+                }
+            };
+
+            context.Permissions.AddRange(
+                permissions);
+
+            await context.SaveChangesAsync();
+        }
+
+        // ROLE PERMISSIONS
+        var adminRole =
+            await roleManager.FindByNameAsync(
+                "Admin");
+
+        var permissionsInDb =
+            await context.Permissions.ToListAsync();
+
+        foreach (var permission in permissionsInDb)
+        {
+            var exists =
+                await context.RolePermissions
+                    .AnyAsync(x =>
+                        x.RoleId == adminRole.Id &&
+                        x.PermissionId == permission.Id);
+
+            if (!exists)
+            {
+                context.RolePermissions.Add(
+                    new RolePermission
+                    {
+                        RoleId = adminRole.Id,
+                        PermissionId = permission.Id
+                    });
+            }
+        }
+
+        await context.SaveChangesAsync();
+    }
+}

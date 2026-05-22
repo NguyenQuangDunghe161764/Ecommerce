@@ -1,0 +1,92 @@
+﻿using MVCCallWebAPI.DTOs;
+using MVCCallWebAPI.Models;
+using MVCCallWebAPI.Services.Interface;
+using MVCCallWebAPI.ViewModels;
+namespace MVCCallWebAPI.Services;
+
+public class ProductService : IProductService
+{
+    private readonly IApiService _apiService;
+
+    public ProductService(IApiService apiService)
+    {
+        _apiService = apiService;
+    }
+        public async Task<ProductViewModel?> GetProductByIdAsync(int id)
+    {
+        var result = await _apiService.GetAsync<ProductDto>($"api/products/{id}");
+
+        if (result == null)
+        {
+            return null;
+        }
+
+        return new ProductViewModel
+        {
+            Id = result.Id,
+            Name = result.Name,
+            Price = result.Price,
+            Stock = result.Stock,
+            Category = result.Category == null
+                ? null
+                : new CategoryViewModel
+                {
+                    Id = result.Category.Id,
+                    Name = result.Category.Name
+                }
+        };
+    }
+    public async Task<PagedResult<ProductViewModel>> GetProductsAsync(
+        string? keyword,
+        int? categoryId,
+        int page,
+        int pageSize)
+    {
+        page = page < 1 ? 1 : page;
+        pageSize = pageSize < 1 ? 10 : pageSize;
+
+        var queryParams = new List<string>();
+
+        if (!string.IsNullOrEmpty(keyword))
+            queryParams.Add($"keyword={Uri.EscapeDataString(keyword)}");
+
+        if (categoryId.HasValue)
+            queryParams.Add($"categoryId={categoryId.Value}");
+
+        queryParams.Add($"page={page}");
+        queryParams.Add($"pageSize={pageSize}");
+
+        var url = $"api/products?{string.Join("&", queryParams)}";
+
+        var result =
+            await _apiService.GetAsync<PagedResult<ProductDto>>(url);
+
+        if (result == null)
+        {
+            return new PagedResult<ProductViewModel>();
+        }
+
+        return new PagedResult<ProductViewModel>
+        {
+            Items = (result.Items ?? new List<ProductDto>())
+                .Select(p => new ProductViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Price = p.Price,
+                    Stock = p.Stock,
+                    Category = p.Category == null
+                        ? null
+                        : new CategoryViewModel
+                        {
+                            Id = p.Category.Id,
+                            Name = p.Category.Name
+                        }
+                }).ToList(),
+
+            TotalItems = result.TotalItems,
+            Page = result.Page,
+            PageSize = result.PageSize
+        };
+    }
+}
