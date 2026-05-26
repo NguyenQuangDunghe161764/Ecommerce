@@ -1,0 +1,100 @@
+﻿@model MVCCallWebAPI.ViewModels.ProductViewModel
+
+@{
+    var mainImage = !string.IsNullOrEmpty(Model.MainImageUrl)
+        ? $"https://localhost:7208{Model.MainImageUrl}"
+        : "https://via.placeholder.com/500x500?text=No+Image";
+}
+
+<div class="container mt-4">
+
+    <div class="row">
+
+        <!-- LEFT -->
+        <div class="col-md-5">
+
+            <!-- MAIN IMAGE -->
+            <div class="border rounded p-2 text-center">
+
+                <img id="mainImage"
+                     src="@mainImage"
+                     class="img-fluid rounded"
+                     style="max-height:500px;object-fit:contain;" />
+
+            </div>
+
+            <!-- THUMBNAILS -->
+            @if (Model.ExistingImages != null &&
+                 Model.ExistingImages.Any())
+            {
+                <div class="d-flex flex-wrap gap-2 mt-3">
+
+                    @foreach (var img in Model.ExistingImages)
+                    {
+                        <img src="@($"https://localhost:7208{img}")"
+                             class="border rounded thumb-image"
+                             width="80"
+                             height="80"
+                             style="object-fit:cover;cursor:pointer;"
+                             onclick="changeMainImage(this.src)" />
+                    }
+
+                </div>
+            }
+
+        </div>
+
+        <!-- RIGHT -->
+        <div class="col-md-7">
+
+            <h2>@Model.Name</h2>
+
+            <h3 class="text-danger mt-3">
+                @Model.Price.ToString("N0") VNĐ
+            </h3>
+
+            <div class="mt-3">
+                <strong>Stock:</strong>
+                @Model.Stock
+            </div>
+
+            <div class="mt-2">
+                <strong>Category:</strong>
+                @Model.Category?.Name
+            </div>
+
+            <div class="mt-4">
+                <strong>Description</strong>
+
+                <p class="mt-2">
+                    @Model.Description
+                </p>
+            </div>
+
+            <div class="mt-4">
+
+                <a asp-controller="Cart"
+                   asp-action="AddToCart"
+                   asp-route-productId="@Model.Id"
+                   class="btn btn-primary btn-lg">
+                    Add To Cart
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    function changeMainImage(src)
+    {
+        document
+            .getElementById("mainImage")
+            .src = src;
+    }
+
+</script>

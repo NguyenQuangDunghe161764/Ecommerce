@@ -1,8 +1,18 @@
 ﻿public class UpdateProductDto
 {
     public string Name { get; set; }
-    public string Description { get; set; }
+
+    public string? Description { get; set; }
+
     public decimal Price { get; set; }
-    public int CategoryId { get; set; }
+
     public int Stock { get; set; }
+
+    public int CategoryId { get; set; }
+    public List<IFormFile>? Images { get; set; }
+    public List<string>? DeletedImages { get; set; }
+
+    public string? MainImageUrl { get; set; }
+
+    public List<string>? ImageOrders { get; set; }
 }

@@ -1,0 +1,32 @@
+﻿@model MVCCallWebAPI.ViewModels.ProductViewModel
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h3>Delete Product</h3>
+
+<div class="alert alert-danger">
+
+    Are you sure you want to delete:
+
+    <strong>@Model.Name</strong> ?
+
+</div>
+
+<form method="post">
+
+    <input type="hidden"
+           asp-for="Id" />
+
+    <button type="submit"
+            class="btn btn-danger">
+        Delete
+    </button>
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        Cancel
+    </a>
+
+</form>

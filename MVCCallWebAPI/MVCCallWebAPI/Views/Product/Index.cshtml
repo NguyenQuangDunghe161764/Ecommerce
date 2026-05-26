@@ -67,14 +67,21 @@
             foreach (var item in Model.Items)
             {
                 <tr>
-                    <td>@item.Name</td>
+                    <td>
+                        <a asp-controller="Product"
+                           asp-action="Details"
+                           asp-route-id="@item.Id">
+                            @item.Name
+                        </a>
+                    </td>
                     <td>
                         @if (!string.IsNullOrEmpty(item.MainImageUrl))
                         {
-                            <img src="https://localhost:7208@item.MainImageUrl"
+                            <img src="https://localhost:7208@(item.MainImageUrl)"
                                  style="
                             width:80px;
                             height:80px;
+                            object-fit:cover;
                             object-fit:cover;
                             border-radius:8px;
                             " />

@@ -12,9 +12,11 @@ public class ProductService : IProductService
     {
         _apiService = apiService;
     }
-        public async Task<ProductViewModel?> GetProductByIdAsync(int id)
+    public async Task<ProductViewModel?> GetProductByIdAsync(int id)
     {
-        var result = await _apiService.GetAsync<ProductDto>($"api/products/{id}");
+        var result =
+            await _apiService.GetAsync<ProductDto>(
+                $"api/products/{id}");
 
         if (result == null)
         {
@@ -24,9 +26,15 @@ public class ProductService : IProductService
         return new ProductViewModel
         {
             Id = result.Id,
+
             Name = result.Name,
+
             Price = result.Price,
+
             Stock = result.Stock,
+
+            ExistingImages = result.Images,
+
             Category = result.Category == null
                 ? null
                 : new CategoryViewModel
@@ -75,13 +83,15 @@ public class ProductService : IProductService
                     Name = p.Name,
                     Price = p.Price,
                     Stock = p.Stock,
+                    MainImageUrl = p.MainImageUrl,
                     Category = p.Category == null
                         ? null
                         : new CategoryViewModel
                         {
                             Id = p.Category.Id,
                             Name = p.Category.Name
-                        }
+                        },
+                    Description = p.Description
                 }).ToList(),
 
             TotalItems = result.TotalItems,

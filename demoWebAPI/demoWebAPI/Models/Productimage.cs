@@ -16,4 +16,5 @@ public partial class Productimage
     public DateTime? CreatedDate { get; set; }
 
     public virtual Product Product { get; set; } = null!;
+    public int DisplayOrder { get; set; }
 }

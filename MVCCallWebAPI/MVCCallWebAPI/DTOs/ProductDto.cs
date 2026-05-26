@@ -1,11 +1,17 @@
-﻿namespace MVCCallWebAPI.DTOs;
+﻿using MVCCallWebAPI.DTOs;
 
 public class ProductDto
 {
     public int Id { get; set; }
-    public string Name { get; set; }
+
+    public string Name { get; set; } = null!;
+    public string? MainImageUrl { get; set; }
+
     public decimal Price { get; set; }
+
     public int Stock { get; set; }
 
     public CategoryDto? Category { get; set; }
+    public List<string> Images { get; set; } = new();
+    public string Description { get; internal set; }
 }

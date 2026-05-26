@@ -64,12 +64,13 @@ public class ProductService : IProductService
         await _context.SaveChangesAsync();
 
         // SAVE IMAGES
+
         if (dto.Images != null && dto.Images.Any())
         {
             var uploadFolder = Path.Combine(
                 Directory.GetCurrentDirectory(),
                 "wwwroot",
-                "uploads",
+                "images",
                 "products",
                 product.Id.ToString()
             );
@@ -87,9 +88,11 @@ public class ProductService : IProductService
 
                 var fileName = $"{Guid.NewGuid()}{ext}";
 
-                var fullPath = Path.Combine(uploadFolder, fileName);
+                var fullPath =
+                    Path.Combine(uploadFolder, fileName);
 
-                using (var stream = new FileStream(fullPath, FileMode.Create))
+                using (var stream =
+                    new FileStream(fullPath, FileMode.Create))
                 {
                     await file.CopyToAsync(stream);
                 }
@@ -99,7 +102,7 @@ public class ProductService : IProductService
                     ProductId = product.Id,
 
                     ImageUrl =
-                        $"/uploads/products/{product.Id}/{fileName}",
+                        $"/images/products/{product.Id}/{fileName}",
 
                     IsMain = isFirst,
 
@@ -114,7 +117,6 @@ public class ProductService : IProductService
             await _context.SaveChangesAsync();
         }
 
-        // LOAD FULL DATA
         var createdProduct = await _context.Products
             .Include(x => x.Category)
             .Include(x => x.Productimages)
@@ -134,6 +136,10 @@ public class ProductService : IProductService
                 .Where(x => x.IsMain)
                 .Select(x => x.ImageUrl)
                 .FirstOrDefault(),
+
+            Images = createdProduct.Productimages
+                .Select(x => x.ImageUrl)
+                .ToList(),
 
             Category = createdProduct.Category == null
                 ? null

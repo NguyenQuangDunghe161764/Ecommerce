@@ -10,7 +10,5 @@
     public int Stock { get; set; }
 
     public CategoryDto? Category { get; set; }
-
-    // THÊM
-    public List<string> Images { get; set; } = new();
+    public List<string>? Images { get; set; }
 }

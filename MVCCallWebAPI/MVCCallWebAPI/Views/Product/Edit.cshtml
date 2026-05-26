@@ -1,0 +1,276 @@
+﻿@model MVCCallWebAPI.ViewModels.ProductViewModel
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h3>Edit Product</h3>
+
+<form method="post" enctype="multipart/form-data">
+
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label>Name</label>
+
+        <input asp-for="Name"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Price</label>
+
+        <input asp-for="Price"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Stock</label>
+
+        <input asp-for="Stock"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+
+        <label class="form-label">
+            Images
+        </label>
+
+        <input type="file"
+               id="imageInput"
+               name="Images"
+               multiple
+               class="form-control" />
+
+        <div id="preview"
+             class="d-flex flex-wrap gap-3 mt-3">
+
+            @if (Model.ExistingImages != null)
+            {
+                foreach (var img in Model.ExistingImages)
+                {
+                    <div class="image-box border p-2 rounded position-relative"
+                         draggable="true"
+                         data-image="@img"
+                         style="width:170px;cursor:move;">
+
+                        <button type="button"
+                                class="btn btn-danger btn-sm position-absolute top-0 end-0 remove-image"
+                                data-image="@img">
+                            ×
+                        </button>
+                        <div class="form-check mt-2 text-center">
+
+                            <input class="form-check-input"
+                                   type="radio"
+                                   name="MainImageUrl"
+                                   value="@img"
+                            @(Model.MainImageUrl == img ? "checked" : "") />
+
+                            <label class="form-check-label">
+                                Ảnh Đầu
+                            </label>
+
+                        </div>
+
+                        <img src="@($"https://localhost:7208{img}")"
+                             width="150"
+                             height="150"
+                             style="object-fit:cover;border-radius:10px;" />
+
+                        <div class="small text-center mt-2">
+                            @System.IO.Path.GetFileName(img)
+                        </div>
+                        <input type="hidden"
+                               name="ImageOrders"
+                               value="@img" />
+                    </div>
+                }
+            }
+
+        </div>
+    </div>
+
+    <button type="submit"
+            class="btn btn-primary">
+        Save
+    </button>
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        Back
+    </a>
+
+</form>
+
+<script>
+
+    // ================= REMOVE OLD IMAGE =================
+
+    document.addEventListener("click", function (e) {
+
+        if (e.target.classList.contains("remove-image")) {
+
+            const image =
+                e.target.dataset.image;
+
+            const hidden =
+                document.createElement("input");
+
+            hidden.type = "hidden";
+
+            hidden.name = "DeletedImages";
+
+            hidden.value = image;
+
+            document.forms[0].appendChild(hidden);
+
+            e.target.closest(".image-box").remove();
+        }
+    });
+
+
+
+    // ================= NEW IMAGE PREVIEW =================
+
+    const input =
+        document.getElementById("imageInput");
+
+    const preview =
+        document.getElementById("preview");
+
+    let selectedFiles = [];
+
+    input.addEventListener("change", function () {
+
+        selectedFiles =
+            selectedFiles.concat(Array.from(this.files));
+
+        renderPreview();
+
+        updateFileInput();
+    });
+
+
+
+    function renderPreview()
+    {
+        document.querySelectorAll(".new-image")
+            .forEach(x => x.remove());
+
+        selectedFiles.forEach((file, index) => {
+
+            const reader = new FileReader();
+
+            reader.onload = function (e)
+            {
+                const div =
+                    document.createElement("div");
+
+                div.className =
+                    "image-box border p-2 rounded position-relative new-image";
+
+                div.style.width = "170px";
+
+                div.draggable = true;
+
+                div.innerHTML = `
+
+                    <button type="button"
+                            class="btn btn-danger btn-sm position-absolute top-0 end-0 remove-new-image">
+                        ×
+                    </button>
+                    <div class="form-check mt-2 text-center">
+
+                        <input class="form-check-input"
+                               type="radio"
+                               name="MainImageUrl"
+                               value="${file.name}" />
+
+                        <label class="form-check-label">
+                            Ảnh Đầu
+                        </label>
+
+                    </div>
+                    <img
+                        src="${e.target.result}"
+                        width="150"
+                        height="150"
+                        style="object-fit:cover;border-radius:10px;"
+                    />
+
+                    <div class="small text-center mt-2">
+                        ${file.name}
+                    </div>
+
+                    
+                `;
+
+                preview.appendChild(div);
+
+                div.querySelector(".remove-new-image")
+                    .addEventListener("click", function () {
+
+                        selectedFiles.splice(index, 1);
+
+                        updateFileInput();
+
+                        renderPreview();
+
+                    });
+            };
+
+            reader.readAsDataURL(file);
+        });
+    }
+
+
+
+    function updateFileInput()
+    {
+        const dataTransfer =
+            new DataTransfer();
+
+        selectedFiles.forEach(file => {
+            dataTransfer.items.add(file);
+        });
+
+        input.files = dataTransfer.files;
+    }
+
+
+
+    // ================= DRAG DROP =================
+
+    let dragged;
+
+    document.addEventListener("dragstart", e => {
+
+        if (e.target.classList.contains("image-box")) {
+            dragged = e.target;
+        }
+
+    });
+
+    document.addEventListener("dragover", e => {
+        e.preventDefault();
+    });
+
+    document.addEventListener("drop", e => {
+
+        e.preventDefault();
+
+        if (e.target.closest(".image-box")) {
+
+            const target =
+                e.target.closest(".image-box");
+
+            preview.insertBefore(
+                dragged,
+                target
+            );
+        }
+    });
+
+</script>
