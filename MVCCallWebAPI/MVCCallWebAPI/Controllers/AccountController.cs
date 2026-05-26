@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MVCCallWebAPI.DTOs;
 using MVCCallWebAPI.Models;
 using MVCCallWebAPI.ViewModels;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Security.Claims;
 [AllowAnonymous]
 public class AccountController : Controller
 {
@@ -195,5 +196,49 @@ public class AccountController : Controller
             return View(model);
         }
         return RedirectToAction("Login", "Account");
+    }
+    [HttpGet]
+    public async Task<IActionResult> EditProfile()
+    {
+        var token =
+            HttpContext.Session.GetString("JWT");
+
+        _httpClient.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue(
+                "Bearer",
+                token);
+
+        var profile =
+            await _httpClient.GetFromJsonAsync<ProfileViewModel>(
+                "https://localhost:7208/api/account/profile");
+
+        return View(profile);
+    }
+    [HttpPost]
+    public async Task<IActionResult> EditProfile(
+    ProfileViewModel model)
+    {
+        var token =
+            HttpContext.Session.GetString("JWT");
+
+        _httpClient.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue(
+                "Bearer",
+                token);
+
+        var response =
+            await _httpClient.PutAsJsonAsync(
+                "https://localhost:7208/api/account/profile",
+                model);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return View(model);
+        }
+
+        TempData["Success"] =
+            "Profile updated successfully";
+
+        return RedirectToAction("EditProfile");
     }
 }

@@ -6,6 +6,7 @@ public class ApplicationUser : IdentityUser
 {
     public string? FullName { get; set; }
 
+    public string? Address { get; set; }
     public ICollection<Order> Orders
     { get; set; } = new List<Order>();
 
@@ -14,4 +15,5 @@ public class ApplicationUser : IdentityUser
 
     public ICollection<RefreshToken> RefreshTokens
     { get; set; } = new List<RefreshToken>();
+
 }
