@@ -6,10 +6,20 @@
 
 <h3>Edit Product</h3>
 
-<form method="post" enctype="multipart/form-data">
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.Error
+    </div>
+}
+
+<form asp-action="Edit"
+      method="post"
+      enctype="multipart/form-data">
 
     <input type="hidden" asp-for="Id" />
-
+    <input type="hidden" asp-for="CategoryId" />
+    <input type="hidden" asp-for="Description" />
     <div class="mb-3">
         <label>Name</label>
 
@@ -51,40 +61,41 @@
                 foreach (var img in Model.ExistingImages)
                 {
                     <div class="image-box border p-2 rounded position-relative"
-                         draggable="true"
-                         data-image="@img"
-                         style="width:170px;cursor:move;">
+                         style="width:170px;">
 
+                        <!-- DELETE -->
                         <button type="button"
                                 class="btn btn-danger btn-sm position-absolute top-0 end-0 remove-image"
                                 data-image="@img">
                             ×
                         </button>
-                        <div class="form-check mt-2 text-center">
+
+                        <!-- MAIN -->
+                        <div class="form-check text-center mb-2">
 
                             <input class="form-check-input"
                                    type="radio"
                                    name="MainImageUrl"
                                    value="@img"
-                            @(Model.MainImageUrl == img ? "checked" : "") />
+                            @(Model.MainImageUrl == img ? "checked='checked'" : "") />
 
                             <label class="form-check-label">
-                                Ảnh Đầu
+                                Ảnh Chính
                             </label>
 
                         </div>
 
-                        <img src="@($"https://localhost:7208{img}")"
+                        <!-- IMAGE -->
+                        <img src="https://localhost:7208@(img)"
                              width="150"
                              height="150"
                              style="object-fit:cover;border-radius:10px;" />
 
-                        <div class="small text-center mt-2">
+                        <!-- FILE NAME -->
+                        <div class="small text-center mt-2 text-break">
                             @System.IO.Path.GetFileName(img)
                         </div>
-                        <input type="hidden"
-                               name="ImageOrders"
-                               value="@img" />
+
                     </div>
                 }
             }
@@ -106,7 +117,7 @@
 
 <script>
 
-    // ================= REMOVE OLD IMAGE =================
+    // REMOVE OLD IMAGE
 
     document.addEventListener("click", function (e) {
 
@@ -132,7 +143,8 @@
 
 
 
-    // ================= NEW IMAGE PREVIEW =================
+
+    // NEW IMAGE PREVIEW
 
     const input =
         document.getElementById("imageInput");
@@ -154,8 +166,9 @@
 
 
 
-    function renderPreview()
-    {
+
+    function renderPreview() {
+
         document.querySelectorAll(".new-image")
             .forEach(x => x.remove());
 
@@ -163,8 +176,8 @@
 
             const reader = new FileReader();
 
-            reader.onload = function (e)
-            {
+            reader.onload = function (e) {
+
                 const div =
                     document.createElement("div");
 
@@ -173,15 +186,14 @@
 
                 div.style.width = "170px";
 
-                div.draggable = true;
-
                 div.innerHTML = `
 
                     <button type="button"
                             class="btn btn-danger btn-sm position-absolute top-0 end-0 remove-new-image">
                         ×
                     </button>
-                    <div class="form-check mt-2 text-center">
+
+                    <div class="form-check text-center mb-2">
 
                         <input class="form-check-input"
                                type="radio"
@@ -189,10 +201,11 @@
                                value="${file.name}" />
 
                         <label class="form-check-label">
-                            Ảnh Đầu
+                            Ảnh Chính
                         </label>
 
                     </div>
+
                     <img
                         src="${e.target.result}"
                         width="150"
@@ -200,11 +213,9 @@
                         style="object-fit:cover;border-radius:10px;"
                     />
 
-                    <div class="small text-center mt-2">
+                    <div class="small text-center mt-2 text-break">
                         ${file.name}
                     </div>
-
-                    
                 `;
 
                 preview.appendChild(div);
@@ -217,7 +228,6 @@
                         updateFileInput();
 
                         renderPreview();
-
                     });
             };
 
@@ -227,50 +237,18 @@
 
 
 
-    function updateFileInput()
-    {
+
+    function updateFileInput() {
+
         const dataTransfer =
             new DataTransfer();
 
         selectedFiles.forEach(file => {
+
             dataTransfer.items.add(file);
         });
 
         input.files = dataTransfer.files;
     }
-
-
-
-    // ================= DRAG DROP =================
-
-    let dragged;
-
-    document.addEventListener("dragstart", e => {
-
-        if (e.target.classList.contains("image-box")) {
-            dragged = e.target;
-        }
-
-    });
-
-    document.addEventListener("dragover", e => {
-        e.preventDefault();
-    });
-
-    document.addEventListener("drop", e => {
-
-        e.preventDefault();
-
-        if (e.target.closest(".image-box")) {
-
-            const target =
-                e.target.closest(".image-box");
-
-            preview.insertBefore(
-                dragged,
-                target
-            );
-        }
-    });
 
 </script>

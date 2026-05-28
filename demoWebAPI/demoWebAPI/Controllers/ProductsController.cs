@@ -1,5 +1,6 @@
 ﻿using demoWebAPI.Authorization.Requirements;
 using demoWebAPI.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -314,7 +315,9 @@ public async Task<IActionResult> UploadProductImages(
         );
     }
     [HttpPut("{id}")]
-    [Authorize(Policy = "Product.Edit")]
+    [Authorize(
+        AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,
+        Policy = "Product.Edit")]
     public async Task<IActionResult> UpdateProduct(
     int id,
     [FromForm] UpdateProductDto dto)
@@ -351,18 +354,22 @@ public async Task<IActionResult> UploadProductImages(
 
                 if (image != null)
                 {
-                    var physicalPath =
-                        Path.Combine(
-                            Directory.GetCurrentDirectory(),
-                            "wwwroot",
-                            deleted.TrimStart('/')
-                        );
+                    // DELETE FILE
+                    var physicalPath = Path.Combine(
+                        Directory.GetCurrentDirectory(),
+                        "wwwroot",
+                        deleted.TrimStart('/')
+                    );
 
                     if (System.IO.File.Exists(physicalPath))
                     {
                         System.IO.File.Delete(physicalPath);
                     }
 
+                    // REMOVE FROM NAVIGATION
+                    product.Productimages.Remove(image);
+
+                    // REMOVE DB
                     _context.Productimages.Remove(image);
                 }
             }
@@ -403,11 +410,46 @@ public async Task<IActionResult> UploadProductImages(
             }
         }
 
-        // MAIN IMAGE
+        // RESET MAIN
         foreach (var img in product.Productimages)
         {
-            img.IsMain =
-                img.ImageUrl == dto.MainImageUrl;
+            img.IsMain = false;
+        }
+
+        // MAIN OLD IMAGE
+        var oldMain = product.Productimages
+            .FirstOrDefault(x =>
+                x.ImageUrl == dto.MainImageUrl);
+
+        if (oldMain != null)
+        {
+            oldMain.IsMain = true;
+        }
+
+        // MAIN NEW IMAGE
+        if (oldMain == null &&
+            !string.IsNullOrEmpty(dto.MainImageUrl))
+        {
+            var newMain = product.Productimages
+    .LastOrDefault(x =>
+        x.ImageUrl.Contains("/images/products/"));
+
+            if (newMain != null)
+            {
+                newMain.IsMain = true;
+            }
+        }
+
+        // NO MAIN => FIRST IMAGE
+        if (!product.Productimages.Any(x => x.IsMain))
+        {
+            var first = product.Productimages
+                .FirstOrDefault();
+
+            if (first != null)
+            {
+                first.IsMain = true;
+            }
         }
 
         await _context.SaveChangesAsync();
@@ -418,7 +460,9 @@ public async Task<IActionResult> UploadProductImages(
         });
     }
     [HttpDelete("{id}")]
-    [Authorize(Policy = "Product.Delete")]
+    [Authorize(
+        AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,
+        Policy = "Product.Delete")]
     public async Task<IActionResult>
     DeleteProduct(int id)
     {

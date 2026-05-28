@@ -30,7 +30,14 @@ namespace MVCCallWebAPI.Services
                     ManagePermissionViewModel>(
                     $"api/admin/role-permissions/{roleId}");
 
-            return result ?? new ManagePermissionViewModel();
+            if (result == null || string.IsNullOrWhiteSpace(result.RoleId))
+            {
+                throw new Exception("Cannot load role permissions. Please login again and try.");
+            }
+
+            result.Permissions ??= new List<PermissionCheckbox>();
+
+            return result;
         }
 
         public async Task UpdateRolePermissionsAsync(
@@ -42,7 +49,7 @@ namespace MVCCallWebAPI.Services
 
             if (result == null)
             {
-                throw new Exception("Failed to update role permissions.");
+                throw new Exception("Failed to update role permissions. API returned empty/unauthorized response.");
             }
         }
     }

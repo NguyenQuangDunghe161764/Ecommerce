@@ -1,4 +1,5 @@
 ﻿using demoWebAPI.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +30,7 @@ public class AccountController : ControllerBase
 
     // ================= PROFILE =================
 
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpGet("profile")]
     public async Task<IActionResult> GetProfile()
     {
@@ -55,7 +56,7 @@ public class AccountController : ControllerBase
 
     // ================= UPDATE PROFILE =================
 
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpPut("profile")]
     public async Task<IActionResult> UpdateProfile(
         [FromBody] UpdateProfileDto dto)
@@ -87,7 +88,7 @@ public class AccountController : ControllerBase
 
     // ================= CHANGE PASSWORD =================
 
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpPost("change-password")]
     public async Task<IActionResult> ChangePassword(
         ChangePasswordDto dto)
@@ -119,7 +120,7 @@ public class AccountController : ControllerBase
 
     // ================= LOGOUT =================
 
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpPost("logout")]
     public async Task<IActionResult> Logout()
     {

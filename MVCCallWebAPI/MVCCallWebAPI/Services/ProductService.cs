@@ -33,15 +33,19 @@ public class ProductService : IProductService
 
             Stock = result.Stock,
 
-            ExistingImages = result.Images,
+            MainImageUrl = result.MainImageUrl,
+
+            ExistingImages = result.Images ?? new List<string>(),
+
+            CategoryId = result.Category?.Id ?? 0,
 
             Category = result.Category == null
-                ? null
-                : new CategoryViewModel
-                {
-                    Id = result.Category.Id,
-                    Name = result.Category.Name
-                }
+        ? null
+        : new CategoryViewModel
+        {
+            Id = result.Category.Id,
+            Name = result.Category.Name
+        }
         };
     }
     public async Task<PagedResult<ProductViewModel>> GetProductsAsync(

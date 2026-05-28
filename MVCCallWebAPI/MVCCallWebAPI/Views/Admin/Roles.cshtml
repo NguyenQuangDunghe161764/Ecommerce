@@ -9,6 +9,16 @@
     <h1 class="h2">Danh sách Quyền (Roles)</h1>
 </div>
 
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
 <div class="card shadow-sm">
     <div class="card-body p-0">
         <table class="table table-bordered table-hover mb-0">
@@ -30,8 +40,7 @@
                             </td>
 
                             <td class="text-center">
-                                <a asp-area="Admin"
-                                   asp-controller="Admin"
+                                <a asp-controller="Admin"
                                    asp-action="ManageRolePermissions"
                                    asp-route-roleId="@role.Id"
                                    class="btn btn-primary btn-sm shadow-sm">

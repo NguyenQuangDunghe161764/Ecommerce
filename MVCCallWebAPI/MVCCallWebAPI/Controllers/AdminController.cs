@@ -95,6 +95,11 @@ namespace MVCCallWebAPI.Controllers
                     return NotFound();
                 }
 
+                if (vm.Permissions == null)
+                {
+                    vm.Permissions = new List<PermissionCheckbox>();
+                }
+
                 return View(vm);
             }
             catch (Exception ex)
@@ -114,6 +119,17 @@ namespace MVCCallWebAPI.Controllers
             ManageRolePermissions(
                 ManagePermissionViewModel vm)
         {
+            if (vm.Permissions == null)
+            {
+                vm.Permissions = new List<PermissionCheckbox>();
+            }
+
+            if (string.IsNullOrWhiteSpace(vm.RoleId))
+            {
+                TempData["Error"] = "Role is missing. Please open Manage Permissions again.";
+                return RedirectToAction(nameof(Roles));
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(vm);

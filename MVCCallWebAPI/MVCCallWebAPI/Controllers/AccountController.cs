@@ -8,6 +8,7 @@ using MVCCallWebAPI.ViewModels;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Security.Claims;
+using System.Text.Json;
 [AllowAnonymous]
 public class AccountController : Controller
 {
@@ -132,7 +133,14 @@ public class AccountController : Controller
         }
 
         // store in session
-        HttpContext.Session.SetString("JWT", accessToken ?? string.Empty);
+        if (string.IsNullOrWhiteSpace(accessToken))
+        {
+            ViewBag.Error = "Login failed: token was not returned by API.";
+            return View(model);
+        }
+
+        HttpContext.Session.SetString("JWT", accessToken);
+        HttpContext.Session.SetString("AccessToken", accessToken);
         HttpContext.Session.SetString("RefreshToken", refreshToken ?? string.Empty);
         HttpContext.Session.SetString("UserName", userName ?? string.Empty);
         HttpContext.Session.SetString("Role", role ?? string.Empty);
@@ -159,9 +167,17 @@ public class AccountController : Controller
     }
 
     // LOGOUT
-    public IActionResult Logout()
+    public async Task<IActionResult> Logout()
     {
         HttpContext.Session.Remove("JWT");
+        HttpContext.Session.Remove("AccessToken");
+        HttpContext.Session.Remove("RefreshToken");
+        HttpContext.Session.Remove("UserName");
+        HttpContext.Session.Remove("Role");
+
+        HttpContext.Session.Clear();
+
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         return RedirectToAction("Login");
     }
     // GET: REGISTER
@@ -200,39 +216,97 @@ public class AccountController : Controller
     [HttpGet]
     public async Task<IActionResult> EditProfile()
     {
-        var token =
-            HttpContext.Session.GetString("JWT");
+        var token = GetAccessTokenFromSession();
+        if (string.IsNullOrWhiteSpace(token))
+        {
+            TempData["Error"] = "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.";
+            return RedirectToAction("Login");
+        }
 
-        _httpClient.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue(
-                "Bearer",
-                token);
+        var request = new HttpRequestMessage(
+            HttpMethod.Get,
+            "https://localhost:7208/api/account/profile");
+        request.Headers.Authorization =
+            new AuthenticationHeaderValue("Bearer", token);
 
-        var profile =
-            await _httpClient.GetFromJsonAsync<ProfileViewModel>(
+        var response = await _httpClient.SendAsync(request);
+        if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+        {
+            var refreshed = await TryRefreshAccessTokenAsync();
+            if (!refreshed)
+            {
+                TempData["Error"] = "Phiên đăng nhập không hợp lệ. Vui lòng đăng nhập lại.";
+                return RedirectToAction("Login");
+            }
+
+            var retryRequest = new HttpRequestMessage(
+                HttpMethod.Get,
                 "https://localhost:7208/api/account/profile");
+            retryRequest.Headers.Authorization =
+                new AuthenticationHeaderValue("Bearer", GetAccessTokenFromSession());
+            response = await _httpClient.SendAsync(retryRequest);
+        }
 
-        return View(profile);
+        if (!response.IsSuccessStatusCode)
+        {
+            TempData["Error"] = $"Không thể tải thông tin profile ({(int)response.StatusCode}).";
+            return View(new ProfileViewModel());
+        }
+
+        var profile = await response.Content.ReadFromJsonAsync<ProfileViewModel>();
+        return View(profile ?? new ProfileViewModel());
     }
     [HttpPost]
     public async Task<IActionResult> EditProfile(
     ProfileViewModel model)
     {
-        var token =
-            HttpContext.Session.GetString("JWT");
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
 
-        _httpClient.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue(
-                "Bearer",
-                token);
+        var token = GetAccessTokenFromSession();
+        if (string.IsNullOrWhiteSpace(token))
+        {
+            TempData["Error"] = "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.";
+            return RedirectToAction("Login");
+        }
 
-        var response =
-            await _httpClient.PutAsJsonAsync(
-                "https://localhost:7208/api/account/profile",
-                model);
+        var request = new HttpRequestMessage(
+            HttpMethod.Put,
+            "https://localhost:7208/api/account/profile")
+        {
+            Content = JsonContent.Create(model)
+        };
+        request.Headers.Authorization =
+            new AuthenticationHeaderValue("Bearer", token);
+
+        var response = await _httpClient.SendAsync(request);
+
+        if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+        {
+            var refreshed = await TryRefreshAccessTokenAsync();
+            if (!refreshed)
+            {
+                TempData["Error"] = "Phiên đăng nhập không hợp lệ. Vui lòng đăng nhập lại.";
+                return RedirectToAction("Login");
+            }
+
+            var retryRequest = new HttpRequestMessage(
+                HttpMethod.Put,
+                "https://localhost:7208/api/account/profile")
+            {
+                Content = JsonContent.Create(model)
+            };
+            retryRequest.Headers.Authorization =
+                new AuthenticationHeaderValue("Bearer", GetAccessTokenFromSession());
+            response = await _httpClient.SendAsync(retryRequest);
+        }
 
         if (!response.IsSuccessStatusCode)
         {
+            ViewBag.Error =
+                $"Cập nhật profile thất bại ({(int)response.StatusCode})";
             return View(model);
         }
 
@@ -240,5 +314,134 @@ public class AccountController : Controller
             "Profile updated successfully";
 
         return RedirectToAction("EditProfile");
+    }
+
+    [HttpGet]
+    public IActionResult ChangePassword()
+    {
+        return View(new ChangePasswordViewModel());
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var token = GetAccessTokenFromSession();
+        if (string.IsNullOrWhiteSpace(token))
+        {
+            TempData["Error"] = "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.";
+            return RedirectToAction("Login");
+        }
+
+        var payload = new
+        {
+            currentPassword = model.CurrentPassword,
+            newPassword = model.NewPassword
+        };
+
+        var request = new HttpRequestMessage(
+            HttpMethod.Post,
+            "https://localhost:7208/api/account/change-password")
+        {
+            Content = JsonContent.Create(payload)
+        };
+        request.Headers.Authorization =
+            new AuthenticationHeaderValue("Bearer", token);
+
+        var response = await _httpClient.SendAsync(request);
+        if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+        {
+            var refreshed = await TryRefreshAccessTokenAsync();
+            if (!refreshed)
+            {
+                TempData["Error"] = "Phiên đăng nhập không hợp lệ. Vui lòng đăng nhập lại.";
+                return RedirectToAction("Login");
+            }
+
+            var retryRequest = new HttpRequestMessage(
+                HttpMethod.Post,
+                "https://localhost:7208/api/account/change-password")
+            {
+                Content = JsonContent.Create(payload)
+            };
+            retryRequest.Headers.Authorization =
+                new AuthenticationHeaderValue("Bearer", GetAccessTokenFromSession());
+            response = await _httpClient.SendAsync(retryRequest);
+        }
+
+        if (!response.IsSuccessStatusCode)
+        {
+            ViewBag.Error = "Đổi mật khẩu thất bại. Vui lòng kiểm tra mật khẩu hiện tại.";
+            return View(model);
+        }
+
+        TempData["Success"] = "Đổi mật khẩu thành công.";
+        return RedirectToAction(nameof(ChangePassword));
+    }
+
+    private string? GetAccessTokenFromSession()
+    {
+        var token = HttpContext.Session.GetString("JWT");
+        if (string.IsNullOrWhiteSpace(token))
+        {
+            token = HttpContext.Session.GetString("AccessToken");
+        }
+
+        if (string.IsNullOrWhiteSpace(token))
+        {
+            return null;
+        }
+
+        token = token.Trim();
+        if (token.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
+        {
+            token = token.Substring("Bearer ".Length).Trim();
+        }
+
+        return string.IsNullOrWhiteSpace(token) ? null : token;
+    }
+
+    private async Task<bool> TryRefreshAccessTokenAsync()
+    {
+        var refreshToken =
+            HttpContext.Session.GetString("RefreshToken");
+
+        if (string.IsNullOrWhiteSpace(refreshToken))
+        {
+            return false;
+        }
+
+        var refreshResponse =
+            await _httpClient.PostAsJsonAsync(
+                "https://localhost:7208/api/auth/refresh",
+                new { refreshToken });
+
+        if (!refreshResponse.IsSuccessStatusCode)
+        {
+            return false;
+        }
+
+        using var doc = JsonDocument.Parse(
+            await refreshResponse.Content.ReadAsStringAsync());
+
+        if (!doc.RootElement.TryGetProperty("accessToken", out var tokenElement))
+        {
+            return false;
+        }
+
+        var newAccessToken = tokenElement.GetString();
+        if (string.IsNullOrWhiteSpace(newAccessToken))
+        {
+            return false;
+        }
+
+        HttpContext.Session.SetString("JWT", newAccessToken);
+        HttpContext.Session.SetString("AccessToken", newAccessToken);
+        return true;
     }
 }

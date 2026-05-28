@@ -59,10 +59,26 @@
 
                         @if (!string.IsNullOrEmpty(jwtToken))
                         {
-                            <li class="nav-item">
-                                <span class="nav-link text-dark">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-dark"
+                                   href="#"
+                                   role="button"
+                                   data-bs-toggle="dropdown"
+                                   aria-expanded="false">
                                     👤 @userName
-                                </span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Account" asp-action="EditProfile">
+                                            Thông tin cá nhân
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Account" asp-action="ChangePassword">
+                                            Đổi mật khẩu
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
 
                             @if (userRole == "Admin")
