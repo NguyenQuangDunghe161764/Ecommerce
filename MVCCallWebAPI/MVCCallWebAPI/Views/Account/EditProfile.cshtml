@@ -42,10 +42,42 @@
     </div>
 
     <div class="mb-3">
-        <label>Address</label>
+        <label class="form-label">Tỉnh/Thành phố</label>
+        <select id="provinceSelect" class="form-select">
+            <option value="">-- Chọn Tỉnh/Thành --</option>
+        </select>
+    </div>
 
-        <textarea asp-for="Address"
-                  class="form-control"></textarea>
+    <div class="mb-3">
+        <label class="form-label">Quận/Huyện</label>
+        <select id="districtSelect" class="form-select" disabled>
+            <option value="">-- Chọn Quận/Huyện --</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Phường/Xã</label>
+        <select id="wardSelect" class="form-select" disabled>
+            <option value="">-- Chọn Phường/Xã --</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="AddressDetail" class="form-label">Số nhà, tên đường</label>
+        <input asp-for="AddressDetail" id="addressDetailInput" class="form-control" />
+    </div>
+
+    <input type="hidden" asp-for="ProvinceName" id="provinceNameInput" />
+    <input type="hidden" asp-for="DistrictName" id="districtNameInput" />
+    <input type="hidden" asp-for="WardName" id="wardNameInput" />
+    <input type="hidden" asp-for="Address" id="addressInput" />
+
+    <div class="mb-3">
+        <label class="form-label">Địa chỉ đầy đủ</label>
+        <textarea id="addressPreview"
+                  class="form-control"
+                  rows="2"
+                  readonly></textarea>
     </div>
 
     <button type="submit"
@@ -54,3 +86,165 @@
     </button>
 
 </form>
+
+@section Scripts {
+    <script>
+        const provinceSelect = document.getElementById("provinceSelect");
+        const districtSelect = document.getElementById("districtSelect");
+        const wardSelect = document.getElementById("wardSelect");
+        const detailInput = document.getElementById("addressDetailInput");
+
+        const provinceNameInput = document.getElementById("provinceNameInput");
+        const districtNameInput = document.getElementById("districtNameInput");
+        const wardNameInput = document.getElementById("wardNameInput");
+        const addressInput = document.getElementById("addressInput");
+        const addressPreview = document.getElementById("addressPreview");
+
+        const existingAddress = (addressInput.value || "").trim();
+        let provinces = [];
+
+        function buildAddressString() {
+            const parts = [];
+            if (detailInput.value.trim()) parts.push(detailInput.value.trim());
+            if (wardNameInput.value.trim()) parts.push(wardNameInput.value.trim());
+            if (districtNameInput.value.trim()) parts.push(districtNameInput.value.trim());
+            if (provinceNameInput.value.trim()) parts.push(provinceNameInput.value.trim());
+            const value = parts.join(", ");
+            addressInput.value = value;
+            addressPreview.value = value;
+        }
+
+        function resetSelect(select, placeholder) {
+            select.innerHTML = `<option value="">${placeholder}</option>`;
+        }
+
+        function setSelectionByText(select, text) {
+            if (!text) return false;
+            const normalized = text.trim().toLowerCase();
+            for (let i = 0; i < select.options.length; i++) {
+                if (select.options[i].text.trim().toLowerCase() === normalized) {
+                    select.selectedIndex = i;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function parseExistingAddress(address) {
+            if (!address) {
+                return { detail: "", ward: "", district: "", province: "" };
+            }
+
+            const parts = address.split(",").map(x => x.trim()).filter(Boolean);
+            if (parts.length >= 4) {
+                return {
+                    detail: parts.slice(0, parts.length - 3).join(", "),
+                    ward: parts[parts.length - 3],
+                    district: parts[parts.length - 2],
+                    province: parts[parts.length - 1]
+                };
+            }
+
+            if (parts.length === 3) {
+                return { detail: "", ward: parts[0], district: parts[1], province: parts[2] };
+            }
+
+            return { detail: address, ward: "", district: "", province: "" };
+        }
+
+        async function loadAddressData() {
+            const response = await fetch("https://provinces.open-api.vn/api/?depth=3");
+            if (!response.ok) return;
+
+            provinces = await response.json();
+            for (const p of provinces) {
+                provinceSelect.insertAdjacentHTML("beforeend", `<option value="${p.code}">${p.name}</option>`);
+            }
+
+            const parsed = parseExistingAddress(existingAddress);
+            if (!detailInput.value && parsed.detail) {
+                detailInput.value = parsed.detail;
+            }
+
+            if (setSelectionByText(provinceSelect, parsed.province)) {
+                provinceSelect.dispatchEvent(new Event("change"));
+
+                setTimeout(() => {
+                    if (setSelectionByText(districtSelect, parsed.district)) {
+                        districtSelect.dispatchEvent(new Event("change"));
+
+                        setTimeout(() => {
+                            if (setSelectionByText(wardSelect, parsed.ward)) {
+                                wardSelect.dispatchEvent(new Event("change"));
+                            }
+                        }, 0);
+                    }
+                }, 0);
+            }
+
+            buildAddressString();
+        }
+
+        provinceSelect.addEventListener("change", function () {
+            resetSelect(districtSelect, "-- Chọn Quận/Huyện --");
+            resetSelect(wardSelect, "-- Chọn Phường/Xã --");
+            districtSelect.disabled = true;
+            wardSelect.disabled = true;
+
+            provinceNameInput.value = "";
+            districtNameInput.value = "";
+            wardNameInput.value = "";
+
+            const province = provinces.find(x => String(x.code) === this.value);
+            if (!province) {
+                buildAddressString();
+                return;
+            }
+
+            provinceNameInput.value = province.name;
+
+            for (const d of province.districts || []) {
+                districtSelect.insertAdjacentHTML("beforeend", `<option value="${d.code}">${d.name}</option>`);
+            }
+
+            districtSelect.disabled = false;
+            buildAddressString();
+        });
+
+        districtSelect.addEventListener("change", function () {
+            resetSelect(wardSelect, "-- Chọn Phường/Xã --");
+            wardSelect.disabled = true;
+
+            districtNameInput.value = "";
+            wardNameInput.value = "";
+
+            const province = provinces.find(x => String(x.code) === provinceSelect.value);
+            const district = (province?.districts || []).find(x => String(x.code) === this.value);
+            if (!district) {
+                buildAddressString();
+                return;
+            }
+
+            districtNameInput.value = district.name;
+
+            for (const w of district.wards || []) {
+                wardSelect.insertAdjacentHTML("beforeend", `<option value="${w.code}">${w.name}</option>`);
+            }
+
+            wardSelect.disabled = false;
+            buildAddressString();
+        });
+
+        wardSelect.addEventListener("change", function () {
+            const province = provinces.find(x => String(x.code) === provinceSelect.value);
+            const district = (province?.districts || []).find(x => String(x.code) === districtSelect.value);
+            const ward = (district?.wards || []).find(x => String(x.code) === this.value);
+
+            wardNameInput.value = ward ? ward.name : "";
+            buildAddressString();
+        });
+
+        detailInput.addEventListener("input", buildAddressString);
+        loadAddressData();
+    </script>
+}

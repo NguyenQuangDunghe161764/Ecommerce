@@ -276,7 +276,12 @@ public class AccountController : Controller
             HttpMethod.Put,
             "https://localhost:7208/api/account/profile")
         {
-            Content = JsonContent.Create(model)
+            Content = JsonContent.Create(new
+            {
+                fullName = model.FullName,
+                phoneNumber = model.PhoneNumber,
+                address = BuildAddress(model)
+            })
         };
         request.Headers.Authorization =
             new AuthenticationHeaderValue("Bearer", token);
@@ -296,7 +301,12 @@ public class AccountController : Controller
                 HttpMethod.Put,
                 "https://localhost:7208/api/account/profile")
             {
-                Content = JsonContent.Create(model)
+                Content = JsonContent.Create(new
+                {
+                    fullName = model.FullName,
+                    phoneNumber = model.PhoneNumber,
+                    address = BuildAddress(model)
+                })
             };
             retryRequest.Headers.Authorization =
                 new AuthenticationHeaderValue("Bearer", GetAccessTokenFromSession());
@@ -314,6 +324,38 @@ public class AccountController : Controller
             "Profile updated successfully";
 
         return RedirectToAction("EditProfile");
+    }
+
+    private static string? BuildAddress(ProfileViewModel model)
+    {
+        if (!string.IsNullOrWhiteSpace(model.Address))
+        {
+            return model.Address.Trim();
+        }
+
+        var parts = new List<string>();
+
+        if (!string.IsNullOrWhiteSpace(model.AddressDetail))
+        {
+            parts.Add(model.AddressDetail.Trim());
+        }
+
+        if (!string.IsNullOrWhiteSpace(model.WardName))
+        {
+            parts.Add(model.WardName.Trim());
+        }
+
+        if (!string.IsNullOrWhiteSpace(model.DistrictName))
+        {
+            parts.Add(model.DistrictName.Trim());
+        }
+
+        if (!string.IsNullOrWhiteSpace(model.ProvinceName))
+        {
+            parts.Add(model.ProvinceName.Trim());
+        }
+
+        return parts.Count == 0 ? null : string.Join(", ", parts);
     }
 
     [HttpGet]
