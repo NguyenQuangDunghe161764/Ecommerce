@@ -1,15 +1,21 @@
 ﻿using MVCCallWebAPI.DTOs;
+using MVCCallWebAPI.Helpers;
 using System.Net.Http.Headers;
 
 public class ApiClientService
 {
     private readonly HttpClient _httpClient;
     private readonly IHttpContextAccessor _contextAccessor;
+    private readonly IConfiguration _configuration;
 
-    public ApiClientService(IHttpClientFactory factory, IHttpContextAccessor accessor)
+    public ApiClientService(
+        IHttpClientFactory factory,
+        IHttpContextAccessor accessor,
+        IConfiguration configuration)
     {
         _httpClient = factory.CreateClient();
         _contextAccessor = accessor;
+        _configuration = configuration;
     }
 
     public async Task<List<ProductDto>> GetProducts()
@@ -20,7 +26,6 @@ public class ApiClientService
             new AuthenticationHeaderValue("Bearer", token);
 
         return await _httpClient.GetFromJsonAsync<List<ProductDto>>(
-            "https://localhost:5001/api/products"
-        );
+            ApiConfig.ApiUrl(_configuration, "api/products"));
     }
 }

@@ -47,7 +47,9 @@ public class ProductService : IProductService
     }
 
     // CREATE
-    public async Task<ProductDto> CreateAsync(CreateProductDto dto)
+    public async Task<ProductDto> CreateAsync(
+        CreateProductDto dto,
+        string? ownerId = null)
     {
         var product = new Product
         {
@@ -56,6 +58,7 @@ public class ProductService : IProductService
             Price = dto.Price,
             Stock = dto.Stock,
             CategoryId = dto.CategoryId,
+            OwnerId = ownerId,
             CreatedDate = DateTime.UtcNow
         };
 

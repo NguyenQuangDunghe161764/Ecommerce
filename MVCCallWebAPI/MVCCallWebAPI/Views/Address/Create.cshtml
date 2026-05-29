@@ -1,0 +1,165 @@
+﻿@model MVCCallWebAPI.ViewModels.AddressViewModel
+
+<h3>Thêm địa chỉ</h3>
+
+<form asp-controller="Address" asp-action="Create" method="post">
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">
+            <strong>Lỗi:</strong> @ViewBag.Error
+        </div>
+    }
+
+    <div class="mb-3">
+        <label class="form-label font-weight-bold">Người nhận</label>
+        <input asp-for="FullName" class="form-control" placeholder="Nhập tên người nhận..." />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label font-weight-bold">Số điện thoại</label>
+        <input asp-for="PhoneNumber" class="form-control" placeholder="Nhập số điện thoại..." />
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label font-weight-bold">Tỉnh / Thành phố</label>
+        <select id="provinceSelect" asp-for="Province" class="form-select">
+            <option value="">-- Chọn tỉnh thành --</option>
+        </select>
+        <span asp-validation-for="Province" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label font-weight-bold">Quận / Huyện</label>
+        <select id="districtSelect" asp-for="District" class="form-select">
+            <option value="">-- Chọn quận huyện --</option>
+        </select>
+        <span asp-validation-for="District" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label font-weight-bold">Phường / Xã</label>
+        <select id="wardSelect" asp-for="Ward" class="form-select">
+            <option value="">-- Chọn phường xã --</option>
+        </select>
+        <span asp-validation-for="Ward" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label font-weight-bold">Số nhà, tên đường</label>
+        <input asp-for="DetailAddress" id="detailInput" class="form-control" placeholder="Ví dụ: 123 Đường ABC..." />
+        <span asp-validation-for="DetailAddress" class="text-danger"></span>
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="IsDefault" class="form-check-input" type="checkbox" />
+        <label class="form-check-label" asp-for="IsDefault">
+            Đặt làm địa chỉ mặc định
+        </label>
+    </div>
+
+    <input type="hidden" asp-for="FullAddress" id="fullAddressInput" />
+
+    <div class="mb-3">
+        <label class="form-label text-muted">Xem trước địa chỉ đầy đủ</label>
+        <textarea id="preview" class="form-control bg-light" rows="2" readonly></textarea>
+    </div>
+
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary px-4">Lưu địa chỉ</button>
+        <a asp-action="Index" class="btn btn-outline-secondary ms-2">Quay lại</a>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        const provinceSelect = document.getElementById("provinceSelect");
+        const districtSelect = document.getElementById("districtSelect");
+        const wardSelect = document.getElementById("wardSelect");
+        const detailInput = document.getElementById("detailInput");
+        const fullAddressInput = document.getElementById("fullAddressInput");
+        const preview = document.getElementById("preview");
+        let provinces = [];
+
+        // LOAD DATA TỪ API PROVINCES
+        async function loadData() {
+            try {
+                const response = await fetch("https://provinces.open-api.vn/api/?depth=3");
+                provinces = await response.json();
+
+                provinces.forEach(p => {
+                    provinceSelect.innerHTML += `<option value="${p.name}">${p.name}</option>`;
+                });
+            } catch (error) {
+                console.error("Không thể tải danh sách tỉnh thành:", error);
+            }
+        }
+
+        // TỰ ĐỘNG GHÉP CHUỖI ĐỊA CHỈ
+        function buildAddress() {
+            const parts = [];
+
+            if (detailInput.value.trim()) {
+                parts.push(detailInput.value.trim());
+            }
+            if (wardSelect.value) {
+                parts.push(wardSelect.value);
+            }
+            if (districtSelect.value) {
+                parts.push(districtSelect.value);
+            }
+            if (provinceSelect.value) {
+                parts.push(provinceSelect.value);
+            }
+
+            const full = parts.join(", ");
+            fullAddressInput.value = full;
+            preview.value = full;
+        }
+
+        // SỰ KIỆN THAY ĐỔI TỈNH / THÀNH
+        provinceSelect.addEventListener("change", function () {
+            districtSelect.innerHTML = `<option value="">-- Chọn quận huyện --</option>`;
+            wardSelect.innerHTML = `<option value="">-- Chọn phường xã --</option>`;
+
+            const province = provinces.find(x => x.name == this.value);
+            if (!province) {
+                buildAddress();
+                return;
+            }
+
+            province.districts.forEach(d => {
+                districtSelect.innerHTML += `<option value="${d.name}">${d.name}</option>`;
+            });
+
+            buildAddress();
+        });
+
+        // SỰ KIỆN THAY ĐỔI QUẬN / HUYỆN
+        districtSelect.addEventListener("change", function () {
+            wardSelect.innerHTML = `<option value="">-- Chọn phường xã --</option>`;
+
+            const province = provinces.find(x => x.name == provinceSelect.value);
+            const district = province?.districts.find(x => x.name == this.value);
+            if (!district) {
+                buildAddress();
+                return;
+            }
+
+            district.wards.forEach(w => {
+                wardSelect.innerHTML += `<option value="${w.name}">${w.name}</option>`;
+            });
+
+            buildAddress();
+        });
+
+        // SỰ KIỆN THAY ĐỔI PHƯỜNG / XÃ VÀ SỐ NHÀ
+        wardSelect.addEventListener("change", buildAddress);
+        detailInput.addEventListener("input", buildAddress);
+
+        // KHỞI CHẠY LẤY DỮ LIỆU
+        loadData();
+    </script>
+}

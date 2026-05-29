@@ -33,6 +33,8 @@ public partial class EcomDbContext
     public virtual DbSet<RolePermission> RolePermissions { get; set; }
 
     public virtual DbSet<Review> Reviews { get; set; }
+    public DbSet<Address> UserAddresses { get; set; }
+
 
     protected override void OnModelCreating(
         ModelBuilder modelBuilder)
@@ -74,6 +76,9 @@ public partial class EcomDbContext
 
             entity.Property(e => e.TotalAmount)
                 .HasPrecision(18, 2);
+
+            entity.Property(e => e.ZaloPayAppTransId)
+                .HasMaxLength(50);
 
             entity.HasOne(d => d.User)
                 .WithMany(p => p.Orders)

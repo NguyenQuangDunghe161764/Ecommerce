@@ -227,7 +227,7 @@ public async Task<IActionResult> UploadProductImages(
 
         if (product == null)
         {
-            return null;
+            return NotFound();
         }
 
         return new ProductDto
@@ -260,8 +260,9 @@ public async Task<IActionResult> UploadProductImages(
     }
 
     [HttpPost]
-    //[Authorize(Policy = "Product.Create")]
-    [AllowAnonymous]
+    [Authorize(
+        AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,
+        Policy = "Product.Create")]
     public async Task<ActionResult<ProductDto>>
     CreateProduct([FromForm] CreateProductDto dto)
     {
@@ -270,8 +271,9 @@ public async Task<IActionResult> UploadProductImages(
             return BadRequest(ModelState);
         }
 
+        var ownerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var created =
-            await _service.CreateAsync(dto);
+            await _service.CreateAsync(dto, ownerId);
 
         // LOAD ENTITY
         var product = await _context.Products

@@ -173,6 +173,46 @@ namespace demoWebAPI.Migrations
                     b.ToTable("refreshtokens", (string)null);
                 });
 
+            modelBuilder.Entity("demoWebAPI.Models.Address", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("DetailAddress")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("District")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Province")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Ward")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserAddresses");
+                });
+
             modelBuilder.Entity("demoWebAPI.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -273,6 +313,9 @@ namespace demoWebAPI.Migrations
                         .HasColumnType("datetime")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
+                    b.Property<int>("PaymentStatus")
+                        .HasColumnType("int");
+
                     b.Property<string>("Status")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(50)
@@ -285,6 +328,10 @@ namespace demoWebAPI.Migrations
 
                     b.Property<string>("UserId")
                         .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ZaloPayAppTransId")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("Id")
                         .HasName("PRIMARY");
@@ -531,6 +578,15 @@ namespace demoWebAPI.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("demoWebAPI.Models.Address", b =>
+                {
+                    b.HasOne("demoWebAPI.Models.ApplicationUser", "User")
+                        .WithMany("UserAddresses")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("demoWebAPI.Models.Order", b =>
                 {
                     b.HasOne("demoWebAPI.Models.ApplicationUser", "User")
@@ -626,6 +682,8 @@ namespace demoWebAPI.Migrations
                     b.Navigation("RefreshTokens");
 
                     b.Navigation("Reviews");
+
+                    b.Navigation("UserAddresses");
                 });
 
             modelBuilder.Entity("demoWebAPI.Models.Category", b =>

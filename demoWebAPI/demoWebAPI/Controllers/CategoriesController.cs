@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -19,6 +21,9 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(
+        AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,
+        Roles = "Admin,Staff")]
     public async Task<IActionResult> CreateCategory([FromBody] CategoryDto dto)
     {
         if (dto == null || string.IsNullOrWhiteSpace(dto.Name))

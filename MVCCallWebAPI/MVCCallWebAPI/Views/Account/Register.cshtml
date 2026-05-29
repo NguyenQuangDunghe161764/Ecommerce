@@ -74,7 +74,7 @@
                     return;
                 }
 
-                $.get("https://localhost:7208/api/auth/check-email",
+                $.get("@(ApiConfig.GetBaseUrl(Configuration))/api/auth/check-email",
                     { email: email },
                     function (res) {
 
@@ -103,7 +103,7 @@
                     return;
                 }
 
-                $.get("https://localhost:7208/api/auth/check-phone",
+                $.get("@(ApiConfig.GetBaseUrl(Configuration))/api/auth/check-phone",
                     { phone: phone },
                     function (res) {
 

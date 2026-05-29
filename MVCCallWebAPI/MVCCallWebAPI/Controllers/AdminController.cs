@@ -6,7 +6,7 @@ using MVCCallWebAPI.ViewModels;
 
 namespace MVCCallWebAPI.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly IAdminService _adminService;
@@ -53,12 +53,6 @@ namespace MVCCallWebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> Roles()
         {
-            // allow if authenticated and either cookie role or session role is Admin
-            var sessionRole = HttpContext.Session.GetString("Role");
-            if (!User.IsInRole("Admin") && !string.Equals(sessionRole, "Admin", System.StringComparison.OrdinalIgnoreCase))
-            {
-                return Challenge();
-            }
             try
             {
                 var roles = await _adminService.GetRolesAsync();

@@ -2,7 +2,7 @@
 
 @{
     var mainImage = !string.IsNullOrEmpty(Model.MainImageUrl)
-        ? $"https://localhost:7208{Model.MainImageUrl}"
+        ? ApiConfig.ImageUrl(Configuration, Model.MainImageUrl)
         : "https://via.placeholder.com/500x500?text=No+Image";
 }
 
@@ -31,7 +31,7 @@
 
                     @foreach (var img in Model.ExistingImages)
                     {
-                        <img src="@($"https://localhost:7208{img}")"
+                        <img src="@ApiConfig.ImageUrl(Configuration, img)"
                              class="border rounded thumb-image"
                              width="80"
                              height="80"

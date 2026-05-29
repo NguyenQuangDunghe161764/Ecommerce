@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using demoWebAPI.Models.Enums;
 namespace demoWebAPI.Models;
 
 public partial class Order
@@ -16,6 +16,9 @@ public partial class Order
     public decimal TotalAmount { get; set; }
 
     public string? Status { get; set; }
+    public PaymentStatus PaymentStatus { get; set; }
+
+    public string? ZaloPayAppTransId { get; set; }
 
     public virtual ICollection<Orderdetail> Orderdetails { get; set; } = new List<Orderdetail>();
 

@@ -10,7 +10,10 @@ public static class JwtHelper
         var claims = token.Claims.ToList();
 
         var permissions = claims
-            .Where(c => c.Type == "permission" || c.Type == "permissions")
+            .Where(c =>
+                c.Type == "Permission" ||
+                c.Type == "permission" ||
+                c.Type == "permissions")
             .SelectMany(c => c.Value.Split(',', StringSplitOptions.RemoveEmptyEntries))
             .Select(x => x.Trim());
 

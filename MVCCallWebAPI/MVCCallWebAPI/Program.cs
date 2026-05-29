@@ -45,6 +45,8 @@ builder.Services.AddAuthorization(options =>
 });
 
 // ================= HTTP CLIENT =================
+builder.Services.AddHttpClient();
+
 builder.Services
     .AddHttpClient<IApiService, ApiService>(client =>
     {

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MVCCallWebAPI.DTOs;
+using MVCCallWebAPI.Helpers;
 using MVCCallWebAPI.Models;
 using MVCCallWebAPI.ViewModels;
 using System.Net.Http.Headers;
@@ -13,11 +14,17 @@ using System.Text.Json;
 public class AccountController : Controller
 {
     private readonly HttpClient _httpClient;
-    
-    public AccountController(IHttpClientFactory factory)
+    private readonly IConfiguration _configuration;
+
+    public AccountController(
+        IHttpClientFactory factory,
+        IConfiguration configuration)
     {
         _httpClient = factory.CreateClient();
+        _configuration = configuration;
     }
+
+    private string Api(string path) => ApiConfig.ApiUrl(_configuration, path);
     public IActionResult AccessDenied()
         {
             return View();
@@ -34,7 +41,7 @@ public class AccountController : Controller
     public async Task<IActionResult> Login(LoginViewModel model)
     {
         var response = await _httpClient.PostAsJsonAsync(
-            "https://localhost:7208/api/auth/login",
+            Api("api/auth/login"),
             model
         );
 
@@ -143,14 +150,45 @@ public class AccountController : Controller
         HttpContext.Session.SetString("AccessToken", accessToken);
         HttpContext.Session.SetString("RefreshToken", refreshToken ?? string.Empty);
         HttpContext.Session.SetString("UserName", userName ?? string.Empty);
-        HttpContext.Session.SetString("Role", role ?? string.Empty);
+        var roleList = new List<string>();
+        if (!string.IsNullOrWhiteSpace(role))
+        {
+            roleList.AddRange(
+                role.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries));
+        }
 
-        // Create authentication cookie so [Authorize] works with Role checks
+        try
+        {
+            using var rolesDoc = System.Text.Json.JsonDocument.Parse(content);
+            if (rolesDoc.RootElement.TryGetProperty("roles", out var rolesProp) &&
+                rolesProp.ValueKind == System.Text.Json.JsonValueKind.Array)
+            {
+                roleList.Clear();
+                foreach (var r in rolesProp.EnumerateArray())
+                {
+                    var roleName = r.GetString();
+                    if (!string.IsNullOrWhiteSpace(roleName))
+                    {
+                        roleList.Add(roleName);
+                    }
+                }
+            }
+        }
+        catch
+        {
+        }
+
+        HttpContext.Session.SetString("Role", roleList.FirstOrDefault() ?? string.Empty);
+
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, userName ?? string.Empty),
-            new Claim(ClaimTypes.Role, role ?? string.Empty)
+            new Claim(ClaimTypes.Name, userName ?? string.Empty)
         };
+
+        foreach (var roleName in roleList.Distinct(StringComparer.OrdinalIgnoreCase))
+        {
+            claims.Add(new Claim(ClaimTypes.Role, roleName));
+        }
 
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
         var principal = new ClaimsPrincipal(identity);
@@ -196,7 +234,7 @@ public class AccountController : Controller
             return View(model); 
         }
         var response = await _httpClient.PostAsJsonAsync(
-            "https://localhost:7208/api/auth/register",
+            Api("api/auth/register"),
             model
         );
 
@@ -225,7 +263,7 @@ public class AccountController : Controller
 
         var request = new HttpRequestMessage(
             HttpMethod.Get,
-            "https://localhost:7208/api/account/profile");
+            Api("api/account/profile"));
         request.Headers.Authorization =
             new AuthenticationHeaderValue("Bearer", token);
 
@@ -241,7 +279,7 @@ public class AccountController : Controller
 
             var retryRequest = new HttpRequestMessage(
                 HttpMethod.Get,
-                "https://localhost:7208/api/account/profile");
+                Api("api/account/profile"));
             retryRequest.Headers.Authorization =
                 new AuthenticationHeaderValue("Bearer", GetAccessTokenFromSession());
             response = await _httpClient.SendAsync(retryRequest);
@@ -274,7 +312,7 @@ public class AccountController : Controller
 
         var request = new HttpRequestMessage(
             HttpMethod.Put,
-            "https://localhost:7208/api/account/profile")
+            Api("api/account/profile"))
         {
             Content = JsonContent.Create(new
             {
@@ -299,7 +337,7 @@ public class AccountController : Controller
 
             var retryRequest = new HttpRequestMessage(
                 HttpMethod.Put,
-                "https://localhost:7208/api/account/profile")
+                Api("api/account/profile"))
             {
                 Content = JsonContent.Create(new
                 {
@@ -388,7 +426,7 @@ public class AccountController : Controller
 
         var request = new HttpRequestMessage(
             HttpMethod.Post,
-            "https://localhost:7208/api/account/change-password")
+            Api("api/account/change-password"))
         {
             Content = JsonContent.Create(payload)
         };
@@ -407,7 +445,7 @@ public class AccountController : Controller
 
             var retryRequest = new HttpRequestMessage(
                 HttpMethod.Post,
-                "https://localhost:7208/api/account/change-password")
+                Api("api/account/change-password"))
             {
                 Content = JsonContent.Create(payload)
             };
@@ -460,7 +498,7 @@ public class AccountController : Controller
 
         var refreshResponse =
             await _httpClient.PostAsJsonAsync(
-                "https://localhost:7208/api/auth/refresh",
+                Api("api/auth/refresh"),
                 new { refreshToken });
 
         if (!refreshResponse.IsSuccessStatusCode)

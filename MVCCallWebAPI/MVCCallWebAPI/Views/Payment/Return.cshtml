@@ -1,0 +1,26 @@
+@{
+    ViewData["Title"] = "Kết quả thanh toán";
+    var isPaid = ViewBag.IsPaid == true;
+}
+
+<div class="container mt-5">
+    <div class="card shadow p-4 text-center">
+        @if (isPaid)
+        {
+            <h2 class="text-success mb-3">Thanh toán thành công</h2>
+            <p>Đơn hàng <strong>#@ViewBag.OrderId</strong> đã được thanh toán qua ZaloPay.</p>
+        }
+        else
+        {
+            <h2 class="text-warning mb-3">Đang xử lý thanh toán</h2>
+            <p>Đơn hàng <strong>#@ViewBag.OrderId</strong> chưa được xác nhận thanh toán.</p>
+        }
+
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary mt-3">
+            Về trang chủ
+        </a>
+        <a asp-controller="Cart" asp-action="Index" class="btn btn-outline-secondary mt-3 ms-2">
+            Giỏ hàng
+        </a>
+    </div>
+</div>

@@ -2,7 +2,7 @@
 
 namespace demoWebAPI.Models
 {
-    public class Address
+public class Address
     {
         public int Id { get; set; }
 
@@ -10,16 +10,22 @@ namespace demoWebAPI.Models
 
         public string FullName { get; set; }
 
-        public string Phone { get; set; }
+        public string PhoneNumber { get; set; }
 
-        public string Street { get; set; }
+        public string Province { get; set; }
 
-        public string City { get; set; }
+        public string District { get; set; }
 
-        public string Country { get; set; }
+        public string Ward { get; set; }
+
+        public string DetailAddress { get; set; }
 
         public bool IsDefault { get; set; }
 
-        public ApplicationUser User { get; set; }
+        public DateTime CreatedDate { get; set; }
+
+        // NAVIGATION
+
+        public virtual ApplicationUser User { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MVCCallWebAPI.Helpers;
 using MVCCallWebAPI.Services.Interface;
 using MVCCallWebAPI.ViewModels;
 
@@ -10,17 +11,24 @@ public class ProductController : Controller
 {
     private readonly IProductService _productService;
     private readonly ICategoryService _categoryService;
-    private readonly HttpClient _httpClient;
+    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly IConfiguration _configuration;
 
     public ProductController(
         IProductService productService,
         ICategoryService categoryService,
-        HttpClient httpClient)
+        IHttpClientFactory httpClientFactory,
+        IConfiguration configuration)
     {
         _productService = productService;
         _categoryService = categoryService;
-        _httpClient = httpClient;
+        _httpClientFactory = httpClientFactory;
+        _configuration = configuration;
     }
+
+    private HttpClient CreateApiClient() => _httpClientFactory.CreateClient();
+
+    private string Api(string path) => ApiConfig.ApiUrl(_configuration, path);
 
     public async Task<IActionResult> Index(
         string keyword,
@@ -69,13 +77,12 @@ public class ProductController : Controller
         var token =
             HttpContext.Session.GetString("JWT");
 
-        _httpClient.DefaultRequestHeaders.Authorization =
-            new System.Net.Http.Headers
-                .AuthenticationHeaderValue(
-                    "Bearer",
-                    token);
+        var createRequest = new HttpRequestMessage(HttpMethod.Post, Api("api/products"));
+        createRequest.Headers.Authorization =
+            new AuthenticationHeaderValue("Bearer", token);
 
         var content = new MultipartFormDataContent();
+        createRequest.Content = content;
 
         content.Add(
             new StringContent(model.Name),
@@ -118,10 +125,7 @@ public class ProductController : Controller
             }
         }
 
-        var response =
-    await _httpClient.PostAsync(
-        "https://localhost:7208/api/products",
-        content);
+        var response = await CreateApiClient().SendAsync(createRequest);
 
         if (!response.IsSuccessStatusCode)
         {
@@ -233,14 +237,14 @@ public class ProductController : Controller
 
         var request = new HttpRequestMessage(
             HttpMethod.Put,
-            $"https://localhost:7208/api/products/{model.Id}")
+            Api($"api/products/{model.Id}"))
         {
             Content = content
         };
         request.Headers.Authorization =
             new AuthenticationHeaderValue("Bearer", token);
 
-        var response = await _httpClient.SendAsync(request);
+        var response = await CreateApiClient().SendAsync(request);
 
         if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
         {
@@ -307,14 +311,14 @@ public class ProductController : Controller
                 var retryToken = GetAccessTokenFromSession();
                 var retryRequest = new HttpRequestMessage(
                     HttpMethod.Put,
-                    $"https://localhost:7208/api/products/{model.Id}")
+                    Api($"api/products/{model.Id}"))
                 {
                     Content = retryContent
                 };
                 retryRequest.Headers.Authorization =
                     new AuthenticationHeaderValue("Bearer", retryToken);
 
-                response = await _httpClient.SendAsync(retryRequest);
+                response = await CreateApiClient().SendAsync(retryRequest);
             }
             else
             {
@@ -388,8 +392,8 @@ public class ProductController : Controller
         }
 
         var refreshResponse =
-            await _httpClient.PostAsJsonAsync(
-                "https://localhost:7208/api/auth/refresh",
+            await CreateApiClient().PostAsJsonAsync(
+                Api("api/auth/refresh"),
                 new { refreshToken });
 
         if (!refreshResponse.IsSuccessStatusCode)
@@ -413,8 +417,6 @@ public class ProductController : Controller
 
         HttpContext.Session.SetString("JWT", newAccessToken);
         HttpContext.Session.SetString("AccessToken", newAccessToken);
-        _httpClient.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue("Bearer", newAccessToken);
 
         return true;
     }
@@ -441,6 +443,7 @@ public class ProductController : Controller
         return string.IsNullOrWhiteSpace(token) ? null : token;
     }
     [HttpGet]
+    [Permission("Product.Delete")]
     public async Task<IActionResult> Delete(int id)
     {
         var product =
@@ -454,19 +457,26 @@ public class ProductController : Controller
         return View(product);
     }
     [HttpPost]
+    [Permission("Product.Delete")]
     public async Task<IActionResult> Delete(ProductViewModel model)
     {
-        var token =
-            HttpContext.Session.GetString("JWT");
+        var token = GetAccessTokenFromSession();
+        if (string.IsNullOrWhiteSpace(token))
+        {
+            return RedirectToAction("Login", "Account");
+        }
 
-        _httpClient.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue(
-                "Bearer",
-                token);
+        var request = new HttpRequestMessage(
+            HttpMethod.Delete,
+            Api($"api/products/{model.Id}"));
+        request.Headers.Authorization =
+            new AuthenticationHeaderValue("Bearer", token);
 
-        var response =
-            await _httpClient.DeleteAsync(
-                $"https://localhost:7208/api/products/{model.Id}");
+        var response = await CreateApiClient().SendAsync(request);
+        if (!response.IsSuccessStatusCode)
+        {
+            TempData["Error"] = "Xóa sản phẩm thất bại.";
+        }
 
         return RedirectToAction("Index");
     }

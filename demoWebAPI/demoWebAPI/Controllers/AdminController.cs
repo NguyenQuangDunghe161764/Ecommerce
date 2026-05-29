@@ -1,5 +1,7 @@
 ﻿using demoWebAPI.Models;
 using demoWebAPI.ViewModels;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +10,9 @@ namespace demoWebAPI.Controllers
 {
     [ApiController]
     [Route("api/admin")]
+    [Authorize(
+        AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,
+        Roles = "Admin")]
     public class AdminController : ControllerBase
     {
         private readonly RoleManager<IdentityRole> _roleManager;

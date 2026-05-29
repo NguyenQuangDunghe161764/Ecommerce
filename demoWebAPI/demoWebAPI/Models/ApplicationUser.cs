@@ -16,4 +16,10 @@ public class ApplicationUser : IdentityUser
     public ICollection<RefreshToken> RefreshTokens
     { get; set; } = new List<RefreshToken>();
 
+public virtual ICollection<Address>
+    UserAddresses
+    { get; set; }
+        = new List<Address>();
+
+
 }

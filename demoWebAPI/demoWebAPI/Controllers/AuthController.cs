@@ -129,7 +129,8 @@ public class AuthController : ControllerBase
             accessToken,
             refreshToken,
             userName = user.UserName,
-            role = roles.FirstOrDefault()
+            role = roles.FirstOrDefault(),
+            roles = roles.ToList()
         });
     }
     [HttpPost("refresh")]

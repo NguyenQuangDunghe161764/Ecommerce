@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "Fake Payment";
+}
+
+<div class="container mt-5">
+
+    <div class="card shadow p-4">
+
+        <h2 class="mb-4">
+            Fake Payment Gateway
+        </h2>
+
+        <p>
+            Order ID:
+            <strong>
+                @ViewBag.OrderId
+            </strong>
+        </p>
+
+        <div class="d-flex gap-3 mt-4">
+
+            <form asp-action="Success"
+                  method="post">
+
+                <input type="hidden"
+                       name="orderId"
+                       value="@ViewBag.OrderId" />
+
+                <button type="submit"
+                        class="btn btn-success">
+
+                    Payment Success
+
+                </button>
+
+            </form>
+
+            <form asp-action="Fail"
+                  method="post">
+
+                <input type="hidden"
+                       name="orderId"
+                       value="@ViewBag.OrderId" />
+
+                <button type="submit"
+                        class="btn btn-danger">
+
+                    Payment Fail
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,70 @@
+﻿@model List<MVCCallWebAPI.ViewModels.AddressViewModel>
+
+<h2>My Addresses</h2>
+
+<a asp-controller="Address" asp-action="Create" class="btn btn-primary mb-3">Add Address</a>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-info">
+        Chưa có địa chỉ nào
+    </div>
+}
+else
+{
+    <table class="table table-bordered align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Người nhận</th>
+                <th>Số điện thoại</th>
+                <th>Địa chỉ</th>
+                <th>Mặc định</th>
+                <th width="180"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.FullName
+                    </td>
+                    <td>
+                        @item.PhoneNumber
+                    </td>
+                    <td>
+                        <div>
+                            @item.DetailAddress
+                        </div>
+                        <small class="text-muted">
+                            @item.Ward, @item.District, @item.Province
+                        </small>
+                    </td>
+                    <td>
+                        @if (item.IsDefault)
+                        {
+                            <span class="badge bg-success">
+                                Mặc định
+                            </span>
+                        }
+                        else
+                        {
+                            <form asp-controller="Address" asp-action="SetDefault" asp-route-id="@item.Id" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-warning btn-sm">
+                                    Đặt mặc định
+                                </button>
+                            </form>
+                        }
+                    </td>
+                    <td>
+                        <form asp-controller="Address" asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa địa chỉ này?');">
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

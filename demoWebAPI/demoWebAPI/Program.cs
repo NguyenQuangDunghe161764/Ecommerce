@@ -1,7 +1,6 @@
 using AutoMapper;
 using demoWebAPI.Authorization.Handlers;
-
-//using demoWebAPI.Authorization.Handlers;
+using demoWebAPI.Options;
 using demoWebAPI.Data;
 using demoWebAPI.Data.Repositories;
 using demoWebAPI.Models;
@@ -11,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using demoWebAPI.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // ================= DI =================
@@ -27,7 +27,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowSpecificOrigin",
         policy =>
         {
-            policy.WithOrigins("http://localhost:7208", "https://localhost:7157")
+            policy.WithOrigins(
+                    "http://localhost:7208",
+                    "https://localhost:7208",
+                    "https://localhost:7157")
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         });
@@ -85,8 +88,12 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
-builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+builder.Services.Configure<ZaloPaySettings>(
+    builder.Configuration.GetSection("ZaloPay"));
+builder.Services.AddHttpClient<IZaloPayService, ZaloPayService>();
+
 var app = builder.Build();
 
 
@@ -96,8 +103,11 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
     
 }
-app.UseSwagger();
-app.UseSwaggerUI();
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 app.UseStaticFiles();
 app.UseHttpsRedirection();
 

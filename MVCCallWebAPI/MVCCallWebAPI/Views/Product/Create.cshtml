@@ -255,7 +255,7 @@
                 }
 
                 $.ajax({
-                    url: "https://localhost:7208/api/categories",
+                    url: "@(ApiConfig.GetBaseUrl(Configuration))/api/categories",
 
                     type: "POST",
 
