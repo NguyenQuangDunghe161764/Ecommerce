@@ -224,6 +224,41 @@ public partial class EcomDbContext
                 .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
+        // ADDRESS
+        modelBuilder.Entity<Address>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+
+            entity.ToTable("UserAddresses");
+
+            entity.Property(e => e.FullName)
+                .HasMaxLength(255);
+
+            entity.Property(e => e.PhoneNumber)
+                .HasMaxLength(20);
+
+            entity.Property(e => e.Province)
+                .HasMaxLength(100);
+
+            entity.Property(e => e.District)
+                .HasMaxLength(100);
+
+            entity.Property(e => e.Ward)
+                .HasMaxLength(100);
+
+            entity.Property(e => e.DetailAddress)
+                .HasColumnType("text");
+
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+
+            entity.HasOne(d => d.User)
+                .WithMany(p => p.UserAddresses)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
         // REFRESH TOKEN
         modelBuilder.Entity<RefreshToken>(entity =>
         {

@@ -9,6 +9,7 @@ namespace MVCCallWebAPI.Controllers
     public class AddressController : Controller
     {
         private readonly HttpClient _httpClient;
+        private const string BaseUrl = "https://localhost:7208/api/address";
 
         public AddressController(HttpClient httpClient)
         {
@@ -21,23 +22,24 @@ namespace MVCCallWebAPI.Controllers
         {
             var token = HttpContext.Session.GetString("JWT");
 
-            _httpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", token);
+            if (string.IsNullOrEmpty(token))
+                return RedirectToAction("Login", "Account");
 
-            var response = await _httpClient.GetAsync("https://localhost:7208/api/address");
+            var request = new HttpRequestMessage(HttpMethod.Get, BaseUrl);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.SendAsync(request);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                return RedirectToAction("Login", "Account");
 
             if (!response.IsSuccessStatusCode)
-            {
                 return View(new List<AddressViewModel>());
-            }
 
             var json = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<List<AddressViewModel>>(json);
 
-            if (result == null)
-            {
-                result = new List<AddressViewModel>();
-            }
+            var result = JsonConvert.DeserializeObject<List<AddressViewModel>>(json)
+                         ?? new List<AddressViewModel>();
 
             return View(result);
         }
@@ -54,52 +56,31 @@ namespace MVCCallWebAPI.Controllers
         public async Task<IActionResult> Create(AddressViewModel model)
         {
             if (!ModelState.IsValid)
-            {
                 return View(model);
-            }
 
             var token = HttpContext.Session.GetString("JWT");
 
-            // Kiểm tra an toàn nếu chưa đăng nhập hoặc Session mất Token
             if (string.IsNullOrEmpty(token))
             {
-                ViewBag.Error = "Phiên đăng nhập đã hết hạn hoặc không tìm thấy Token (JWT). Vui lòng đăng nhập lại!";
+                ViewBag.Error = "Bạn chưa đăng nhập hoặc token đã hết hạn.";
                 return View(model);
             }
 
-            _httpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", token);
+            var request = new HttpRequestMessage(HttpMethod.Post, BaseUrl);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             var json = JsonConvert.SerializeObject(model);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            request.Content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync("https://localhost:7208/api/address", content);
+            var response = await _httpClient.SendAsync(request);
 
             if (!response.IsSuccessStatusCode)
             {
-                var errorContent = await response.Content.ReadAsStringAsync();
+                var error = await response.Content.ReadAsStringAsync();
 
-                // CẢI TIẾN: Nếu API trả về chuỗi lỗi trống, phân tích theo StatusCode hệ thống
-                if (string.IsNullOrWhiteSpace(errorContent))
-                {
-                    if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-                    {
-                        ViewBag.Error = "Tài khoản không có quyền truy cập hoặc Token không hợp lệ (Mã lỗi: 401 Unauthorized).";
-                    }
-                    else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
-                    {
-                        ViewBag.Error = "Không tìm thấy đường dẫn gọi API. Vui lòng kiểm tra lại URL (Mã lỗi: 404 Not Found).";
-                    }
-                    else
-                    {
-                        ViewBag.Error = $"API trả về lỗi hệ thống không xác định (Mã lỗi: {(int)response.StatusCode} {response.StatusCode}).";
-                    }
-                }
-                else
-                {
-                    // Nếu API trả về chuỗi text lỗi cụ thể
-                    ViewBag.Error = errorContent;
-                }
+                ViewBag.Error = string.IsNullOrWhiteSpace(error)
+                    ? $"Lỗi API: {(int)response.StatusCode} {response.StatusCode}"
+                    : error;
 
                 return View(model);
             }
@@ -108,29 +89,41 @@ namespace MVCCallWebAPI.Controllers
         }
 
         // ================= SET DEFAULT =================
-        [HttpPost] // THÊM ATTRIBUTE: Đồng bộ với Method="POST" của form trong Index.cshtml
+        [HttpPost]
         public async Task<IActionResult> SetDefault(int id)
         {
             var token = HttpContext.Session.GetString("JWT");
 
-            _httpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", token);
+            if (string.IsNullOrEmpty(token))
+                return RedirectToAction("Login", "Account");
 
-            await _httpClient.PutAsync($"https://localhost:7208/api/address/{id}/default", null);
+            var request = new HttpRequestMessage(HttpMethod.Put, $"{BaseUrl}/{id}/default");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.SendAsync(request);
+
+            if (!response.IsSuccessStatusCode)
+                TempData["Error"] = "Không thể đặt mặc định!";
 
             return RedirectToAction("Index");
         }
 
         // ================= DELETE =================
-        [HttpPost] // THÊM ATTRIBUTE: Đồng bộ với Method="POST" của form trong Index.cshtml
+        [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
             var token = HttpContext.Session.GetString("JWT");
 
-            _httpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", token);
+            if (string.IsNullOrEmpty(token))
+                return RedirectToAction("Login", "Account");
 
-            await _httpClient.DeleteAsync($"https://localhost:7208/api/address/{id}");
+            var request = new HttpRequestMessage(HttpMethod.Delete, $"{BaseUrl}/{id}");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.SendAsync(request);
+
+            if (!response.IsSuccessStatusCode)
+                TempData["Error"] = "Xóa thất bại!";
 
             return RedirectToAction("Index");
         }

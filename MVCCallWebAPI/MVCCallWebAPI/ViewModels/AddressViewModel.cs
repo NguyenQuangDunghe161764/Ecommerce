@@ -26,6 +26,8 @@ namespace MVCCallWebAPI.ViewModels
 
         public bool IsDefault { get; set; }
 
+        [System.Text.Json.Serialization.JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public string FullAddress => $"{DetailAddress}, {Ward}, {District}, {Province}";
     }
 }
