@@ -1,16 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
 namespace demoWebAPI.Models
 {
     public class Cart
     {
         public int Id { get; set; }
 
-        public string UserId { get; set; }
+        public string UserId { get; set; } = null!;
 
-        public ApplicationUser User { get; set; }
+        public DateTime? CreatedDate { get; set; }
 
-        public ICollection<CartItem> CartItems
-        { get; set; }
+        public DateTime? UpdatedDate { get; set; }
+
+        public virtual ApplicationUser User { get; set; } = null!;
+
+        public virtual ICollection<CartItem> CartItems { get; set; }
+            = new List<CartItem>();
     }
 }

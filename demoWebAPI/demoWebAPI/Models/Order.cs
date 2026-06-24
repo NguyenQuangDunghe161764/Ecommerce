@@ -20,6 +20,11 @@ public partial class Order
 
     public string? ZaloPayAppTransId { get; set; }
 
+    // Mã giảm giá đã áp (nếu có) và số tiền được giảm
+    public string? CouponCode { get; set; }
+
+    public decimal DiscountAmount { get; set; }
+
     public virtual ICollection<Orderdetail> Orderdetails { get; set; } = new List<Orderdetail>();
 
 }

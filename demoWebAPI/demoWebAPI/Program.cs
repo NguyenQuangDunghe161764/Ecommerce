@@ -89,10 +89,18 @@ builder.Services.AddScoped<JwtService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ICouponService, CouponService>();
+builder.Services.Configure<EmailSettings>(
+    builder.Configuration.GetSection("Email"));
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.Configure<ZaloPaySettings>(
     builder.Configuration.GetSection("ZaloPay"));
 builder.Services.AddHttpClient<IZaloPayService, ZaloPayService>();
+
+builder.Services.Configure<VnPaySettings>(
+    builder.Configuration.GetSection("VnPay"));
+builder.Services.AddScoped<IVnPayService, VnPayService>();
 
 var app = builder.Build();
 

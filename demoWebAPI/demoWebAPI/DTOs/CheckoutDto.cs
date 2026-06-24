@@ -6,6 +6,9 @@ public class CheckoutDto
 {
     [Required]
     public List<CheckoutItemDto> Items { get; set; } = new();
+
+    // Mã giảm giá (tùy chọn)
+    public string? CouponCode { get; set; }
 }
 
 public class CheckoutItemDto
@@ -17,6 +20,9 @@ public class CheckoutItemDto
 public class CheckoutResponseDto
 {
     public int OrderId { get; set; }
+    public decimal SubTotal { get; set; }
+    public decimal DiscountAmount { get; set; }
+    public string? CouponCode { get; set; }
     public decimal TotalAmount { get; set; }
 }
 

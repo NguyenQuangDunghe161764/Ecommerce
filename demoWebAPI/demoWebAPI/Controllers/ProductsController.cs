@@ -46,19 +46,24 @@ public class ProductsController : ControllerBase
     int page = 1,
     int pageSize = 5,
     string? keyword = null,
-    int? categoryId = null)
+    int? categoryId = null,
+    decimal? minPrice = null,
+    decimal? maxPrice = null,
+    double? minRating = null,
+    string? sortBy = null)
     {
         var query = _context.Products
     .Include(x => x.Category)
     .Include(x => x.Productimages)
-    .AsQueryable(); ;
+    .AsQueryable();
 
-        // FILTER: keyword
+        // FILTER: keyword (tên hoặc mô tả)
         if (!string.IsNullOrWhiteSpace(keyword))
         {
-            query = query.Where(x => x.Name.Contains(keyword));
+            query = query.Where(x =>
+                x.Name.Contains(keyword)
+                || (x.Description != null && x.Description.Contains(keyword)));
         }
-
 
         // FILTER: category
         if (categoryId.HasValue)
@@ -66,10 +71,41 @@ public class ProductsController : ControllerBase
             query = query.Where(x => x.CategoryId == categoryId.Value);
         }
 
+        // FILTER: price range
+        if (minPrice.HasValue)
+        {
+            query = query.Where(x => x.Price >= minPrice.Value);
+        }
+
+        if (maxPrice.HasValue)
+        {
+            query = query.Where(x => x.Price <= maxPrice.Value);
+        }
+
+        // FILTER: rating trung bình tối thiểu
+        if (minRating.HasValue)
+        {
+            query = query.Where(x =>
+                x.Reviews.Any()
+                && x.Reviews.Average(r => r.Rating) >= minRating.Value);
+        }
+
+        // SORT
+        query = sortBy?.ToLower() switch
+        {
+            "price_asc" => query.OrderBy(x => x.Price),
+            "price_desc" => query.OrderByDescending(x => x.Price),
+            "name_asc" => query.OrderBy(x => x.Name),
+            "name_desc" => query.OrderByDescending(x => x.Name),
+            "rating_desc" => query.OrderByDescending(x =>
+                x.Reviews.Any() ? x.Reviews.Average(r => r.Rating) : 0),
+            "oldest" => query.OrderBy(x => x.Id),
+            _ => query.OrderByDescending(x => x.Id) // newest (mặc định)
+        };
+
         var totalItems = await query.CountAsync();
 
         var products = await query
-    .OrderByDescending(x => x.Id)
     .Skip((page - 1) * pageSize)
     .Take(pageSize)
     .Select(x => new ProductDto
@@ -86,6 +122,12 @@ public class ProductsController : ControllerBase
             .Where(i => i.IsMain)
             .Select(i => i.ImageUrl)
             .FirstOrDefault(),
+
+        AverageRating = x.Reviews.Any()
+            ? Math.Round(x.Reviews.Average(r => r.Rating), 1)
+            : 0,
+
+        ReviewCount = x.Reviews.Count,
 
         Category = x.Category == null
             ? null

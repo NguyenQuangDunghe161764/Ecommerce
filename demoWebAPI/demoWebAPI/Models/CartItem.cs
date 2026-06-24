@@ -1,5 +1,3 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
 namespace demoWebAPI.Models
 {
     public class CartItem
@@ -12,8 +10,8 @@ namespace demoWebAPI.Models
 
         public int Quantity { get; set; }
 
-        public Cart Cart { get; set; }
+        public virtual Cart Cart { get; set; } = null!;
 
-        public Product Product { get; set; }
+        public virtual Product Product { get; set; } = null!;
     }
 }

@@ -11,4 +11,7 @@
 
     public CategoryDto? Category { get; set; }
     public List<string>? Images { get; set; }
+
+    public double AverageRating { get; set; }
+    public int ReviewCount { get; set; }
 }

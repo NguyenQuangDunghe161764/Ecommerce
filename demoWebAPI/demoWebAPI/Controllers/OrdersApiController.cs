@@ -1,6 +1,7 @@
 using demoWebAPI.DTOs;
 using demoWebAPI.Models;
 using demoWebAPI.Models.Enums;
+using demoWebAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,10 +16,17 @@ namespace demoWebAPI.Controllers;
 public class OrdersApiController : ControllerBase
 {
     private readonly EcomDbContext _context;
+    private readonly ICouponService _couponService;
+    private readonly IEmailService _emailService;
 
-    public OrdersApiController(EcomDbContext context)
+    public OrdersApiController(
+        EcomDbContext context,
+        ICouponService couponService,
+        IEmailService emailService)
     {
         _context = context;
+        _couponService = couponService;
+        _emailService = emailService;
     }
 
     [HttpPost("checkout")]
@@ -76,22 +84,68 @@ public class OrdersApiController : ControllerBase
             });
         }
 
+        // Áp mã giảm giá (nếu có)
+        decimal discount = 0;
+        string? appliedCode = null;
+        Coupon? appliedCoupon = null;
+
+        if (!string.IsNullOrWhiteSpace(dto.CouponCode))
+        {
+            var couponResult = await _couponService.ValidateAsync(
+                dto.CouponCode.Trim().ToUpperInvariant(), total);
+
+            if (!couponResult.IsValid)
+                return BadRequest(new { message = couponResult.Error });
+
+            discount = couponResult.DiscountAmount;
+            appliedCoupon = couponResult.Coupon;
+            appliedCode = appliedCoupon!.Code;
+        }
+
+        var finalAmount = total - discount;
+
         var order = new Order
         {
             UserId = userId,
             OrderDate = DateTime.UtcNow,
-            TotalAmount = total,
+            TotalAmount = finalAmount,
             Status = "Pending",
             PaymentStatus = PaymentStatus.Pending,
+            CouponCode = appliedCode,
+            DiscountAmount = discount,
             Orderdetails = orderDetails
         };
 
         _context.Orders.Add(order);
+
+        // Tăng số lần dùng mã
+        if (appliedCoupon != null)
+        {
+            appliedCoupon.UsedCount += 1;
+            _context.Coupons.Update(appliedCoupon);
+        }
+
         await _context.SaveChangesAsync();
+
+        // Gửi email xác nhận (không chặn luồng nếu lỗi)
+        var user = await _context.Users
+            .FirstOrDefaultAsync(u => u.Id == userId);
+
+        if (user != null && !string.IsNullOrEmpty(user.Email))
+        {
+            await _emailService.SendOrderConfirmationAsync(
+                user.Email,
+                user.FullName ?? user.UserName ?? "Khách hàng",
+                order.Id,
+                order.TotalAmount);
+        }
 
         return Ok(new CheckoutResponseDto
         {
             OrderId = order.Id,
+            SubTotal = total,
+            DiscountAmount = discount,
+            CouponCode = appliedCode,
             TotalAmount = order.TotalAmount
         });
     }

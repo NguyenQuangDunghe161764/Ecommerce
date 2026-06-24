@@ -35,6 +35,14 @@ public partial class EcomDbContext
     public virtual DbSet<Review> Reviews { get; set; }
     public DbSet<Address> UserAddresses { get; set; }
 
+    public virtual DbSet<Cart> Carts { get; set; }
+
+    public virtual DbSet<CartItem> CartItems { get; set; }
+
+    public virtual DbSet<Coupon> Coupons { get; set; }
+
+    public virtual DbSet<WishlistItem> WishlistItems { get; set; }
+
 
     protected override void OnModelCreating(
         ModelBuilder modelBuilder)
@@ -79,6 +87,12 @@ public partial class EcomDbContext
 
             entity.Property(e => e.ZaloPayAppTransId)
                 .HasMaxLength(50);
+
+            entity.Property(e => e.CouponCode)
+                .HasMaxLength(50);
+
+            entity.Property(e => e.DiscountAmount)
+                .HasPrecision(18, 2);
 
             entity.HasOne(d => d.User)
                 .WithMany(p => p.Orders)
@@ -256,6 +270,109 @@ public partial class EcomDbContext
             entity.HasOne(d => d.User)
                 .WithMany(p => p.UserAddresses)
                 .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // CART
+        modelBuilder.Entity<Cart>(entity =>
+        {
+            entity.HasKey(e => e.Id)
+                .HasName("PRIMARY");
+
+            entity.ToTable("carts");
+
+            entity.HasIndex(e => e.UserId)
+                .IsUnique();
+
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+
+            entity.Property(e => e.UpdatedDate)
+                .HasColumnType("datetime");
+
+            entity.HasOne(d => d.User)
+                .WithMany()
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // CART ITEM
+        modelBuilder.Entity<CartItem>(entity =>
+        {
+            entity.HasKey(e => e.Id)
+                .HasName("PRIMARY");
+
+            entity.ToTable("cartitems");
+
+            entity.HasIndex(e => new { e.CartId, e.ProductId })
+                .IsUnique();
+
+            entity.HasOne(d => d.Cart)
+                .WithMany(p => p.CartItems)
+                .HasForeignKey(d => d.CartId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(d => d.Product)
+                .WithMany()
+                .HasForeignKey(d => d.ProductId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
+        // COUPON
+        modelBuilder.Entity<Coupon>(entity =>
+        {
+            entity.HasKey(e => e.Id)
+                .HasName("PRIMARY");
+
+            entity.ToTable("coupons");
+
+            entity.HasIndex(e => e.Code)
+                .IsUnique();
+
+            entity.Property(e => e.Code)
+                .HasMaxLength(50);
+
+            entity.Property(e => e.DiscountValue)
+                .HasPrecision(18, 2);
+
+            entity.Property(e => e.MinOrderAmount)
+                .HasPrecision(18, 2);
+
+            entity.Property(e => e.MaxDiscountAmount)
+                .HasPrecision(18, 2);
+
+            entity.Property(e => e.IsActive)
+                .HasDefaultValue(true);
+
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+        });
+
+        // WISHLIST
+        modelBuilder.Entity<WishlistItem>(entity =>
+        {
+            entity.HasKey(e => e.Id)
+                .HasName("PRIMARY");
+
+            entity.ToTable("wishlistitems");
+
+            entity.HasIndex(e => new { e.UserId, e.ProductId })
+                .IsUnique();
+
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+
+            entity.HasOne(d => d.User)
+                .WithMany()
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(d => d.Product)
+                .WithMany()
+                .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
 
