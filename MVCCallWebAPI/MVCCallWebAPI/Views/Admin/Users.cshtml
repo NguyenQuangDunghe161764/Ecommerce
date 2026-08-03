@@ -1,8 +1,45 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    ViewData["Title"] = "Manage Users";
+    ViewData["Title"] = "Quản lý người dùng";
 }
 
-<h3>Users</h3>
+<div class="container-fluid">
+    <!-- Header Page -->
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-3 mb-4 border-bottom">
+        <h3 class="fw-bold mb-0 luxury-accent">
+            <i class="bi bi-people-fill me-2"></i>Quản lý người dùng
+        </h3>
+        <button class="btn btn-primary fw-bold px-3" disabled>
+            <i class="bi bi-person-plus-fill me-1"></i>Thêm người dùng mới
+        </button>
+    </div>
 
-<p>Coming soon: user management UI (list, edit roles, deactivate).</p>
+    <!-- Alert Messages / Placeholder -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <!-- Coming Soon Card UI -->
+    <div class="card text-center py-5 shadow-sm border-0">
+        <div class="card-body py-4">
+            <div class="mb-3">
+                <i class="bi bi-gear-wide-connected display-3 luxury-accent"></i>
+            </div>
+            <h4 class="fw-bold text-heading mb-2">Tính năng đang được phát triển</h4>
+            <p class="text-muted max-w-md mx-auto mb-4" style="max-width: 500px;">
+                Giao diện quản lý tài khoản người dùng (Danh sách, phân vai trò Role, kích hoạt / khóa tài khoản) sẽ sớm được cập nhật.
+            </p>
+            <a asp-controller="Admin" asp-action="Roles" class="btn btn-outline-secondary px-4 rounded-pill">
+                <i class="bi bi-shield-lock me-1"></i>Quản lý Phân quyền (Roles) trước
+            </a>
+        </div>
+    </div>
+</div>

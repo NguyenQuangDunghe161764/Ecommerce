@@ -1,47 +1,131 @@
-﻿@model RegisterViewModel
+﻿@using MVCCallWebAPI.Helpers
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@model RegisterViewModel
 
-<h2>Register</h2>
-
-<form asp-action="Register" method="post">
-
-    <div>
-        <label>Full Name</label>
-        <input asp-for="FullName" class="form-control" />
-        <span asp-validation-for="FullName" class="text-danger"></span>
-    </div>
-
-    <div>
-        <label>Email</label>
-        <input asp-for="Email" id="emailInput" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-    <div>
-        <label>Phone</label>
-        <input asp-for="PhoneNumber" id="phoneInput" class="form-control" />
-        <span id="phoneError" class="text-danger"></span>
-    </div>
-    <div>
-        <label>Password</label>
-        <input asp-for="Password" type="password" class="form-control" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
-
-    <div>
-        <label>Confirm Password</label>
-        <input asp-for="ConfirmPassword" type="password" class="form-control" />
-        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-    </div>
-
-    <button type="submit" disabled>Register</button>
-
-</form>
-
-@if (ViewBag.Error != null)
-{
-    <div style="color:red">
-        @Html.Raw(ViewBag.Error)
-    </div>
+@{
+    ViewData["Title"] = "Đăng Ký Tài Khoản";
 }
+
+@section Styles {
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/theme-mocha.css" asp-append-version="true" />
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-9 col-lg-6">
+            <div class="auth-card">
+
+                @* --- Header --- *@
+                <div class="auth-header">
+                    <div class="mb-2">
+                        <i class="bi bi-person-plus-fill display-5" style="color: #C9A96E;"></i>
+                    </div>
+                    <h3 class="auth-header-title mb-1">ĐĂNG KÝ TÀI KHOẢN</h3>
+                    <p class="auth-header-sub mb-0">Tạo tài khoản mới để trải nghiệm dịch vụ</p>
+                </div>
+
+                @* --- Body Form --- *@
+                <div class="p-4 p-md-5">
+
+                    @* Hiển thị thông báo lỗi từ Server *@
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-mocha-danger d-flex align-items-center gap-2 mb-4" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill fs-5 flex-shrink-0"></i>
+                            <div>@Html.Raw(ViewBag.Error)</div>
+                        </div>
+                    }
+
+                    <form asp-action="Register" method="post" class="d-flex flex-column gap-3">
+
+                        @* Full Name *@
+                        <div>
+                            <label asp-for="FullName" class="form-label form-label-mocha">Họ và tên</label>
+                            <div class="input-icon-wrapper">
+                                <i class="bi bi-person-badge-fill input-icon"></i>
+                                <input asp-for="FullName"
+                                       class="form-control form-control-mocha"
+                                       placeholder="Nguyễn Văn A" />
+                            </div>
+                            <span asp-validation-for="FullName" class="text-danger small mt-1 d-block"></span>
+                        </div>
+
+                        @* Email *@
+                        <div>
+                            <label asp-for="Email" class="form-label form-label-mocha">Địa chỉ Email</label>
+                            <div class="input-icon-wrapper">
+                                <i class="bi bi-envelope-fill input-icon"></i>
+                                <input asp-for="Email"
+                                       id="emailInput"
+                                       class="form-control form-control-mocha"
+                                       placeholder="example@domain.com" />
+                            </div>
+                            <span asp-validation-for="Email" class="text-danger small mt-1 d-block"></span>
+                        </div>
+
+                        @* Phone Number *@
+                        <div>
+                            <label asp-for="PhoneNumber" class="form-label form-label-mocha">Số điện thoại</label>
+                            <div class="input-icon-wrapper">
+                                <i class="bi bi-telephone-fill input-icon"></i>
+                                <input asp-for="PhoneNumber"
+                                       id="phoneInput"
+                                       class="form-control form-control-mocha"
+                                       placeholder="0987654321" />
+                            </div>
+                            <span id="phoneError" class="text-danger small mt-1 d-block"></span>
+                        </div>
+
+                        @* Password *@
+                        <div>
+                            <label asp-for="Password" class="form-label form-label-mocha">Mật khẩu</label>
+                            <div class="input-icon-wrapper">
+                                <i class="bi bi-lock-fill input-icon"></i>
+                                <input asp-for="Password"
+                                       type="password"
+                                       class="form-control form-control-mocha"
+                                       placeholder="••••••••" />
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger small mt-1 d-block"></span>
+                        </div>
+
+                        @* Confirm Password *@
+                        <div>
+                            <label asp-for="ConfirmPassword" class="form-label form-label-mocha">Xác nhận mật khẩu</label>
+                            <div class="input-icon-wrapper">
+                                <i class="bi bi-shield-check input-icon"></i>
+                                <input asp-for="ConfirmPassword"
+                                       type="password"
+                                       class="form-control form-control-mocha"
+                                       placeholder="••••••••" />
+                            </div>
+                            <span asp-validation-for="ConfirmPassword" class="text-danger small mt-1 d-block"></span>
+                        </div>
+
+                        @* Submit Button *@
+                        <button type="submit" disabled class="btn btn-mocha-primary w-100 mt-3 d-flex align-items-center justify-content-center gap-2">
+                            <span>Đăng Ký Tài Khoản</span>
+                            <i class="bi bi-check-circle-fill fs-5"></i>
+                        </button>
+
+                        @* Login Link *@
+                        <div class="text-center mt-3 pt-3 border-top" style="border-color: #F8F5EF !important;">
+                            <span class="text-muted small">Đã có tài khoản? </span>
+                            <a asp-controller="Account" asp-action="Login" class="auth-link small">
+                                Đăng nhập ngay
+                            </a>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
@@ -51,7 +135,6 @@
         let phoneTimer;
 
         function validateForm() {
-
             let hasError =
                 $("[data-valmsg-for='Email']").text().trim() !== "" ||
                 $("#phoneError").text().trim() !== "";
@@ -60,12 +143,10 @@
         }
 
         // EMAIL CHECK
-        $("#emailInput").on("input", function () {
-
+        $("#emailInput").on("input", function() {
             clearTimeout(emailTimer);
 
-            emailTimer = setTimeout(function () {
-
+            emailTimer = setTimeout(function() {
                 let email = $("#emailInput").val();
 
                 if (!email) {
@@ -76,12 +157,10 @@
 
                 $.get("@(ApiConfig.GetBaseUrl(Configuration))/api/auth/check-email",
                     { email: email },
-                    function (res) {
-
+                    function(res) {
                         $("[data-valmsg-for='Email']").text(
-                            res.exists ? "Email already exists" : ""
+                            res.exists ? "Email đã được sử dụng" : ""
                         );
-
                         validateForm();
                     });
 
@@ -89,12 +168,10 @@
         });
 
         // PHONE CHECK
-        $("#phoneInput").on("input", function () {
-
+        $("#phoneInput").on("input", function() {
             clearTimeout(phoneTimer);
 
-            phoneTimer = setTimeout(function () {
-
+            phoneTimer = setTimeout(function() {
                 let phone = $("#phoneInput").val();
 
                 if (!phone) {
@@ -105,12 +182,10 @@
 
                 $.get("@(ApiConfig.GetBaseUrl(Configuration))/api/auth/check-phone",
                     { phone: phone },
-                    function (res) {
-
+                    function(res) {
                         $("#phoneError").text(
-                            res.exists ? "Phone already exists" : ""
+                            res.exists ? "Số điện thoại đã được sử dụng" : ""
                         );
-
                         validateForm();
                     });
 
@@ -118,11 +193,10 @@
         });
 
         // SUBMIT BLOCK
-        $("form").on("submit", function (e) {
-
+        $("form").on("submit", function(e) {
             if ($("button[type='submit']").prop("disabled")) {
                 e.preventDefault();
-                alert("Please fix errors first");
+                alert("Vui lòng sửa các lỗi trước khi thực hiện đăng ký.");
             }
         });
     </script>

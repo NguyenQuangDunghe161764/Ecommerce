@@ -1,137 +1,164 @@
 using AutoMapper;
 using demoWebAPI.Authorization.Handlers;
-using demoWebAPI.Options;
 using demoWebAPI.Data;
 using demoWebAPI.Data.Repositories;
 using demoWebAPI.Models;
+using demoWebAPI.Options;
+using demoWebAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
 using System.Text;
-using demoWebAPI.Services;
-var builder = WebApplication.CreateBuilder(args);
 
-// ================= DI =================
-builder.Services.AddControllers();
-
-builder.Services.AddDbContext<EcomDbContext>(options =>
-    options.UseMySQL(
-        builder.Configuration.GetConnectionString("MyCnn")
-    )
-);
-// ================= CORS =================
-builder.Services.AddCors(options =>
+public partial class Program
 {
-    options.AddPolicy("AllowSpecificOrigin",
-        policy =>
-        {
-            policy.WithOrigins(
-                    "http://localhost:7208",
-                    "https://localhost:7208",
-                    "https://localhost:7157")
-                  .AllowAnyHeader()
-                  .AllowAnyMethod();
-        });
-});
-
-// ================= Repositories + Services =================
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IProductService, ProductService>();
-
-// ================= Swagger =================
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-// ================= AutoMapper =================
-builder.Services.AddAutoMapper(typeof(MappingProfile));
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
+    private static async Task Main(string[] args)
     {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
+        var builder = WebApplication.CreateBuilder(args);
 
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(
-    Encoding.UTF8.GetBytes(
-        builder.Configuration["Jwt:Key"]!
-    )
-)
-    };
-});
-builder.Services.AddSingleton<
-    IAuthorizationPolicyProvider,
-    PermissionPolicyProvider>();
+        // ================= DI =================
+        builder.Services.AddControllers();
 
-builder.Services.AddScoped<
-    IAuthorizationHandler,
-    PermissionHandler>();
+        builder.Services.AddDbContext<EcomDbContext>(options =>
+            options.UseMySQL(
+                builder.Configuration.GetConnectionString("MyCnn")
+            )
+        );
+        // ================= CORS =================
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowSpecificOrigin",
+                policy =>
+                {
+                    policy.WithOrigins(
+                            "http://localhost:7208",
+                            "https://localhost:7208",
+                            "https://localhost:7157")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                });
+        });
 
-builder.Services.AddScoped<
-    IAuthorizationHandler,
-    ProductOwnerHandler>();
-builder.Services
-    .AddIdentity<ApplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<EcomDbContext>()
-    .AddDefaultTokenProviders();
-builder.Services.AddAuthorization();
-builder.Services.AddScoped<JwtService>();
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddHttpClient();
-builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<ICouponService, CouponService>();
-builder.Services.Configure<EmailSettings>(
-    builder.Configuration.GetSection("Email"));
-builder.Services.AddScoped<IEmailService, EmailService>();
+        // ================= Repositories + Services =================
+        builder.Services.AddScoped<IProductRepository, ProductRepository>();
+        builder.Services.AddScoped<IProductService, ProductService>();
 
-builder.Services.Configure<ZaloPaySettings>(
-    builder.Configuration.GetSection("ZaloPay"));
-builder.Services.AddHttpClient<IZaloPayService, ZaloPayService>();
+        // ================= Swagger =================
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen(options =>
+        {
+            options.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
 
-builder.Services.Configure<VnPaySettings>(
-    builder.Configuration.GetSection("VnPay"));
-builder.Services.AddScoped<IVnPayService, VnPayService>();
+            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Name = "Authorization",
+                Type = SecuritySchemeType.Http,
+                Scheme = "Bearer",
+                BearerFormat = "JWT",
+                In = ParameterLocation.Header,
+                Description = "Nhập token JWT (không cần gõ chữ 'Bearer' phía trước)"
+            });
 
-var app = builder.Build();
+            // Cú pháp mới: dùng delegate nhận document, trả về requirement
+            options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+            {
+                [new OpenApiSecuritySchemeReference("Bearer", document)] = []
+            });
+        });
+
+        // ================= AutoMapper =================
+        builder.Services.AddAutoMapper(typeof(MappingProfile));
+        builder.Services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+
+                ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                ValidAudience = builder.Configuration["Jwt:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(
+                builder.Configuration["Jwt:Key"]!
+            )
+        )
+            };
+        });
+        builder.Services.AddSingleton<
+            IAuthorizationPolicyProvider,
+            PermissionPolicyProvider>();
+
+        builder.Services.AddScoped<
+            IAuthorizationHandler,
+            PermissionHandler>();
+
+        builder.Services.AddScoped<
+            IAuthorizationHandler,
+            ProductOwnerHandler>();
+        builder.Services
+            .AddIdentity<ApplicationUser, IdentityRole>()
+            .AddEntityFrameworkStores<EcomDbContext>()
+            .AddDefaultTokenProviders();
+        builder.Services.AddAuthorization();
+        builder.Services.AddScoped<JwtService>();
+        builder.Services.AddHttpContextAccessor();
+        builder.Services.AddHttpClient();
+        builder.Services.AddScoped<ICategoryService, CategoryService>();
+        builder.Services.AddScoped<ICouponService, CouponService>();
+        builder.Services.Configure<EmailSettings>(
+            builder.Configuration.GetSection("Email"));
+        builder.Services.AddScoped<IEmailService, EmailService>();
+
+        builder.Services.Configure<ZaloPaySettings>(
+            builder.Configuration.GetSection("ZaloPay"));
+        builder.Services.AddHttpClient<IZaloPayService, ZaloPayService>();
+
+        builder.Services.Configure<VnPaySettings>(
+            builder.Configuration.GetSection("VnPay"));
+        builder.Services.AddScoped<IVnPayService, VnPayService>();
+
+        var app = builder.Build();
 
 
-// ================= PIPELINE =================
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-    
+        // ================= PIPELINE =================
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
+
+        }
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
+        app.UseStaticFiles();
+        app.UseHttpsRedirection();
+
+        app.UseCors("AllowSpecificOrigin");
+
+        app.UseAuthentication();
+
+        app.UseAuthorization();
+
+        app.UseMiddleware<ExceptionMiddleware>();
+
+        app.MapControllers();
+        using (var scope = app.Services.CreateScope())
+        {
+            var services = scope.ServiceProvider;
+
+            await DbSeeder.SeedAsync(services);
+        }
+        app.Run();
+    }
 }
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-app.UseStaticFiles();
-app.UseHttpsRedirection();
-
-app.UseCors("AllowSpecificOrigin");
-
-app.UseAuthentication();
-
-app.UseAuthorization();
-
-app.UseMiddleware<ExceptionMiddleware>();
-
-app.MapControllers();
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-
-    await DbSeeder.SeedAsync(services);
-}
-app.Run();

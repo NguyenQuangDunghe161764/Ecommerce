@@ -1,48 +1,103 @@
 ﻿@model MVCCallWebAPI.ViewModels.ProfileViewModel
 
-<h3>Thông Tin Cá Nhân</h3>
-
-@if (TempData["Success"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["Success"]
-    </div>
+@{
+    ViewData["Title"] = "Thông Tin Cá Nhân";
 }
 
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger">
-        @TempData["Error"]
-    </div>
+@section Styles {
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/theme-mocha.css" asp-append-version="true" />
 }
 
-<form method="post">
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+            <div class="profile-card">
 
-    <div class="mb-3">
-        <label>Họ và tên</label>
+                @* --- Header --- *@
+                <div class="profile-header">
+                    <div class="mb-2">
+                        <i class="bi bi-person-circle display-5" style="color: #C9A96E;"></i>
+                    </div>
+                    <h3 class="profile-header-title mb-1">THÔNG TIN CÁ NHÂN</h3>
+                    <p class="profile-header-sub mb-0">Quản lý và cập nhật thông tin tài khoản của bạn</p>
+                </div>
 
-        <input asp-for="FullName"
-               class="form-control" />
+                @* --- Body Form --- *@
+                <div class="p-4 p-md-5">
+
+                    @* Hiển thị thông báo Success *@
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-mocha-success d-flex align-items-center gap-2 mb-4" role="alert">
+                            <i class="bi bi-check-circle-fill fs-5 flex-shrink-0"></i>
+                            <div>@TempData["Success"]</div>
+                        </div>
+                    }
+
+                    @* Hiển thị thông báo Error *@
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-mocha-danger d-flex align-items-center gap-2 mb-4" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill fs-5 flex-shrink-0"></i>
+                            <div>@TempData["Error"]</div>
+                        </div>
+                    }
+
+                    <form method="post" class="d-flex flex-column gap-3">
+
+                        @* Full Name *@
+                        <div>
+                            <label asp-for="FullName" class="form-label form-label-mocha">Họ và tên</label>
+                            <div class="input-icon-wrapper">
+                                <i class="bi bi-person-badge-fill input-icon"></i>
+                                <input asp-for="FullName"
+                                       class="form-control form-control-mocha"
+                                       placeholder="Nhập họ và tên" />
+                            </div>
+                            <span asp-validation-for="FullName" class="text-danger small mt-1 d-block"></span>
+                        </div>
+
+                        @* Email (Readonly) *@
+                        <div>
+                            <label asp-for="Email" class="form-label form-label-mocha">Địa chỉ Email</label>
+                            <div class="input-icon-wrapper">
+                                <i class="bi bi-envelope-fill input-icon"></i>
+                                <input asp-for="Email"
+                                       class="form-control form-control-mocha"
+                                       readonly />
+                            </div>
+                            <span class="form-text small" style="color: #806A4A;">Email cố định không thể thay đổi.</span>
+                        </div>
+
+                        @* Phone Number *@
+                        <div>
+                            <label asp-for="PhoneNumber" class="form-label form-label-mocha">Số điện thoại</label>
+                            <div class="input-icon-wrapper">
+                                <i class="bi bi-telephone-fill input-icon"></i>
+                                <input asp-for="PhoneNumber"
+                                       class="form-control form-control-mocha"
+                                       placeholder="Nhập số điện thoại" />
+                            </div>
+                            <span asp-validation-for="PhoneNumber" class="text-danger small mt-1 d-block"></span>
+                        </div>
+
+                        @* Submit Button *@
+                        <button type="submit" class="btn btn-mocha-primary w-100 mt-3 d-flex align-items-center justify-content-center gap-2">
+                            <i class="bi bi-floppy-fill fs-5"></i>
+                            <span>Lưu Thay Đổi</span>
+                        </button>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
     </div>
+</div>
 
-    <div class="mb-3">
-        <label>Email</label>
-
-        <input asp-for="Email"
-               class="form-control"
-               readonly />
-    </div>
-
-    <div class="mb-3">
-        <label>Số điện thoại</label>
-
-        <input asp-for="PhoneNumber"
-               class="form-control" />
-    </div>
-
-    <button type="submit"
-            class="btn btn-primary">
-        Lưu thay đổi
-    </button>
-
-</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

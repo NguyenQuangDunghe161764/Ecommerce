@@ -1,4 +1,6 @@
-﻿@model IEnumerable<MVCCallWebAPI.ViewModels.RoleViewModel>
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<MVCCallWebAPI.ViewModels.RoleViewModel>
 
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -6,17 +8,21 @@
 }
 
 <div class="container-fluid">
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <h1 class="h3 text-secondary">Danh sách Quyền hệ thống</h1>
+    <!-- Header -->
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-3 mb-4 border-bottom">
+        <h3 class="fw-bold mb-0 luxury-accent">
+            <i class="bi bi-shield-lock-fill me-2"></i>Danh sách Quyền hệ thống
+        </h3>
     </div>
 
-    <div class="card shadow-sm border-0">
-        <div class="card-body p-0">
-            <table class="table table-bordered table-hover mb-0">
-                <thead class="table-dark">
+    <!-- Table Card -->
+    <div class="card shadow-sm border-0 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead>
                     <tr>
-                        <th scope="col" class="w-75 ps-3">Role Name</th>
-                        <th scope="col" class="w-25 text-center">Actions</th>
+                        <th scope="col" class="ps-4 py-3">Tên Role (Role Name)</th>
+                        <th scope="col" class="py-3 text-center pe-4" style="width: 220px;">Thao tác</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -25,15 +31,15 @@
                         @foreach (var role in Model)
                         {
                             <tr>
-                                <td class="align-middle ps-3 fw-bold text-dark">
-                                    @role.Name
+                                <td class="ps-4">
+                                    <span class="fw-bold text-heading fs-6">@role.Name</span>
                                 </td>
-                                <td class="text-center align-middle">
+                                <td class="text-center pe-4">
                                     <a asp-controller="Admin"
                                        asp-action="ManageRolePermissions"
                                        asp-route-roleId="@role.Id"
-                                       class="btn btn-primary btn-sm px-3 shadow-sm">
-                                        <i class="bi bi-gear-fill me-1"></i> Manage Permissions
+                                       class="btn btn-sm btn-primary px-3 fw-medium">
+                                        <i class="bi bi-gear-fill me-1"></i> Phân quyền
                                     </a>
                                 </td>
                             </tr>
@@ -42,8 +48,9 @@
                     else
                     {
                         <tr>
-                            <td colspan="2" class="text-center text-muted py-4">
-                                <i class="bi bi-exclamation-circle me-1"></i> Không tìm thấy quyền nào trong hệ thống.
+                            <td colspan="2" class="text-center text-muted py-5">
+                                <i class="bi bi-exclamation-circle fs-2 d-block mb-2"></i>
+                                Không tìm thấy quyền nào trong hệ thống.
                             </td>
                         </tr>
                     }

@@ -1,116 +1,135 @@
-﻿@model MVCCallWebAPI.Models.ShoppingCart
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model MVCCallWebAPI.Models.ShoppingCart
 
-<h1>Shopping Cart</h1>
-
-@if (!Model.Items.Any())
-{
-    <p>Cart is empty</p>
+@{
+    ViewData["Title"] = "Giỏ hàng";
 }
-else
-{
-    <table class="table">
 
-        <thead>
-            <tr>
-                <th>Product</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total</th>
-                <th></th>
-            </tr>
-        </thead>
-
-        <tbody>
-
-            @foreach (var item in Model.Items)
-            {
-                <tr>
-
-                    <td>
-                        @item.ProductName
-                    </td>
-
-                    <td>
-                        @item.Price.ToString("N0")
-                    </td>
-
-                    <td>
-
-                        <form asp-action="UpdateQuantity"
-                              method="post">
-
-                            <input type="hidden"
-                                   name="productId"
-                                   value="@item.ProductId" />
-
-                            <input type="number"
-                                   name="quantity"
-                                   value="@item.Quantity"
-                                   min="1"
-                                   class="form-control"
-                                   style="width:100px;" />
-
-                            <button type="submit"
-                                    class="btn btn-sm btn-primary mt-2">
-
-                                Update
-
-                            </button>
-
-                        </form>
-
-                    </td>
-
-                    <td>
-                        @item.Total.ToString("N0")
-                    </td>
-
-                    <td>
-
-                        <a asp-action="Remove"
-                           asp-route-productId="@item.ProductId"
-                           class="btn btn-danger btn-sm">
-
-                            Remove
-
-                        </a>
-
-                    </td>
-
-                </tr>
-            }
-
-        </tbody>
-
-    </table>
-
-    <h3 class="mt-4">
-
-        Total:
-        @Model.TotalPrice.ToString("N0") VNĐ
-
-    </h3>
-
-    <div class="mt-4 d-flex gap-3">
-
-        <a asp-action="Clear"
-           class="btn btn-danger">
-
-            Clear Cart
-
+<div class="container my-4">
+    <!-- Header -->
+    <div class="d-flex align-items-center justify-content-between mb-4 pb-2 border-bottom">
+        <h3 class="fw-bold mb-0 luxury-accent">
+            <i class="bi bi-cart3 me-2"></i>Giỏ hàng của bạn
+        </h3>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary btn-sm rounded-pill">
+            <i class="bi bi-arrow-left me-1"></i>Tiếp tục mua sắm
         </a>
-
-        <form asp-action="Checkout"
-              method="post">
-
-            <button type="submit"
-                    class="btn btn-success">
-
-                Thanh toán ZaloPay
-
-            </button>
-
-        </form>
-
     </div>
-}
+
+    @if (Model == null || !Model.Items.Any())
+    {
+        <!-- Empty Cart State -->
+        <div class="card text-center py-5 shadow-sm border-0">
+            <div class="card-body">
+                <i class="bi bi-cart-x text-muted display-1 mb-3"></i>
+                <h4 class="fw-bold">Giỏ hàng đang trống</h4>
+                <p class="text-muted mb-4">Bạn chưa thêm sản phẩm nào vào giỏ hàng.</p>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-primary px-4 fw-bold">
+                    Khám phá sản phẩm ngay
+                </a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- Cart Items Table -->
+        <div class="card shadow-sm border-0 mb-4 overflow-hidden">
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="ps-4 py-3">Sản phẩm</th>
+                            <th scope="col" class="py-3 text-end" style="width: 150px;">Đơn giá</th>
+                            <th scope="col" class="py-3 text-center" style="width: 180px;">Số lượng</th>
+                            <th scope="col" class="py-3 text-end" style="width: 160px;">Thành tiền</th>
+                            <th scope="col" class="py-3 text-center pe-4" style="width: 80px;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Items)
+                        {
+                            <tr>
+                                <!-- Product Name -->
+                                <td class="ps-4">
+                                    <span class="fw-bold text-heading d-block">@item.ProductName</span>
+                                </td>
+
+                                <!-- Price -->
+                                <td class="text-end">
+                                    <span>@item.Price.ToString("N0") VNĐ</span>
+                                </td>
+
+                                <!-- Quantity Form -->
+                                <td>
+                                    <form asp-action="UpdateQuantity" method="post" class="d-flex align-items-center justify-content-center gap-1">
+                                        <input type="hidden" name="productId" value="@item.ProductId" />
+
+                                        <input type="number"
+                                               name="quantity"
+                                               value="@item.Quantity"
+                                               min="1"
+                                               class="form-control form-control-sm text-center"
+                                               style="width: 70px;" />
+
+                                        <button type="submit"
+                                                class="btn btn-sm btn-outline-secondary"
+                                                title="Cập nhật số lượng">
+                                            <i class="bi bi-arrow-clockwise"></i>
+                                        </button>
+                                    </form>
+                                </td>
+
+                                <!-- Item Total -->
+                                <td class="text-end fw-bold luxury-accent">
+                                    @item.Total.ToString("N0") VNĐ
+                                </td>
+
+                                <!-- Remove Button -->
+                                <td class="text-center pe-4">
+                                    <a asp-action="Remove"
+                                       asp-route-productId="@item.ProductId"
+                                       class="btn btn-link text-danger p-0 border-0"
+                                       title="Xóa khỏi giỏ hàng">
+                                        <i class="bi bi-trash fs-5"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Footer Total & Actions inside Card -->
+            <div class="card-footer p-4 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+
+                <!-- Clear Cart Button -->
+                <div>
+                    <a asp-action="Clear"
+                       class="btn btn-outline-danger btn-sm px-3"
+                       onclick="return confirm('Bạn có chắc chắn muốn xóa toàn bộ giỏ hàng?');">
+                        <i class="bi bi-trash3 me-1"></i>Xóa tất cả
+                    </a>
+                </div>
+
+                <!-- Total & Checkout Form -->
+                <div class="d-flex align-items-center gap-4 ms-auto">
+                    <div class="text-end">
+                        <span class="text-muted small d-block">Tổng thanh toán:</span>
+                        <span class="fs-4 fw-bold luxury-accent">
+                            @Model.TotalPrice.ToString("N0") VNĐ
+                        </span>
+                    </div>
+
+                    <form asp-action="Checkout" method="post" class="m-0">
+                        <button type="submit" class="btn btn-success px-4 py-2 fw-bold d-flex align-items-center gap-2">
+                            <i class="bi bi-wallet2"></i>
+                            <span>Thanh toán ZaloPay</span>
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    }
+</div>

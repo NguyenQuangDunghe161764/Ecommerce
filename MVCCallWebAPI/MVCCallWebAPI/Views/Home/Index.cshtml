@@ -1,8 +1,418 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using MVCCallWebAPI.ViewModels
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@model IEnumerable<ProductViewModel>
+
+@{
+    ViewData["Title"] = "Trang Chủ - Thiết Bị Chiếu Sáng & Công Nghệ Cao Cấp";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    /* Custom CSS riêng cho các component đặc thù trên Homepage */
+    .hero-slider .carousel-item {
+        min-height: 420px;
+    }
+
+    .category-card {
+        transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-gold, #c89567) !important;
+        }
+
+    .flash-sale-card {
+        background: linear-gradient(135deg, rgba(200, 149, 103, 0.15) 0%, rgba(20, 20, 20, 0.8) 100%);
+    }
+</style>
+
+<div class="container py-3">
+
+    <!-- ================= 1. HERO BANNER SLIDER ================= -->
+    <section class="mb-5">
+        <div id="heroCarousel" class="carousel slide hero-slider rounded-4 overflow-hidden border border-secondary shadow-lg" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+            </div>
+            <div class="carousel-inner">
+                <!-- Slide 1 -->
+                <div class="carousel-item active p-4 p-md-5" style="background: radial-gradient(circle at top right, #2a2018, #121212);">
+                    <div class="row align-items-center h-100 py-3">
+                        <div class="col-lg-7">
+                            <span class="badge bg-dark text-light border border-secondary px-3 py-2 rounded-pill fw-semibold mb-3">
+                                <i class="bi bi-star-fill me-1 luxury-accent"></i> Bộ Sưu Tập Mới 2026
+                            </span>
+                            <h1 class="display-4 fw-bold text-heading mb-3">Công Nghệ Chiếu Sáng Đột Phá</h1>
+                            <p class="text-muted fs-5 mb-4">Nâng tầm không gian sống với các dòng sản phẩm hiện đại, tiết kiệm điện năng và đạt chuẩn quốc tế.</p>
+                            <div class="d-flex gap-3">
+                                <a asp-controller="Product" asp-action="Index" class="btn btn-primary btn-lg px-4 gap-2 d-inline-flex align-items-center">
+                                    <span>Khám Phá Ngay</span>
+                                    <i class="bi bi-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 text-center d-none d-lg-block">
+                            <i class="bi bi-lightbulb display-1 luxury-accent opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- Slide 2 -->
+                <div class="carousel-item p-4 p-md-5" style="background: radial-gradient(circle at top right, #1f2a20, #121212);">
+                    <div class="row align-items-center h-100 py-3">
+                        <div class="col-lg-7">
+                            <span class="badge bg-dark text-light border border-secondary px-3 py-2 rounded-pill fw-semibold mb-3">
+                                <i class="bi bi-percent me-1 luxury-accent"></i> Ưu Đãi Đặc Biệt
+                            </span>
+                            <h1 class="display-4 fw-bold text-heading mb-3">Chương Trình Tri Ân Khách Hàng</h1>
+                            <p class="text-muted fs-5 mb-4">Giảm giá tới 30% cho tất cả các thiết bị chiếu sáng thông minh trong tháng này.</p>
+                            <div class="d-flex gap-3">
+                                <a href="#promotional-section" class="btn btn-primary btn-lg px-4 gap-2 d-inline-flex align-items-center">
+                                    <span>Xem Khuyến Mãi</span>
+                                    <i class="bi bi-fire"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 text-center d-none d-lg-block">
+                            <i class="bi bi-lightning-charge display-1 luxury-accent opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
+    </section>
+
+    <!-- ================= 2. VALUE PROPOSITIONS ================= -->
+    <section class="mb-5">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-3">
+            <div class="col">
+                <div class="card h-100 p-3 d-flex flex-row align-items-center gap-3">
+                    <i class="bi bi-truck fs-1 luxury-accent"></i>
+                    <div>
+                        <h6 class="fw-bold text-heading mb-0">🚚 Giao Hàng Nhanh</h6>
+                        <small class="text-muted">Vận chuyển an toàn toàn quốc</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 p-3 d-flex flex-row align-items-center gap-3">
+                    <i class="bi bi-shield-check fs-1 luxury-accent"></i>
+                    <div>
+                        <h6 class="fw-bold text-heading mb-0">🛡️ Chính Hãng 100%</h6>
+                        <small class="text-muted">Bảo hành dài hạn 12-24 tháng</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 p-3 d-flex flex-row align-items-center gap-3">
+                    <i class="bi bi-headset fs-1 luxury-accent"></i>
+                    <div>
+                        <h6 class="fw-bold text-heading mb-0">💬 Hỗ Trợ 24/7</h6>
+                        <small class="text-muted">Tư vấn kỹ thuật tận tâm</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 p-3 d-flex flex-row align-items-center gap-3">
+                    <i class="bi bi-credit-card fs-1 luxury-accent"></i>
+                    <div>
+                        <h6 class="fw-bold text-heading mb-0">💳 Thanh Toán Linh Hoạt</h6>
+                        <small class="text-muted">VietQR, VNPAY, ZaloPay, COD</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= 3. DANH MỤC NỔI BẬT ================= -->
+    @if (ViewBag.Categories != null)
+    {
+        <section class="mb-5">
+            <div class="d-flex justify-content-between align-items-end mb-4 border-bottom border-secondary pb-2">
+                <div>
+                    <h3 class="fw-bold text-heading mb-1 luxury-accent">Danh Mục Nổi Bật</h3>
+                    <p class="text-muted small mb-0">Tìm kiếm nhanh theo nhóm sản phẩm bạn quan tâm</p>
+                </div>
+            </div>
+            <div class="row row-cols-2 row-cols-md-4 g-3">
+                @foreach (var cat in (IEnumerable<dynamic>)ViewBag.Categories)
+                {
+                    <div class="col">
+                        <a asp-controller="Product" asp-action="Index" asp-route-categoryId="@cat.Id" class="text-decoration-none">
+                            <div class="card p-3 text-center category-card h-100 d-flex flex-column align-items-center justify-content-center">
+                                <i class="bi bi-grid-3x3-gap fs-2 luxury-accent mb-2"></i>
+                                <h6 class="fw-bold text-heading mb-0">@cat.Name</h6>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+        </section>
+    }
+
+    <!-- ================= 4. FEATURED PRODUCTS (TABBED) ================= -->
+    <section class="mb-5">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4 border-bottom border-secondary pb-2 gap-3">
+            <div>
+                <h3 class="fw-bold text-heading mb-1 luxury-accent">Sản Phẩm Nổi Bật</h3>
+                <p class="text-muted small mb-0">Những lựa chọn hàng đầu dành cho không gian của bạn</p>
+            </div>
+            <!-- Filter Tabs -->
+            <ul class="nav nav-pills gap-2" id="productTabs" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active btn-sm" id="all-tab" data-bs-toggle="tab" data-bs-target="#tab-all" type="button">Tất cả</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link btn-sm" id="bestseller-tab" data-bs-toggle="tab" data-bs-target="#tab-all" type="button">Bán chạy</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link btn-sm" id="new-tab" data-bs-toggle="tab" data-bs-target="#tab-all" type="button">Hàng mới</button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="tab-content" id="productTabsContent">
+            <div class="tab-pane fade show active" id="tab-all" role="tabpanel">
+                @if (Model != null && Model.Any())
+                {
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+                        @foreach (var item in Model.Take(8))
+                        {
+                            <div class="col">
+                                <div class="card h-100 overflow-hidden">
+                                    <div class="position-relative w-100 overflow-hidden" style="padding-top: 75%; background-color: rgba(0,0,0,0.2);">
+                                        @if (!string.IsNullOrEmpty(item.MainImageUrl))
+                                        {
+                                            <img src="@ApiConfig.ImageUrl(Configuration, item.MainImageUrl)" class="position-absolute top-0 start-0 w-100 h-100" style="object-fit: cover;" alt="@item.Name" />
+                                        }
+                                        else
+                                        {
+                                            <div class="d-flex flex-column align-items-center justify-content-center h-100 text-muted position-absolute top-0 start-0 w-100">
+                                                <i class="bi bi-image fs-1 opacity-50"></i>
+                                            </div>
+                                        }
+                                        @if (item.Category != null)
+                                        {
+                                            <span class="badge bg-dark text-light border border-secondary position-absolute top-0 start-0 m-2 px-2 py-1 small">
+                                                @item.Category.Name
+                                            </span>
+                                        }
+                                    </div>
+                                    <div class="p-3 d-flex flex-column flex-grow-1">
+                                        <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id" class="text-decoration-none text-heading fw-bold mb-2 text-truncate" title="@item.Name">
+                                            @item.Name
+                                        </a>
+                                        <div class="luxury-accent fw-bold fs-5 mb-3 mt-auto">
+                                            @item.Price.ToString("N0") <span class="fs-6 fw-normal">đ</span>
+                                        </div>
+                                        <a asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@item.Id" class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center gap-2">
+                                            <i class="bi bi-cart-plus"></i>
+                                            <span>Thêm vào giỏ</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted text-center py-4">Chưa có sản phẩm nào để hiển thị.</p>
+                }
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <a asp-controller="Product" asp-action="Index" class="btn btn-outline-secondary px-4">
+                Xem toàn bộ sản phẩm <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- ================= 5. PROMOTIONAL / FLASH SALE ================= -->
+    <section id="promotional-section" class="mb-5">
+        <div class="card border border-secondary p-4 p-md-5 flash-sale-card rounded-4">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-7">
+                    <span class="badge bg-danger text-white px-3 py-2 rounded-pill fw-bold mb-3">
+                        <i class="bi bi-fire me-1"></i> FLASH SALE TRONG NGÀY
+                    </span>
+                    <h2 class="fw-bold text-heading display-6 mb-3">Sản Phẩm Chiếu Sáng Thông Minh</h2>
+                    <p class="text-muted mb-4">Tự động điều chỉnh ánh sáng theo kịch bản, tiết kiệm tới 50% điện năng. Ưu đãi số lượng có hạn!</p>
+
+                    <!-- Countdown Display -->
+                    <div class="d-flex gap-3 text-center mb-4">
+                        <div class="p-2 border border-secondary rounded bg-dark" style="min-width: 60px;">
+                            <span class="fs-4 fw-bold luxury-accent" id="hours">08</span>
+                            <div class="small text-muted">Giờ</div>
+                        </div>
+                        <div class="p-2 border border-secondary rounded bg-dark" style="min-width: 60px;">
+                            <span class="fs-4 fw-bold luxury-accent" id="minutes">45</span>
+                            <div class="small text-muted">Phút</div>
+                        </div>
+                        <div class="p-2 border border-secondary rounded bg-dark" style="min-width: 60px;">
+                            <span class="fs-4 fw-bold luxury-accent" id="seconds">30</span>
+                            <div class="small text-muted">Giây</div>
+                        </div>
+                    </div>
+
+                    <a asp-controller="Product" asp-action="Index" class="btn btn-primary btn-lg px-4">
+                        Săn Deal Ngay
+                    </a>
+                </div>
+                <div class="col-lg-5 text-center">
+                    <i class="bi bi-brightness-high display-1 luxury-accent opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= 6. WHY CHOOSE US ================= -->
+    <section class="mb-5">
+        <div class="text-center mb-4">
+            <h3 class="fw-bold text-heading luxury-accent">Vì Sao Chọn Chúng Tôi?</h3>
+            <p class="text-muted small">Cam kết mang lại chất lượng và sự hài lòng tối đa</p>
+        </div>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <div class="card h-100 p-4 text-center">
+                    <i class="bi bi-arrow-repeat display-5 luxury-accent mb-3"></i>
+                    <h5 class="fw-bold text-heading mb-2">Đổi Trả Dễ Dàng</h5>
+                    <p class="text-muted small mb-0">Hỗ trợ 1 đổi 1 trong vòng 7 ngày nếu có lỗi từ nhà sản xuất.</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 p-4 text-center">
+                    <i class="bi bi-patch-check display-5 luxury-accent mb-3"></i>
+                    <h5 class="fw-bold text-heading mb-2">Nguồn Gốc Trực Tiếp</h5>
+                    <p class="text-muted small mb-0">Sản phẩm nhập khẩu chính ngạch, đầy đủ chứng nhận CO/CQ.</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 p-4 text-center">
+                    <i class="bi bi-tools display-5 luxury-accent mb-3"></i>
+                    <h5 class="fw-bold text-heading mb-2">Hỗ Trợ Lắp Đặt</h5>
+                    <p class="text-muted small mb-0">Đội ngũ kỹ thuật viên giàu kinh nghiệm sẵn sàng hỗ trợ khảo sát.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= 7. CUSTOMER REVIEWS / TESTIMONIALS ================= -->
+    <section class="mb-5">
+        <div class="text-center mb-4">
+            <h3 class="fw-bold text-heading luxury-accent">Đánh Giá Từ Khách Hàng</h3>
+            <p class="text-muted small">Khách hàng nói gì về dịch vụ và sản phẩm của chúng tôi</p>
+        </div>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <div class="card h-100 p-4">
+                    <div class="text-warning mb-2">
+                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                    </div>
+                    <p class="text-muted small mb-3">"Đèn lắp lên nhìn rất sang trọng, ánh sáng êm dịu không bị mỏi mắt. Giao hàng nhanh và tư vấn tận tình."</p>
+                    <div class="fw-bold text-heading small">— Anh Minh (Hà Nội)</div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 p-4">
+                    <div class="text-warning mb-2">
+                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                    </div>
+                    <p class="text-muted small mb-3">"Đã mua 2 lần cho công trình biệt thự, chất lượng cực kỳ đảm bảo, tích hợp thanh toán VietQR chuyển khoản cực tiện."</p>
+                    <div class="fw-bold text-heading small">— Chị Hoàng Anh (TP.HCM)</div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 p-4">
+                    <div class="text-warning mb-2">
+                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                    </div>
+                    <p class="text-muted small mb-3">"Dịch vụ hỗ trợ kỹ thuật tuyệt vời. Nhân viên tư vấn rất kỹ về công suất và góc chiếu phù hợp."</p>
+                    <div class="fw-bold text-heading small">— Anh Quốc Bảo (Đà Nẵng)</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= 8. LATEST NEWS / BLOG ================= -->
+    <section class="mb-5">
+        <div class="d-flex justify-content-between align-items-end mb-4 border-bottom border-secondary pb-2">
+            <div>
+                <h3 class="fw-bold text-heading mb-1 luxury-accent">Kiến Thức & Tin Tức</h3>
+                <p class="text-muted small mb-0">Cập nhật xu hướng thiết kế và hướng dẫn lắp đặt</p>
+            </div>
+        </div>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <div class="card h-100 overflow-hidden">
+                    <div class="p-3">
+                        <span class="badge bg-dark text-muted border border-secondary mb-2">Hướng dẫn</span>
+                        <h6 class="fw-bold text-heading mb-2">Cách Chọn Đèn Chiếu Sáng Phù Hợp Cho Phòng Khách</h6>
+                        <p class="text-muted small mb-0">Bật mí các tiêu chí lựa chọn công suất và màu sắc ánh sáng giúp không gian thêm ấm cúng.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 overflow-hidden">
+                    <div class="p-3">
+                        <span class="badge bg-dark text-muted border border-secondary mb-2">Xu hướng</span>
+                        <h6 class="fw-bold text-heading mb-2">Top 5 Mẫu Đèn Trang Trí Được Ưa Chuộng Năm 2026</h6>
+                        <p class="text-muted small mb-0">Điểm qua những phong cách thiết kế chiếu sáng tinh tế, tối giản nhưng vô cùng đẳng cấp.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 overflow-hidden">
+                    <div class="p-3">
+                        <span class="badge bg-dark text-muted border border-secondary mb-2">Kỹ thuật</span>
+                        <h6 class="fw-bold text-heading mb-2">Lưu Ý Quan Trọng Khi Lắp Đặt Hệ Thống Chiếu Sáng Smart Home</h6>
+                        <p class="text-muted small mb-0">Những điều cần biết để đảm bảo an toàn điện và tối ưu hiệu quả sử dụng lâu dài.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= 9. NEWSLETTER / CTA ================= -->
+    <section class="mb-4">
+        <div class="card p-4 p-md-5 text-center border border-secondary">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <i class="bi bi-envelope-paper display-4 luxury-accent mb-3"></i>
+                    <h3 class="fw-bold text-heading mb-2">Đăng Ký Nhận Thông Tin Ưu Đãi</h3>
+                    <p class="text-muted mb-4">Nhận ngay thông báo về các chương trình khuyến mãi độc quyền và sản phẩm mới nhất.</p>
+                    <form class="d-flex flex-column flex-sm-row gap-2 justify-content-center" onsubmit="event.preventDefault(); alert('Cảm ơn bạn đã đăng ký!');">
+                        <input type="email" class="form-control border-secondary" placeholder="Nhập email của bạn..." required style="max-width: 360px;" />
+                        <button type="submit" class="btn btn-primary px-4">Đăng Ký</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
 </div>
+
+@section Scripts {
+    <script>
+        // Đồng hồ đếm ngược đơn giản cho Flash Sale
+        let totalSeconds = 31530; // 8h 45m 30s
+        setInterval(function() {
+            if (totalSeconds <= 0) return;
+            totalSeconds--;
+            let h = Math.floor(totalSeconds / 3600);
+            let m = Math.floor((totalSeconds % 3600) / 60);
+            let s = totalSeconds % 60;
+
+            document.getElementById("hours").innerText = h < 10 ? "0" + h : h;
+            document.getElementById("minutes").innerText = m < 10 ? "0" + m : m;
+            document.getElementById("seconds").innerText = s < 10 ? "0" + s : s;
+        }, 1000);
+    </script>
+}

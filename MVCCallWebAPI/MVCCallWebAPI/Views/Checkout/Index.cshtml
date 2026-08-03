@@ -1,148 +1,200 @@
-﻿@model CheckoutViewModel
+﻿@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model CheckoutViewModel
+
 @{
     ViewData["Title"] = "Thanh toán đơn hàng";
 }
 
 <div class="container my-5">
-    <div class="row g-5">
-        <div class="col-md-7">
-            <h4 class="mb-3">Thông tin giao hàng</h4>
+    <div class="row g-4">
 
-            @if (Model.Addresses == null || !Model.Addresses.Any())
-            {
-                <div class="alert alert-warning">
-                    Bạn chưa có địa chỉ giao hàng nào.
-                    <a asp-controller="Address" asp-action="Create" class="alert-link">Thêm địa chỉ mới ngay</a>
+        <!-- BÊN TRÁI: THÔNG TIN GIAO HÀNG & PHƯƠNG THỨC THANH TOÁN -->
+        <div class="col-lg-7">
+
+            <!-- Địa chỉ nhận hàng -->
+            <div class="mb-4">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h4 class="fw-bold mb-0 luxury-accent">
+                        <i class="bi bi-geo-alt-fill me-2"></i>Địa chỉ nhận hàng
+                    </h4>
+                    <a asp-controller="Address" asp-action="Create" class="btn btn-sm btn-outline-secondary rounded-pill">
+                        <i class="bi bi-plus-lg me-1"></i>Thêm địa chỉ mới
+                    </a>
                 </div>
-            }
-            else
-            {
-                <div class="card p-3 shadow-sm mb-4">
-                    <h6 class="fw-bold mb-3"><i class="bi bi-geo-alt-fill text-danger"></i> Chọn địa chỉ nhận hàng:</h6>
 
-                    @foreach (var item in Model.Addresses)
-                    {
-                        <div class="form-check border-bottom py-2">
-                            <input class="form-check-input address-radio" type="radio" name="selectedAddress"
-                                   id="addr-@item.Id"
-                                   data-fulladdress="@item.StreetAddress, @item.Ward, @item.District, @item.Province"
-                            @(item.IsDefault ? "checked" : "")>
-                            <label class="form-check-label d-block ms-2" for="addr-@item.Id">
-                                <strong>@item.ReceiverName</strong> | <span class="text-muted">@item.PhoneNumber</span>
-                                @if (item.IsDefault)
-                                {
-                                    <span class="badge bg-danger ms-2">Mặc định</span>
-                                }
-                                <br />
-                                <small class="text-secondary">@item.StreetAddress, @item.Ward, @item.District, @item.Province</small>
-                            </label>
+                @if (Model.Addresses == null || !Model.Addresses.Any())
+                {
+                    <div class="alert alert-warning d-flex align-items-center" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill fs-5 me-2"></i>
+                        <div>
+                            Bạn chưa có địa chỉ giao hàng nào.
+                            <a asp-controller="Address" asp-action="Create" class="alert-link ms-1">Thêm địa chỉ mới ngay</a>
                         </div>
-                    }
-                </div>
-            }
+                    </div>
+                }
+                else
+                {
+                    <div class="card p-3 shadow-sm border-0">
+                        @foreach (var item in Model.Addresses)
+                        {
+                            <div class="form-check border-bottom py-3 me-2">
+                                <input class="form-check-input address-radio"
+                                       type="radio"
+                                       name="selectedAddress"
+                                       id="addr-@item.Id"
+                                       value="@item.Id"
+                                       data-fulladdress="@item.StreetAddress, @item.Ward, @item.District, @item.Province"
+                                @(item.IsDefault ? "checked" : "") />
 
-            <h4 class="mb-3">Phương thức thanh toán</h4>
-            <div class="my-3 card p-3 shadow-sm">
-                <div class="form-check mb-2">
-                    <input id="cod" name="paymentMethod" type="radio" class="form-check-input" checked required>
-                    <label class="form-check-label" for="cod">Thanh toán khi nhận hàng (COD)</label>
-                </div>
-                <div class="form-check">
-                    <input id="vnpay" name="paymentMethod" type="radio" class="form-check-input" required>
-                    <label class="form-check-label" for="vnpay">Chuyển khoản qua VNPAY</label>
+                                <label class="form-check-label ms-2 w-100" for="addr-@item.Id">
+                                    <div class="d-flex align-items-center justify-content-between mb-1">
+                                        <div>
+                                            <strong class="text-heading fs-6">@item.ReceiverName</strong>
+                                            <span class="text-muted ms-2">(@item.PhoneNumber)</span>
+                                        </div>
+                                        @if (item.IsDefault)
+                                        {
+                                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle">Mặc định</span>
+                                        }
+                                    </div>
+                                    <small class="text-muted d-block lh-sm">
+                                        @item.StreetAddress, @item.Ward, @item.District, @item.Province
+                                    </small>
+                                </label>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+
+            <!-- Phương thức thanh toán -->
+            <div class="mb-4">
+                <h4 class="fw-bold mb-3 luxury-accent">
+                    <i class="bi bi-credit-card-2-front-fill me-2"></i>Phương thức thanh toán
+                </h4>
+
+                <div class="card p-3 shadow-sm border-0">
+                    <div class="form-check py-2 border-bottom">
+                        <input id="cod" name="paymentMethod" type="radio" value="COD" class="form-check-input" checked required />
+                        <label class="form-check-label fw-semibold ms-2" for="cod">
+                            <i class="bi bi-cash-stack text-success me-2 fs-5 align-middle"></i>Thanh toán khi nhận hàng (COD)
+                        </label>
+                    </div>
+
+                    <div class="form-check py-2">
+                        <input id="vnpay" name="paymentMethod" type="radio" value="VNPAY" class="form-check-input" required />
+                        <label class="form-check-label fw-semibold ms-2" for="vnpay">
+                            <i class="bi bi-qr-code-scan text-info me-2 fs-5 align-middle"></i>Chuyển khoản qua VNPAY / QrCode
+                        </label>
+                    </div>
                 </div>
             </div>
+
         </div>
 
-        <div class="col-md-5">
-            <h4 class="d-flex justify-content-between align-items-center mb-3">
-                <span class="text-primary">Đơn hàng của bạn</span>
+        <!-- BÊN PHẢI: TÓM TẮT ĐƠN HÀNG & NÚT ĐẶT HÀNG -->
+        <div class="col-lg-5">
+            <h4 class="fw-bold mb-3 luxury-accent">
+                <i class="bi bi-bag-check-fill me-2"></i>Tóm tắt đơn hàng
             </h4>
-            <div class="card p-3 shadow-sm">
+
+            <div class="card p-4 shadow-sm border-0">
                 <ul class="list-group list-group-flush mb-3">
-                    <li class="list-group-item d-flex justify-content-between lh-sm px-0">
+                    <!-- Tạm tính -->
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-3 bg-transparent">
                         <div>
-                            <h6 class="my-0">Tạm tính tiền hàng</h6>
-                            <small class="text-muted">Tổng giá trị sản phẩm</small>
+                            <h6 class="mb-0 fw-semibold text-heading">Tạm tính tiền hàng</h6>
+                            <small class="text-muted">Giá trị các sản phẩm</small>
                         </div>
-                        <span class="text-muted">@Model.SubTotal.ToString("N0") đ</span>
+                        <span class="fw-semibold text-heading">@Model.SubTotal.ToString("N0") đ</span>
                     </li>
-                    <li class="list-group-item d-flex justify-content-between lh-sm px-0">
+
+                    <!-- Phí vận chuyển -->
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-3 bg-transparent">
                         <div>
-                            <h6 class="my-0">Phí vận chuyển</h6>
+                            <h6 class="mb-0 fw-semibold text-heading">Phí vận chuyển</h6>
                             <small class="text-muted" id="ship-status">Đang tính toán...</small>
                         </div>
                         <span class="fw-bold text-success" id="shipping-fee">0 đ</span>
                     </li>
-                    <li class="list-group-item d-flex justify-content-between px-0 pt-3">
-                        <span class="fw-bold fs-5">Tổng thanh toán:</span>
-                        <strong class="text-danger fs-5" id="total-order" data-subtotal="@Model.SubTotal">
+
+                    <!-- Tổng cộng -->
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0 pt-3 pb-2 bg-transparent border-top">
+                        <span class="fw-bold fs-5 text-heading">Tổng thanh toán:</span>
+                        <strong class="fs-4 fw-bold luxury-accent" id="total-order" data-subtotal="@Model.SubTotal">
                             @Model.SubTotal.ToString("N0") đ
                         </strong>
                     </li>
                 </ul>
 
-                <button class="w-100 btn btn-primary btn-lg" type="button" id="btn-order">
-                    <i class="bi bi-cart-check-fill"></i> ĐẶT HÀNG NGAY
+                <button class="w-100 btn btn-primary btn-lg py-3 fw-bold mt-2 shadow" type="button" id="btn-order">
+                    <i class="bi bi-cart-check-fill me-2"></i> ĐẶT HÀNG NGAY
                 </button>
             </div>
         </div>
+
     </div>
 </div>
 
 @section Scripts {
     <script>
-        $(document).ready(function () {
-            // Hàm gọi lên API (được bắc cầu qua Web API hoặc gọi trực tiếp tùy bạn cấu hình) để lấy tiền ship
+        $(document).ready(function() {
+            // Hàm gọi API tính tiền ship từ Goong Maps
             function calculateShipping() {
-                // Lấy chuỗi địa chỉ đầy đủ từ thuộc tính data của Radio đang được tick
                 var selectedRadio = $('input[name="selectedAddress"]:checked');
-                if(selectedRadio.length === 0) {
+                if (selectedRadio.length === 0) {
                     $('#ship-status').text('Vui lòng chọn địa chỉ');
                     return;
                 }
 
                 var fullAddress = selectedRadio.data('fulladdress');
-                $('#ship-status').text('Đang kết nối Goong Maps...');
+                $('#ship-status').text('Đang kết nối bản đồ...');
 
-                // Gọi AJAX lên endpoint tính tiền ship của Web API
-                // (Hãy đảm bảo endpoint "api/Address/calculate-ship" nhận chuỗi address dạng Body/Query)
                 $.ajax({
-                    url: 'https://localhost:7157/api/Address/calculate-ship', // URL Web API xử lý Goong Maps
+                    url: 'https://localhost:7157/api/Address/calculate-ship',
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify(fullAddress),
                     headers: {
-                        "Authorization": "Bearer " + "@Context.Session.GetString("JWT")" // Truyền token nếu endpoint yêu cầu bảo mật
+                        "Authorization": "Bearer " + "@Context.Session.GetString("JWT")"
                     },
-                    success: function (res) {
-                        var shipFee = res.shippingFee; // Hứng số tiền trả về từ ShippingService
+                    success: function(res) {
+                        var shipFee = res.shippingFee;
                         var subTotal = parseFloat($('#total-order').data('subtotal'));
                         var totalOrder = subTotal + shipFee;
 
-                        // Cập nhật lên màn hình giao diện công thức hiển thị trực quan
                         $('#shipping-fee').text(shipFee.toLocaleString('vi-VN') + ' đ');
                         $('#total-order').text(totalOrder.toLocaleString('vi-VN') + ' đ');
-                        $('#ship-status').text('Đã tính xong khoảng cách đường bộ');
+                        $('#ship-status').text('Khoảng cách đường bộ');
                     },
-                    error: function () {
+                    error: function() {
                         $('#shipping-fee').text('30.000 đ');
-                        $('#ship-status').text('Lỗi kết nối bản đồ, áp dụng phí mặc định');
+                        $('#ship-status').text('Áp dụng phí mặc định');
                     }
                 });
             }
 
-            // Kích hoạt tính tiền ship ngay khi trang vừa tải xong (địa chỉ mặc định)
+            // Gọi tính ship khi vừa load trang
             calculateShipping();
 
-            // Kích hoạt tính lại tiền ship mỗi khi người dùng click đổi địa chỉ khác
-            $('.address-radio').change(function () {
+            // Tính lại ship khi chọn địa chỉ khác
+            $('.address-radio').change(function() {
                 calculateShipping();
             });
 
-            // Xử lý nút đặt hàng cuối cùng
-            $('#btn-order').click(function(){
-                 alert('Xử lý lưu đơn hàng vào Database tại đây!');
+            // Xử lý nút Đặt hàng
+            $('#btn-order').click(function() {
+                var selectedAddressId = $('input[name="selectedAddress"]:checked').val();
+                var paymentMethod = $('input[name="paymentMethod"]:checked').val();
+
+                if (!selectedAddressId) {
+                    alert('Vui lòng chọn địa chỉ nhận hàng!');
+                    return;
+                }
+
+                alert('Xử lý lưu đơn hàng (Địa chỉ ID: ' + selectedAddressId + ', PTTT: ' + paymentMethod + ')');
             });
         });
     </script>

@@ -4,6 +4,12 @@
 
 <a asp-controller="Address" asp-action="Create" class="btn btn-primary mb-3">Add Address</a>
 
+@section Styles {
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/theme-mocha.css" asp-append-version="true" />
+}
 @if (Model == null || !Model.Any())
 {
     <div class="alert alert-info">

@@ -1,31 +1,203 @@
+/* =========================================================
+   1. ASP.NET CORE DEFAULT FRAMEWORK STYLES
+   ========================================================= */
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+.form-floating > .form-control-plaintext::placeholder,
+.form-floating > .form-control::placeholder {
+    color: var(--bs-secondary-color);
+    text-align: end;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+.form-floating > .form-control-plaintext:focus::placeholder,
+.form-floating > .form-control:focus::placeholder {
+    text-align: start;
+}
+
+/* =========================================================
+   2. MODERN DARK LUXURY THEME OVERRIDE (Obsidian & Oxidized Copper)
+   ========================================================= */
+
+:root {
+    --color-bg: #121215; /* Nền chính Obsidian Dark */
+    --color-surface: #1e1e24; /* Nền Card/Sidebar */
+    --color-surface-hover: #292930;
+    --color-primary: #a85d38; /* Đồng oxy hóa / Bronze Accent */
+    --color-primary-hover: #8f4c2c;
+    --color-text-main: #e0e0e0;
+    --color-text-heading: #ffffff;
+    --color-border: rgba(255, 255, 255, 0.08);
+}
+
+/* Body & Background Global */
+body {
+    background-color: var(--color-bg) !important;
+    color: var(--color-text-main) !important;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Heading & Accent */
+h1, h2, h3, h4, h5, h6, .text-heading {
+    color: var(--color-text-heading) !important;
+}
+
+.luxury-accent {
+    color: #d47a47 !important;
+}
+
+/* Cards & Containers */
+.card,
+.bg-white,
+.card-filter {
+    background-color: var(--color-surface) !important;
+    border: 1px solid var(--color-border) !important;
+    color: var(--color-text-main) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+.card-header, .card-footer {
+    background-color: rgba(255, 255, 255, 0.02) !important;
+    border-color: var(--color-border) !important;
+}
+
+/* Tables */
+.table {
+    color: var(--color-text-main) !important;
+    --bs-table-bg: transparent;
+    --bs-table-accent-bg: transparent;
+    border-color: var(--color-border) !important;
+}
+
+    .table th {
+        background-color: rgba(255, 255, 255, 0.03) !important;
+        color: #ffffff !important;
+        border-bottom: 2px solid var(--color-border) !important;
+    }
+
+    .table td {
+        border-color: var(--color-border) !important;
+    }
+
+.table-hover tbody tr:hover {
+    background-color: var(--color-surface-hover) !important;
+    color: #ffffff !important;
+}
+
+/* Inputs & Form Controls */
+.form-control, .form-select {
+    background-color: var(--color-bg) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+    .form-control:focus, .form-select:focus {
+        background-color: var(--color-bg) !important;
+        color: #ffffff !important;
+        border-color: var(--color-primary) !important;
+        box-shadow: 0 0 0 0.25rem rgba(168, 93, 56, 0.25) !important;
+    }
+
+    .form-control::placeholder {
+        color: #777777 !important;
+    }
+
+/* Buttons Override */
+.btn-primary {
+    background-color: var(--color-primary) !important;
+    border-color: var(--color-primary) !important;
+    color: #ffffff !important;
+}
+
+    .btn-primary:hover, .btn-primary:focus {
+        background-color: var(--color-primary-hover) !important;
+        border-color: var(--color-primary-hover) !important;
+    }
+
+.btn-outline-primary {
+    color: #d47a47 !important;
+    border-color: #d47a47 !important;
+    background-color: transparent !important;
+}
+
+    .btn-outline-primary:hover {
+        background-color: var(--color-primary) !important;
+        color: #ffffff !important;
+    }
+
+/* Custom Focus Ring for Bootstrap Inputs */
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem var(--color-bg), 0 0 0 0.25rem var(--color-primary) !important;
+}
+
+/* Sidebar & Navigation */
+.navbar-mocha {
+    background-color: var(--color-surface) !important;
+    border-bottom: 1px solid var(--color-border) !important;
+}
+
+.dropdown-menu-mocha {
+    background-color: var(--color-surface) !important;
+    border: 1px solid var(--color-border) !important;
+}
+
+    .dropdown-menu-mocha .dropdown-item {
+        color: var(--color-text-main) !important;
+    }
+
+        .dropdown-menu-mocha .dropdown-item:hover {
+            background-color: var(--color-surface-hover) !important;
+            color: #ffffff !important;
+        }
+
+#sidebarMenu {
+    background-color: var(--color-surface) !important;
+}
+
+    #sidebarMenu .nav-link {
+        color: #b0b0b0 !important;
+        border-radius: 6px;
+        padding: 0.6rem 1rem;
+    }
+
+        #sidebarMenu .nav-link:hover, #sidebarMenu .nav-link.active {
+            background-color: var(--color-surface-hover) !important;
+            color: #ffffff !important;
+        }
+
+/* Badges Soft Dark */
+.bg-success-subtle {
+    background-color: rgba(25, 135, 84, 0.15) !important;
+}
+
+.bg-warning-subtle {
+    background-color: rgba(255, 193, 7, 0.15) !important;
+}
+
+.bg-danger-subtle {
+    background-color: rgba(220, 53, 69, 0.15) !important;
+}
+
+.bg-info-subtle {
+    background-color: rgba(13, 202, 240, 0.15) !important;
+}
+
+.bg-secondary-subtle {
+    background-color: rgba(108, 117, 125, 0.15) !important;
 }

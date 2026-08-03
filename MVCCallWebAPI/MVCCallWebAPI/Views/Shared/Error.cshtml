@@ -1,25 +1,65 @@
 ﻿@model ErrorViewModel
 @{
-    ViewData["Title"] = "Error";
+    ViewData["Title"] = "Lỗi hệ thống";
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+<div class="row justify-content-center align-items-center min-vh-50 py-5">
+    <div class="col-md-8 col-lg-6 text-center">
+        <!-- Error Icon Badge -->
+        <div class="mb-4">
+            <div class="d-inline-flex align-items-center justify-content-center bg-danger-subtle text-danger rounded-circle p-4 shadow-sm" style="width: 90px; height: 90px;">
+                <i class="bi bi-exclamation-triangle-fill fs-1"></i>
+            </div>
+        </div>
 
-@if (Model.ShowRequestId)
-{
-    <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
-    </p>
-}
+        <!-- Heading -->
+        <h2 class="fw-bold text-dark mb-2">Đã xảy ra lỗi!</h2>
+        <p class="text-muted mb-4">Rất tiếc, hệ thống đã gặp sự cố ngoài dự kiến trong quá trình xử lý yêu cầu của bạn.</p>
 
-<h3>Development Mode</h3>
-<p>
-    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
-</p>
-<p>
-    <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
-    It can result in displaying sensitive information from exceptions to end users.
-    For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
-    and restarting the app.
-</p>
+        <!-- Request ID Box -->
+        @if (Model != null && Model.ShowRequestId)
+        {
+            <div class="card border-0 bg-light shadow-sm mb-4 rounded-3 text-start">
+                <div class="card-body p-3 d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-uppercase text-muted fw-bold small d-block" style="font-size: 0.75rem; letter-spacing: 0.5px;">Mã định danh yêu cầu (Request ID)</span>
+                        <code class="fs-6 text-danger fw-bold">@Model.RequestId</code>
+                    </div>
+                    <button class="btn btn-sm btn-outline-secondary ms-2" onclick="navigator.clipboard.writeText('@Model.RequestId')" title="Sao chép ID">
+                        <i class="bi bi-copy"></i>
+                    </button>
+                </div>
+            </div>
+        }
+
+        <!-- Action Buttons -->
+        <div class="d-flex justify-content-center gap-3 mb-5">
+            <a href="javascript:history.back()" class="btn btn-outline-secondary px-4 py-2 rounded-pill fw-semibold">
+                <i class="bi bi-arrow-left me-1"></i> Quay lại
+            </a>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-warning px-4 py-2 rounded-pill fw-bold text-white" style="background-color: var(--primary-gold, #c89567); border: none;">
+                <i class="bi bi-house-door-fill me-1"></i> Về trang chủ
+            </a>
+        </div>
+
+        <!-- Dev Mode Warning Section (Dev Info) -->
+        <div class="accordion" id="devInfoAccordion">
+            <div class="accordion-item border-0 shadow-sm rounded-3 overflow-hidden">
+                <h2 class="accordion-header" id="headingDev">
+                    <button class="accordion-button collapsed bg-light text-secondary small py-2 fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDev" aria-expanded="false" aria-controls="collapseDev">
+                        <i class="bi bi-code-slash me-2 text-warning"></i> Thông tin môi trường phát triển (Development Mode)
+                    </button>
+                </h2>
+                <div id="collapseDev" class="accordion-collapse collapse" aria-labelledby="headingDev" data-bs-parent="#devInfoAccordion">
+                    <div class="accordion-body text-start small text-muted bg-white">
+                        <p class="mb-2">Chuyển sang môi trường <strong>Development</strong> sẽ hiển thị chi tiết Exception giúp bạn ghi nhận lỗi tốt hơn.</p>
+                        <p class="mb-0 text-danger fw-semibold">
+                            ⚠️ Không nên bật môi trường Development khi ứng dụng đã Deploy lên Production vì có thể làm rò rỉ thông tin nhạy cảm.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

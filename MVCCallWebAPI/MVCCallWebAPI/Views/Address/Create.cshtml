@@ -1,79 +1,130 @@
-﻿@model MVCCallWebAPI.ViewModels.AddressViewModel
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model MVCCallWebAPI.ViewModels.AddressViewModel
 
-<h3>Thêm địa chỉ</h3>
+@{
+    ViewData["Title"] = "Thêm địa chỉ mới";
+}
 
-<form asp-controller="Address" asp-action="Create" method="post">
+<div class="row justify-content-center my-4">
+    <div class="col-md-8 col-lg-7">
+        <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
 
-    @if (ViewBag.Error != null)
-    {
-        <div class="alert alert-danger">
-            <strong>Lỗi:</strong> @ViewBag.Error
+            <!-- Header Card -->
+            <div class="card-header py-3 px-4 d-flex align-items-center justify-content-between">
+                <h5 class="mb-0 fw-bold luxury-accent">
+                    <i class="bi bi-geo-alt-fill me-2"></i>Thêm địa chỉ nhận hàng
+                </h5>
+                <a asp-action="Index" class="btn btn-sm btn-outline-secondary rounded-pill">
+                    <i class="bi bi-arrow-left me-1"></i>Quay lại
+                </a>
+            </div>
+
+            <div class="card-body p-4">
+
+                <!-- Alert Error -->
+                @if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        <strong>Lỗi:</strong> @ViewBag.Error
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+
+                <form asp-controller="Address" asp-action="Create" method="post">
+
+                    <!-- Người nhận & Số điện thoại -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Người nhận <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                <input asp-for="FullName" class="form-control" placeholder="Nhập tên người nhận..." required />
+                            </div>
+                            <span asp-validation-for="FullName" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Số điện thoại <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                                <input asp-for="PhoneNumber" class="form-control" placeholder="Nhập số điện thoại..." required />
+                            </div>
+                            <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <!-- Tỉnh / Thành phố -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Tỉnh / Thành phố <span class="text-danger">*</span></label>
+                        <select id="provinceSelect" asp-for="Province" class="form-select" required>
+                            <option value="">-- Chọn tỉnh thành --</option>
+                        </select>
+                        <span asp-validation-for="Province" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Quận / Huyện & Phường / Xã -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Quận / Huyện <span class="text-danger">*</span></label>
+                            <select id="districtSelect" asp-for="District" class="form-select" disabled required>
+                                <option value="">-- Chọn quận huyện --</option>
+                            </select>
+                            <span asp-validation-for="District" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Phường / Xã <span class="text-danger">*</span></label>
+                            <select id="wardSelect" asp-for="Ward" class="form-select" disabled required>
+                                <option value="">-- Chọn phường xã --</option>
+                            </select>
+                            <span asp-validation-for="Ward" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <!-- Số nhà, tên đường -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Số nhà, tên đường <span class="text-danger">*</span></label>
+                        <input asp-for="DetailAddress" id="detailInput" class="form-control" placeholder="Ví dụ: 123 Đường ABC..." required />
+                        <span asp-validation-for="DetailAddress" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Đặt làm mặc định -->
+                    <div class="form-check form-switch mb-4 ms-1">
+                        <input asp-for="IsDefault" class="form-check-input" type="checkbox" id="isDefaultSwitch" />
+                        <label class="form-check-label fw-semibold" for="isDefaultSwitch">
+                            Đặt làm địa chỉ mặc định
+                        </label>
+                    </div>
+
+                    <input type="hidden" asp-for="FullAddress" id="fullAddressInput" />
+
+                    <!-- Xem trước địa chỉ -->
+                    <div class="mb-4">
+                        <label class="form-label text-muted small fw-semibold">
+                            <i class="bi bi-eye me-1"></i>Xem trước địa chỉ đầy đủ
+                        </label>
+                        <textarea id="preview" class="form-control text-muted" rows="2" readonly style="background-color: rgba(255, 255, 255, 0.03); border-color: var(--color-border); font-style: italic;"></textarea>
+                    </div>
+
+                    <!-- Submit Buttons -->
+                    <div class="d-flex gap-2 justify-content-end pt-3 border-top">
+                        <a asp-action="Index" class="btn btn-outline-secondary px-4">Hủy bỏ</a>
+                        <button type="submit" class="btn btn-primary px-4 fw-bold">
+                            <i class="bi bi-save me-1"></i> Lưu địa chỉ
+                        </button>
+                    </div>
+
+                </form>
+            </div>
         </div>
-    }
-
-    <div class="mb-3">
-        <label class="form-label font-weight-bold">Người nhận</label>
-        <input asp-for="FullName" class="form-control" placeholder="Nhập tên người nhận..." />
-        <span asp-validation-for="FullName" class="text-danger"></span>
     </div>
-
-    <div class="mb-3">
-        <label class="form-label font-weight-bold">Số điện thoại</label>
-        <input asp-for="PhoneNumber" class="form-control" placeholder="Nhập số điện thoại..." />
-        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label font-weight-bold">Tỉnh / Thành phố</label>
-        <select id="provinceSelect" asp-for="Province" class="form-select">
-            <option value="">-- Chọn tỉnh thành --</option>
-        </select>
-        <span asp-validation-for="Province" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label font-weight-bold">Quận / Huyện</label>
-        <select id="districtSelect" asp-for="District" class="form-select">
-            <option value="">-- Chọn quận huyện --</option>
-        </select>
-        <span asp-validation-for="District" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label font-weight-bold">Phường / Xã</label>
-        <select id="wardSelect" asp-for="Ward" class="form-select">
-            <option value="">-- Chọn phường xã --</option>
-        </select>
-        <span asp-validation-for="Ward" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label font-weight-bold">Số nhà, tên đường</label>
-        <input asp-for="DetailAddress" id="detailInput" class="form-control" placeholder="Ví dụ: 123 Đường ABC..." />
-        <span asp-validation-for="DetailAddress" class="text-danger"></span>
-    </div>
-
-    <div class="form-check mb-3">
-        <input asp-for="IsDefault" class="form-check-input" type="checkbox" />
-        <label class="form-check-label" asp-for="IsDefault">
-            Đặt làm địa chỉ mặc định
-        </label>
-    </div>
-
-    <input type="hidden" asp-for="FullAddress" id="fullAddressInput" />
-
-    <div class="mb-3">
-        <label class="form-label text-muted">Xem trước địa chỉ đầy đủ</label>
-        <textarea id="preview" class="form-control bg-light" rows="2" readonly></textarea>
-    </div>
-
-    <div class="mt-4">
-        <button type="submit" class="btn btn-primary px-4">Lưu địa chỉ</button>
-        <a asp-action="Index" class="btn btn-outline-secondary ms-2">Quay lại</a>
-    </div>
-</form>
+</div>
 
 @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
     <script>
         const provinceSelect = document.getElementById("provinceSelect");
         const districtSelect = document.getElementById("districtSelect");
@@ -83,83 +134,89 @@
         const preview = document.getElementById("preview");
         let provinces = [];
 
-        // LOAD DATA TỪ API PROVINCES
+        // 1. LOAD DATA TỪ API PROVINCES
         async function loadData() {
             try {
                 const response = await fetch("https://provinces.open-api.vn/api/?depth=3");
                 provinces = await response.json();
 
+                let options = '<option value="">-- Chọn tỉnh thành --</option>';
                 provinces.forEach(p => {
-                    provinceSelect.innerHTML += `<option value="${p.name}">${p.name}</option>`;
+                    options += `<option value="${p.name}">${p.name}</option>`;
                 });
+                provinceSelect.innerHTML = options;
             } catch (error) {
                 console.error("Không thể tải danh sách tỉnh thành:", error);
             }
         }
 
-        // TỰ ĐỘNG GHÉP CHUỖI ĐỊA CHỈ
+        // 2. GHÉP CHUỖI ĐỊA CHỈ HÒAN CHỈNH
         function buildAddress() {
             const parts = [];
 
-            if (detailInput.value.trim()) {
-                parts.push(detailInput.value.trim());
-            }
-            if (wardSelect.value) {
-                parts.push(wardSelect.value);
-            }
-            if (districtSelect.value) {
-                parts.push(districtSelect.value);
-            }
-            if (provinceSelect.value) {
-                parts.push(provinceSelect.value);
-            }
+            if (detailInput.value.trim()) parts.push(detailInput.value.trim());
+            if (wardSelect.value) parts.push(wardSelect.value);
+            if (districtSelect.value) parts.push(districtSelect.value);
+            if (provinceSelect.value) parts.push(provinceSelect.value);
 
             const full = parts.join(", ");
             fullAddressInput.value = full;
-            preview.value = full;
+            preview.value = full || "Địa chỉ đầy đủ sẽ hiển thị tại đây khi bạn lựa chọn...";
         }
 
-        // SỰ KIỆN THAY ĐỔI TỈNH / THÀNH
-        provinceSelect.addEventListener("change", function () {
+        // 3. SỰ KIỆN THAY ĐỔI TỈNH / THÀNH
+        provinceSelect.addEventListener("change", function() {
             districtSelect.innerHTML = `<option value="">-- Chọn quận huyện --</option>`;
             wardSelect.innerHTML = `<option value="">-- Chọn phường xã --</option>`;
+            wardSelect.disabled = true;
 
-            const province = provinces.find(x => x.name == this.value);
+            const province = provinces.find(x => x.name === this.value);
             if (!province) {
+                districtSelect.disabled = true;
                 buildAddress();
                 return;
             }
 
+            let options = `<option value="">-- Chọn quận huyện --</option>`;
             province.districts.forEach(d => {
-                districtSelect.innerHTML += `<option value="${d.name}">${d.name}</option>`;
+                options += `<option value="${d.name}">${d.name}</option>`;
             });
+
+            districtSelect.innerHTML = options;
+            districtSelect.disabled = false;
 
             buildAddress();
         });
 
-        // SỰ KIỆN THAY ĐỔI QUẬN / HUYỆN
-        districtSelect.addEventListener("change", function () {
+        // 4. SỰ KIỆN THAY ĐỔI QUẬN / HUYỆN
+        districtSelect.addEventListener("change", function() {
             wardSelect.innerHTML = `<option value="">-- Chọn phường xã --</option>`;
 
-            const province = provinces.find(x => x.name == provinceSelect.value);
-            const district = province?.districts.find(x => x.name == this.value);
+            const province = provinces.find(x => x.name === provinceSelect.value);
+            const district = province?.districts.find(x => x.name === this.value);
+
             if (!district) {
+                wardSelect.disabled = true;
                 buildAddress();
                 return;
             }
 
+            let options = `<option value="">-- Chọn phường xã --</option>`;
             district.wards.forEach(w => {
-                wardSelect.innerHTML += `<option value="${w.name}">${w.name}</option>`;
+                options += `<option value="${w.name}">${w.name}</option>`;
             });
+
+            wardSelect.innerHTML = options;
+            wardSelect.disabled = false;
 
             buildAddress();
         });
 
-        // SỰ KIỆN THAY ĐỔI PHƯỜNG / XÃ VÀ SỐ NHÀ
+        // 5. LẮNG NGHE THAY ĐỔI
         wardSelect.addEventListener("change", buildAddress);
         detailInput.addEventListener("input", buildAddress);
 
-        // KHỞI CHẠY LẤY DỮ LIỆU
+        // Khởi chạy
         loadData();
     </script>
 }

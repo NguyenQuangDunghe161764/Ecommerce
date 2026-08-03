@@ -1,26 +1,91 @@
 ﻿@model LoginViewModel
 
-<h2>Login</h2>
+@{
+    ViewData["Title"] = "Đăng Nhập";
+}
 
-<form asp-action="Login" method="post">
+@section Styles {
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/theme-mocha.css" asp-append-version="true" />
+}
 
-    <div>
-        <label>Email</label>
-        <input asp-for="Email" />
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-5">
+            <div class="auth-card">
+
+                @* --- Header --- *@
+                <div class="auth-header">
+                    <div class="mb-2">
+                        <i class="bi bi-shield-lock-fill display-5" style="color: #C9A96E;"></i>
+                    </div>
+                    <h3 class="auth-header-title mb-1">ĐĂNG NHẬP</h3>
+                    <p class="auth-header-sub mb-0">Chào mừng bạn trở lại với hệ thống</p>
+                </div>
+
+                @* --- Body Form --- *@
+                <div class="p-4 p-md-5">
+
+                    @* Hiển thị thông báo lỗi *@
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-mocha-danger d-flex align-items-center gap-2 mb-4" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill fs-5"></i>
+                            <div>@ViewBag.Error</div>
+                        </div>
+                    }
+
+                    <form asp-action="Login" method="post" class="d-flex flex-column gap-3">
+
+                        @* Email Field *@
+                        <div>
+                            <label asp-for="Email" class="form-label form-label-mocha">Địa chỉ Email</label>
+                            <div class="input-icon-wrapper">
+                                <i class="bi bi-envelope-fill input-icon"></i>
+                                <input asp-for="Email"
+                                       class="form-control form-control-mocha"
+                                       placeholder="nhapemail@example.com" />
+                            </div>
+                            <span asp-validation-for="Email" class="text-danger small mt-1 d-block"></span>
+                        </div>
+
+                        @* Password Field *@
+                        <div>
+                            <label asp-for="Password" class="form-label form-label-mocha">Mật khẩu</label>
+                            <div class="input-icon-wrapper">
+                                <i class="bi bi-lock-fill input-icon"></i>
+                                <input asp-for="Password"
+                                       type="password"
+                                       class="form-control form-control-mocha"
+                                       placeholder="••••••••" />
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger small mt-1 d-block"></span>
+                        </div>
+
+                        @* Submit Button *@
+                        <button type="submit" class="btn btn-mocha-primary w-100 mt-3 d-flex align-items-center justify-content-center gap-2">
+                            <span>Đăng Nhập</span>
+                            <i class="bi bi-arrow-right-short fs-4"></i>
+                        </button>
+
+                        @* Register Link *@
+                        <div class="text-center mt-3 pt-3 border-top" style="border-color: #F8F5EF !important;">
+                            <span class="text-muted small">Chưa có tài khoản? </span>
+                            <a asp-controller="Account" asp-action="Register" class="auth-link small">
+                                Đăng ký ngay
+                            </a>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
     </div>
+</div>
 
-    <div>
-        <label>Password</label>
-        <input asp-for="Password" type="password" />
-    </div>
-
-    <button type="submit">Login</button>
-    <a asp-controller="Account" asp-action="Register">
-        Don't have an account? Register
-    </a>
-</form>
-
-@if (ViewBag.Error != null)
-{
-    <p style="color:red">@ViewBag.Error</p>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }

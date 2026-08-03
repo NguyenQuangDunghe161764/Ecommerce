@@ -1,4 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @model MVCCallWebAPI.ViewModels.CreateProductViewModel
 
@@ -7,75 +9,82 @@
 }
 
 <div class="row justify-content-center mt-4">
-    <div class="col-md-6">
-        <div class="card shadow-sm">
-            <div class="card-header bg-primary text-white">
-                <h4 class="mb-0">Thêm sản phẩm mới</h4>
+    <div class="col-md-7 col-lg-6">
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-header bg-primary text-white py-3">
+                <h5 class="mb-0 fw-bold"><i class="bi bi-box-seam me-2"></i>Thêm sản phẩm mới</h5>
             </div>
-            <div class="card-body">
+            <div class="card-body p-4">
 
                 @if (ViewBag.Error != null)
                 {
-                    <div class="alert alert-danger">@ViewBag.Error</div>
+                    <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>@ViewBag.Error
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                 }
 
                 <form asp-controller="Product"
                       asp-action="Create"
                       method="post"
                       enctype="multipart/form-data">
+
+                    <!-- Tên sản phẩm -->
                     <div class="mb-3">
-                        <label asp-for="Name" class="form-label fw-bold">Tên sản phẩm</label>
+                        <label asp-for="Name" class="form-label fw-bold">Tên sản phẩm <span class="text-danger">*</span></label>
                         <input asp-for="Name" class="form-control" placeholder="Nhập tên sản phẩm..." required />
-                        <span asp-validation-for="Name" class="text-danger"></span>
+                        <span asp-validation-for="Name" class="text-danger small"></span>
                     </div>
+
+                    <!-- Ảnh sản phẩm -->
                     <div class="mb-3">
-
-                        <label class="form-label">
-                            Product Images
-                        </label>
-
+                        <label class="form-label fw-bold">Hình ảnh sản phẩm</label>
                         <input asp-for="Images"
                                type="file"
                                multiple
                                accept=".png,.jpg,.jpeg"
                                class="form-control"
                                id="imageInput" />
-
+                        <span asp-validation-for="Images" class="text-danger small"></span>
                     </div>
 
-                    <!-- PREVIEW -->
-                    <div id="previewContainer"
-                         class="d-flex flex-wrap gap-3 mt-3">
+                    <!-- PREVIEW ẢNH -->
+                    <div id="previewContainer" class="d-flex flex-wrap gap-3 mb-3"></div>
+
+                    <!-- Giá bán & Kho hàng -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="Price" class="form-label fw-bold">Giá bán (VNĐ) <span class="text-danger">*</span></label>
+                            <input asp-for="Price"
+                                   type="number"
+                                   step="1"
+                                   min="0"
+                                   class="form-control"
+                                   placeholder="0" required />
+                            <span asp-validation-for="Price" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Stock" class="form-label fw-bold">Số lượng kho <span class="text-danger">*</span></label>
+                            <input asp-for="Stock" type="number" min="0" class="form-control" placeholder="0" required />
+                            <span asp-validation-for="Stock" class="text-danger small"></span>
+                        </div>
                     </div>
 
+                    <!-- Mô tả -->
                     <div class="mb-3">
-                        <label asp-for="Price" class="form-label fw-bold">Giá bán</label>
-                        <input asp-for="Price"
-                               type="number"
-                               step="1"
-                               min="0"
-                               class="form-control"
-                               placeholder="0" />                        
-                        <span asp-validation-for="Price" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="Description" class="form-label fw-bold">Description</label>
-                        <input asp-for="Description" class="form-control" />
+                        <label asp-for="Description" class="form-label fw-bold">Mô tả sản phẩm</label>
+                        <textarea asp-for="Description" class="form-control" rows="3" placeholder="Nhập mô tả chi tiết..."></textarea>
+                        <span asp-validation-for="Description" class="text-danger small"></span>
                     </div>
 
+                    <!-- Danh mục -->
                     <div class="mb-3">
-                        <label asp-for="Stock" class="form-label fw-bold">Stock</label>
-                        <input asp-for="Stock" type="number" class="form-control" />
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Danh mục sản phẩm</label>
+                        <label class="form-label fw-bold">Danh mục sản phẩm <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <select asp-for="CategoryId"
                                     id="categorySelect"
                                     class="form-select"
                                     required>
-                                <span asp-validation-for="CategoryId"
-                                      class="text-danger"></span>
                                 <option value="">-- Chọn danh mục --</option>
                                 @if (ViewBag.Categories != null)
                                 {
@@ -86,14 +95,20 @@
                                 }
                             </select>
                             <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
-                                + Thêm mới
+                                <i class="bi bi-plus-circle"></i> Thêm mới
                             </button>
                         </div>
+                        <span asp-validation-for="CategoryId" class="text-danger small"></span>
                     </div>
 
+                    <!-- Nút bấm -->
                     <div class="d-flex gap-2 justify-content-end mt-4">
-                        <a asp-controller="Product" asp-action="Index" class="btn btn-secondary">Quay lại</a>
-                        <button type="submit" class="btn btn-success">Lưu sản phẩm</button>
+                        <a asp-controller="Product" asp-action="Index" class="btn btn-secondary px-4">
+                            <i class="bi bi-arrow-left"></i> Quay lại
+                        </a>
+                        <button type="submit" class="btn btn-success px-4">
+                            <i class="bi bi-check-circle"></i> Lưu sản phẩm
+                        </button>
                     </div>
 
                 </form>
@@ -102,21 +117,22 @@
     </div>
 </div>
 
+<!-- Modal Thêm Danh Mục -->
 <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addCategoryModalLabel">Thêm danh mục mới</h5>
+                <h5 class="modal-title fw-bold" id="addCategoryModalLabel">Thêm danh mục mới</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="mb-3">
-                    <label for="newCategoryName" class="form-label">Tên danh mục</label>
+                    <label for="newCategoryName" class="form-label">Tên danh mục <span class="text-danger">*</span></label>
                     <input type="text" id="newCategoryName" class="form-control" placeholder="Nhập tên danh mục mới..." />
-                    <small id="modalError" class="text-danger d-none">Vui lòng nhập tên danh mục!</small>
+                    <small id="modalError" class="text-danger d-none mt-1 d-block">Vui lòng nhập tên danh mục!</small>
                 </div>
             </div>
-            <div class="modal-header border-0 pt-0 d-flex justify-content-end gap-2">
+            <div class="modal-footer border-0 pt-0">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
                 <button type="button" id="btnSaveCategory" class="btn btn-primary">Lưu lại</button>
             </div>
@@ -125,61 +141,49 @@
 </div>
 
 @section Scripts {
-
     <script>
-
         let selectedFiles = [];
 
-        $("#imageInput").on("change", function (e) {
-
+        // Lắng nghe sự kiện chọn file
+        $("#imageInput").on("change", function(e) {
             const files = Array.from(e.target.files);
 
-            // add file mới vào list
+            // Kiểm tra nếu có file không phải định dạng ảnh
+            const invalidFiles = files.filter(f => !f.type.startsWith("image/"));
+            if (invalidFiles.length > 0) {
+                alert("Chỉ được chọn file hình ảnh (.png, .jpg, .jpeg)!");
+                this.value = "";
+                return;
+            }
+
+            // Thêm các file hợp lệ vào danh sách hiện tại
             selectedFiles.push(...files);
 
             renderPreview();
-
             updateInputFiles();
         });
 
+        // Hiển thị preview ảnh
         function renderPreview() {
-
-            $("#previewContainer").html("");
+            $("#previewContainer").empty();
 
             selectedFiles.forEach((file, index) => {
-
                 const reader = new FileReader();
 
-                reader.onload = function (e) {
-
+                reader.onload = function(e) {
                     const html = `
-                        <div class="position-relative border rounded p-1">
+                                <div class="position-relative border rounded p-1 shadow-sm bg-white">
+                                    <img src="${e.target.result}"
+                                         style="width:100px; height:100px; object-fit:cover; border-radius:6px;" />
 
-                            <img src="${e.target.result}"
-                                 style="
-                                    width:120px;
-                                    height:120px;
-                                    object-fit:cover;
-                                    border-radius:8px;
-                                 " />
-
-                            <button type="button"
-                                    class="btn btn-danger btn-sm position-absolute top-0 end-0"
-                                    onclick="removeImage(${index})"
-                                    style="
-                                        width:24px;
-                                        height:24px;
-                                        padding:0;
-                                        line-height:1;
-                                        border-radius:50%;
-                                        transform:translate(30%,-30%);
-                                    ">
-                                ×
-                            </button>
-
-                        </div>
-                    `;
-
+                                    <button type="button"
+                                            class="btn btn-danger btn-sm position-absolute top-0 end-0"
+                                            onclick="removeImage(${index})"
+                                            style="width:22px; height:22px; padding:0; line-height:1; border-radius:50%; transform:translate(30%,-30%);">
+                                        &times;
+                                    </button>
+                                </div>
+                            `;
                     $("#previewContainer").append(html);
                 };
 
@@ -187,111 +191,55 @@
             });
         }
 
+        // Xóa ảnh khỏi preview
         function removeImage(index) {
-
             selectedFiles.splice(index, 1);
-
             renderPreview();
-
             updateInputFiles();
         }
 
+        // Cập nhật lại input element bằng DataTransfer
         function updateInputFiles() {
-
             const dataTransfer = new DataTransfer();
-
             selectedFiles.forEach(file => {
                 dataTransfer.items.add(file);
             });
-
-            document.getElementById("imageInput").files =
-                dataTransfer.files;
+            document.getElementById("imageInput").files = dataTransfer.files;
         }
 
-    </script>
-    <script>
-        const imageInput = document.getElementById("imageInput");
-
-        imageInput.addEventListener("change", function (e) {
-
-            const files = Array.from(e.target.files);
-
-            const invalidFiles =
-                files.filter(f => !f.type.startsWith("image/"));
-
-            if (invalidFiles.length > 0) {
-
-                alert("Chỉ được chọn file ảnh!");
-
-                selectedFiles = [];
-
-                imageInput.value = "";
-
-                $("#previewContainer").html("");
-
-                return;
-            }
-        });
-    </script>
-    <script>
-        $(document).ready(function () {
-
-            $("#btnSaveCategory").click(function () {
-
-                var catName =
-                    $("#newCategoryName").val().trim();
+        // AJAX Thêm Danh Mục Nhanh
+        $(document).ready(function() {
+            $("#btnSaveCategory").click(function() {
+                var catName = $("#newCategoryName").val().trim();
 
                 if (catName === "") {
-
-                    $("#modalError")
-                        .removeClass("d-none");
-
+                    $("#modalError").removeClass("d-none");
                     return;
-
                 } else {
-
-                    $("#modalError")
-                        .addClass("d-none");
+                    $("#modalError").addClass("d-none");
                 }
 
                 $.ajax({
                     url: "@(ApiConfig.GetBaseUrl(Configuration))/api/categories",
-
                     type: "POST",
-
                     contentType: "application/json",
-
                     data: JSON.stringify({
-                        Name: catName.trim()
+                        Name: catName
                     }),
-
-                    success: function (response) {
-
+                    success: function(response) {
                         $("#categorySelect").append(
-                            new Option(
-                                response.name,
-                                response.id,
-                                true,
-                                true
-                            )
+                            new Option(response.name, response.id, true, true)
                         );
 
                         $("#newCategoryName").val("");
-
                         $("#addCategoryModal").modal("hide");
                     },
-
-                    error: function (xhr) {
-
-                        console.log(xhr.responseText);
-
-                        alert(
-                            "Lỗi: " + xhr.responseText
-                        );
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                        alert("Lỗi khi thêm danh mục: " + (xhr.responseText || "Vui lòng thử lại"));
                     }
                 });
             });
         });
     </script>
-
 }

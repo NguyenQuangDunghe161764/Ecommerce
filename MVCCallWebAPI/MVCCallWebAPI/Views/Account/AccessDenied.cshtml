@@ -1,5 +1,61 @@
-﻿<h2 class="text-danger">403 - Bạn không có quyền truy cập</h2>
+﻿@{
+    ViewData["Title"] = "Không Có Quyền Truy Cập";
+}
 
-<p>Bạn không được phép thực hiện chức năng này.</p>
+@section Styles {
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/theme-mocha.css" asp-append-version="true" />
+}
 
-<a href="/Product">Quay lại</a>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+            <div class="error-card text-center">
+
+                @* --- Header --- *@
+                <div class="error-header">
+                    <div class="mb-3">
+                        <i class="bi bi-shield-slash-fill display-3" style="color: #C9A96E;"></i>
+                    </div>
+                    <div class="mb-2">
+                        <span class="error-badge">LỖI 403</span>
+                    </div>
+                    <h3 class="error-title mb-2">KHÔNG CÓ QUYỀN TRUY CẬP</h3>
+                    <p class="error-sub mb-0">Hệ thống từ chối yêu cầu truy cập của bạn</p>
+                </div>
+
+                @* --- Content --- *@
+                <div class="p-4 p-md-5">
+
+                    <div class="error-message-box text-start mb-4">
+                        <div class="d-flex align-items-start gap-3">
+                            <i class="bi bi-exclamation-octagon-fill fs-4 flex-shrink-0" style="color: #806A4A;"></i>
+                            <div>
+                                <h6 class="fw-bold mb-1" style="color: #1F1915;">Quyền hạn không đủ</h6>
+                                <p class="mb-0 small" style="color: #3A2B20;">
+                                    Tài khoản hiện tại của bạn không được cấp quyền thực hiện chức năng hoặc truy cập vào trang này.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    @* --- Action Buttons --- *@
+                    <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
+                        <a href="/Product" class="btn-mocha-primary justify-content-center">
+                            <i class="bi bi-house-door-fill fs-5"></i>
+                            <span>Quay lại trang sản phẩm</span>
+                        </a>
+                        <a href="javascript:history.back()" class="btn-mocha-outline justify-content-center">
+                            <i class="bi bi-arrow-left fs-5"></i>
+                            <span>Trở về trang trước</span>
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
